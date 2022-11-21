@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.mem.mapper.device.MemDeviceOlineMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.device.MemDeviceOline">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="mem_id" jdbcType="VARCHAR" property="memId" />
+        <result column="device_json" jdbcType="VARCHAR" property="deviceJson" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  id, mem_id, device_json, status, update_time
+</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+  delete from v_mem_device_oline
+  where id = #{id,jdbcType=INTEGER}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.mem.entity.device.MemDeviceOline">
+  insert into v_mem_device_oline (id, mem_id, device_json, status, update_time
+    )
+  values (#{id,jdbcType=INTEGER}, #{memId,jdbcType=VARCHAR}, #{deviceJson,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+    )
+</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.tsn.serv.mem.entity.device.MemDeviceOline">
+        insert into v_mem_device_oline
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memId != null">
+                mem_id,
+            </if>
+            <if test="deviceJson != null">
+                device_json,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="updateTime != null">
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="memId != null">
+                #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceJson != null">
+                #{deviceJson,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.tsn.serv.mem.entity.device.MemDeviceOline">
+        update v_mem_device_oline
+        <set>
+            <if test="memId != null">
+                mem_id = #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceJson != null">
+                device_json = #{deviceJson,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="update" parameterType="com.tsn.serv.mem.entity.device.MemDeviceOline">
+  update v_mem_device_oline
+  set mem_id = #{memId,jdbcType=VARCHAR},
+    device_json = #{deviceJson,jdbcType=VARCHAR}
+    status = #{status,jdbcType=VARCHAR}
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+  where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_mem_device_oline
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="id != null" >
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="memId != null and memId != ''" >
+                and mem_id = #{memId,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceJson != null and deviceJson != ''" >
+                and device_json = #{deviceJson,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByMemId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_mem_device_oline
+        where mem_id = #{memId,jdbcType=VARCHAR}
+    </select>
+</mapper>

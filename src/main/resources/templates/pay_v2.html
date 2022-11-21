@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- 支付 -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<style>
+
+body {
+	margin: 0px !important;
+}
+
+.content {
+	text-align: center;
+	margin: 0px auto;
+}
+
+.contentHeader {
+	background-image: url(/images/pay/header.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	height: 200px;
+}
+
+.headerTitle {
+	position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.headerTitleImg {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.header_desc {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #FFFFFFFF;
+	font: 20px;
+}
+
+.headerDesc2 {
+	font-size: 20px;
+	font-family: SourceHanSansCN-Regular-, SourceHanSansCN-Regular;
+	font-weight: normal;
+	color: #8b8484;
+}
+
+.vip {
+	font-size: 30px;
+	font-family: SourceHanSansCN-Bold-, SourceHanSansCN-Bold;
+	font-weight: 600;
+    color: #736d6d;
+}
+
+.headerDesc {
+	font-size: 30px;
+	font-family: PingFang HK-Medium, PingFang HK;
+	font-weight: 500;
+	color: #FFFFFF;
+	line-height: 66px;
+}
+
+.contentBody {
+	height: 793px;
+	background: #7f78e2;
+	border-radius: 29px 29px 0px 0px;
+	margin-top: -30px
+}
+
+.contentBody .item {
+	margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 0px;
+    margin-left: 20px;
+	background: #FFFFFF;
+	border-radius: 16px 16px 16px 16px;
+}
+
+.contentBody .item .zkai {
+	position: relative;
+	width:100%;
+	height: 200px;
+}
+
+.contentBody .item .bihe {
+	position: relative;
+	width:100%;
+	height: 60px;
+}
+
+.contentBody .item .zkai .title {
+	position: absolute;
+	left: 16px;
+    top: 30px;
+	font-size: 16px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #000000;
+	line-height: 0px;
+}
+
+.contentBody .item .zkai .zhekou {
+	position: absolute;
+    right: 16px;
+    top: 13px;
+    font-size: 16px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 30px;
+    width: 100px;
+    height: 31px;
+    background: #EB672C;
+    border-radius: 26px 0px 0px 26px;
+    opacity: 1;
+}
+
+.contentBody .item .zkai .price {
+    padding-top: 62px;
+    font-size: 29px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #EB672C;
+}
+
+.contentBody .item .zkai .desc{
+	font-size: 13px;
+	font-family: PingFang HK-Medium, PingFang HK;
+	font-weight: 500;
+	color: #999999;
+}
+
+.contentBody .item .zkai .butpay{
+	margin-left:30px;
+	margin-right:30px;
+	height: 45px;
+	font-size: 16px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #FFFFFF;
+	background: #7f6cf8;
+	line-height:43px;
+	border-radius: 12px 12px 12px 12px;
+}
+
+.contentBody .item .bihe .title {
+	position: absolute;
+	left: 16px;
+    top: 30px;
+	font-size: 16px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #000000;
+	line-height: 0px;
+}
+
+.contentBody .item .bihe .zhekou {
+	position: absolute;
+    right: 16px;
+    top: 13px;
+    font-size: 16px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 30px;
+    width: 100px;
+    height: 31px;
+    background: #EB672C;
+    border-radius: 26px 0px 0px 26px;
+    opacity: 1;
+}
+
+.contentBody .item .bihe .price {
+    position: absolute;
+    right: 16px;
+    top: 13px;
+    font-size: 16px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #000000;
+    line-height: 30px;
+    width: 150px;
+    height: 31px;
+    text-align: right;
+}
+
+.tsn-margin-top-sm {
+	margin-top:5px;
+}
+
+.tsn-margin-top-xl {
+	margin-top:10px;
+}
+
+.tsn-margin-top-xxl {
+	margin-top:15px;
+}
+
+.hide {
+	display:none;
+}
+
+</style>
+<!-- <script src="https://js.stripe.com/v3/"></script> -->
+</head>
+<body>
+	<div class="content">
+
+		<div class="contentHeader">
+			<div class="headerTitle">
+				<div class="vip">VIP</div>
+				<div class="headerDesc">会员中心</div>
+				<div class="headerDesc2">享折扣优惠</div>
+			</div>
+		</div>
+		
+		<div class="contentBody" style="padding-top: 40px;">
+				<div class="taocanTitle">会员套餐</div>
+				
+				<div class="item" th:each="i : ${#numbers.sequence(chargeList.size()-1, 0, -1)}">
+					
+					<div class="zkai" th:if="${ i eq chargeList.size()-1 }">
+						<div class="title" th:if="${ chargeList[i].chargeType eq '10' }">月卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '11' }">季卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '12' }">半年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '13' }">年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '14' }">永久(VIP)</div>
+						<!-- <div class="title">永久(VIP)</div> -->
+						<div class="zhekou">[[ ${#numbers.formatDecimal(chargeList[i].discount / 10,1,1)}]]折</div>
+						<div class="price tsn-margin-top-sm"><span class="">$[[ ${#numbers.formatDecimal(chargeList[i].finalMoney * chargeList[i].usdRateVal,1,2)}]]</span><span>≈¥[[ ${#numbers.formatDecimal(chargeList[i].finalMoney,1,0)}]]</span></div>
+						<div class="desc tsn-margin-top-sm">原价≈$[[ ${#numbers.formatDecimal(chargeList[i].chargeMoney * chargeList[i].usdRateVal,1,2)}]]，立省≈$[[ ${#numbers.formatDecimal(chargeList[i].chargeMoney * chargeList[i].usdRateVal,1,2)} - ${#numbers.formatDecimal(chargeList[i].finalMoney * chargeList[i].usdRateVal,1,2)} ]]!</div>
+						<div class="butpay tsn-margin-top-xl" th:attr-charge-id="${chargeList[i].chargeId}">马上订购</div>
+					</div>
+					<div class="zkai hide" th:if="${ i ne chargeList.size()-1 }">
+						<div class="title" th:if="${ chargeList[i].chargeType eq '10' }">月卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '11' }">季卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '12' }">半年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '13' }">年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '14' }">永久(VIP)</div>
+						<!-- <div class="title">永久(VIP)</div> -->
+						<div class="zhekou">[[ ${#numbers.formatDecimal(chargeList[i].discount / 10,1,1)}]]折</div>
+						<div class="price tsn-margin-top-sm"><span class="">$[[ ${#numbers.formatDecimal(chargeList[i].finalMoney * chargeList[i].usdRateVal,1,2)}]]</span><span>≈¥[[ ${#numbers.formatDecimal(chargeList[i].finalMoney,1,0)}]]</span></div>
+						<div class="desc tsn-margin-top-sm">原价≈$[[ ${#numbers.formatDecimal(chargeList[i].chargeMoney * chargeList[i].usdRateVal,1,2)}]]，立省≈$[[ ${#numbers.formatDecimal(chargeList[i].chargeMoney * chargeList[i].usdRateVal,1,2)} - ${#numbers.formatDecimal(chargeList[i].finalMoney * chargeList[i].usdRateVal,1,2)} ]]!</div>
+						<div class="butpay tsn-margin-top-xl" th:attr-charge-id="${chargeList[i].chargeId}">马上订购</div>
+					</div>
+					
+					
+					<div class="bihe hide" th:if="${ i eq chargeList.size()-1 }">
+						<div class="title" th:if="${ chargeList[i].chargeType eq '10' }">月卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '11' }">季卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '12' }">半年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '13' }">年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '14' }">永久(VIP)</div>
+						<div class="price"><span class="">$[[ ${#numbers.formatDecimal(chargeList[i].finalMoney * chargeList[i].usdRateVal,1,2)}]]</span><span>≈¥[[ ${#numbers.formatDecimal(chargeList[i].finalMoney,1,0)}]]</span></div>
+					</div>
+					<div class="bihe" th:if="${ i ne chargeList.size()-1 }">
+						<div class="title" th:if="${ chargeList[i].chargeType eq '10' }">月卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '11' }">季卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '12' }">半年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '13' }">年卡</div>
+						<div class="title" th:if="${ chargeList[i].chargeType eq '14' }">永久(VIP)</div>
+						<div class="price"><span class="">$[[ ${#numbers.formatDecimal(chargeList[i].finalMoney * chargeList[i].usdRateVal,1,2)}]]</span><span>≈¥[[ ${#numbers.formatDecimal(chargeList[i].finalMoney,1,0)}]]</span></div>
+					</div>
+					
+				</div>
+				
+				
+		</div>
+		
+	</div>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.3.0/layer.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	<script th:inline="javascript">
+			const payApi = [[${payApi}]];
+			// 取资费类型
+	        const chargeList = [[${chargeList}]];
+	        const memId = [[${mId}]];
+	        
+	        const pk = [[${pk}]]
+	        var token = [[${token}]];
+	        
+	        var reToken = [[${reToken}]];
+	        
+	        $.cookie('token', token);
+	        $.cookie('payApi', payApi);
+		</script>
+
+
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		           
+		  $(function() {
+		        	   
+	   			
+	   	        let charge = {};
+	   	        
+	   	        var stripe = {};
+	   	        if (pk) {
+	   	        	stripe = Stripe(pk)
+	   	        }
+	   	        
+	   	        event();
+		   	        
+	   	        function event() {
+	   	        	
+	   	        	$(".butpay").click(function(){
+	   	        		
+	   	        		charge.chargeId = $(this).attr("attr-charge-id");
+	   	        		
+	   	        		//charge.chargeType = $(this).attr("attr-charge-id");
+	   	        		
+	   	        		for (var index in chargeList) {
+	   	        			if (chargeList[index].chargeId == charge.chargeId) {
+	   	        				charge.chargeType = chargeList[index].chargeType
+	   	        			}
+	   	        		}
+	   	        	 	if (!charge.chargeId) {
+		   	            	layer.msg('系统错误');
+		   					return false
+		   				}
+	   	        		chargeOrder($(this));
+	   	        	})
+	   	        	
+	   	        	$(".item").click(function() {
+	   	        		$(this).find(".zkai").removeClass("hide");
+	   	        		$(this).find(".bihe").addClass("hide");
+	   	        		$(this).siblings().find(".zkai").addClass("hide");
+	   	        		$(this).siblings().find(".bihe").removeClass("hide");
+	   	        	})
+	   	        }
+		   	
+		   	     function isPhone() {
+		             var sUserAgent = navigator.userAgent.toLowerCase();
+		             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+		             var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+		             var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+		             var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+		             var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+		             var bIsAndroid = sUserAgent.match(/android/i) == "android";
+		             var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+		             var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+		             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+		                 return true;
+		             } else {
+		            	 return false;
+		             }
+		         }
+		   	
+		   	        // 生成支付订单，获取sessionId
+		   	        function chargeOrder(obj) {
+			   	         charge.payType="alipay";
+	            		 charge.reToken=reToken;
+			   	         $.ajax({
+			                 type : "POST",
+			                 url : payApi + "/order/charge",
+			                 beforeSend: function(request) {
+			                	 obj.text("正在支付..")
+			                	 obj.addClass("disable");
+			                     request.setRequestHeader("V-Auth", token);
+			                 },
+			                 contentType: "application/json; charset=utf-8",
+			                 dataType : "json",
+			                 data : JSON.stringify(charge),
+			                 success : function(msg) {
+			                	 if (msg.code == '000000') {
+			                		 
+			                		 	window.location.href=msg.data.qrcode;
+		   	                            
+		   							} else if (msg.code == '100991') {
+		   								layer.msg('用户未登录');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},2000)
+		   							} else if (msg.code == '100991') {
+		   								layer.msg('用户未登录');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},2000)
+		   							} else if (msg.code == 'R1002' || msg.code == 'R1004') {
+		   								layer.msg('页面操作已超时,稍后操作');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},1000)
+		   							} else {
+		   								layer.msg('服务器繁忙');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},1000)
+		   							}
+			                 },
+			                 error: function(e) {
+			                	alert(e.status) 
+			                 },
+			                 complete : function() {
+			                	 obj.text("立即支付")
+			                	 obj.removeClass("disable");
+			                 }
+			             });
+			   	             
+			   			}
+		        	   
+		           })
+	
+		/*]]>*/
+	</script>
+</body>
+</html>

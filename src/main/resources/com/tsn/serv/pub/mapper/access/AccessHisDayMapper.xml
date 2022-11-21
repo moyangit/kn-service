@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.pub.mapper.access.AccessHisDayMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.access.AccessHisDay">
+        <id column="access_day_id" jdbcType="VARCHAR" property="accessDayId" />
+        <result column="day" jdbcType="VARCHAR" property="day" />
+        <result column="hour" jdbcType="VARCHAR" property="hour" />
+        <result column="access_path" jdbcType="VARCHAR" property="accessPath" />
+        <result column="access_num" jdbcType="INTEGER" property="accessNum" />
+        <result column="down_num" jdbcType="INTEGER" property="downNum" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  access_day_id, day, hour, access_path, access_num, down_num
+</sql>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  delete from v_access_his_day
+  where access_day_id = #{accessDayId,jdbcType=VARCHAR}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.pub.entity.access.AccessHisDay">
+  insert into v_access_his_day (access_day_id, day, hour,
+    access_path, access_num, down_num)
+  values (UUID_SHORT(), #{day,jdbcType=VARCHAR}, #{hour,jdbcType=VARCHAR},
+    #{accessPath,jdbcType=VARCHAR}, #{accessNum,jdbcType=INTEGER}, #{downNum,jdbcType=INTEGER})
+</insert>
+
+
+    <insert id="insertSelective" parameterType="com.tsn.serv.pub.entity.access.AccessHisDay">
+        insert into v_access_his_day
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accessDayId != null">
+                access_day_id,
+            </if>
+            <if test="day != null">
+                day,
+            </if>
+            <if test="hour != null">
+                hour,
+            </if>
+            <if test="accessPath != null">
+                access_path,
+            </if>
+            <if test="accessNum != null">
+                access_num,
+            </if>
+            <if test="downNum != null">
+                down_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accessDayId != null">
+                #{accessDayId,jdbcType=VARCHAR},
+            </if>
+            <if test="day != null">
+                #{day,jdbcType=VARCHAR},
+            </if>
+            <if test="hour != null">
+                #{hour,jdbcType=VARCHAR},
+            </if>
+            <if test="accessPath != null">
+                #{accessPath,jdbcType=VARCHAR},
+            </if>
+            <if test="accessNum != null">
+                #{accessNum,jdbcType=INTEGER},
+            </if>
+            <if test="downNum != null">
+                #{downNum,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.pub.entity.access.AccessHisDay">
+        update v_access_his_day
+        <set>
+            <if test="day != null">
+                day = #{day,jdbcType=VARCHAR},
+            </if>
+            <if test="hour != null">
+                hour = #{hour,jdbcType=VARCHAR},
+            </if>
+            <if test="accessPath != null">
+                access_path = #{accessPath,jdbcType=VARCHAR},
+            </if>
+            <if test="accessNum != null">
+                access_num = #{accessNum,jdbcType=INTEGER},
+            </if>
+            <if test="downNum != null">
+                down_num = #{downNum,jdbcType=INTEGER},
+            </if>
+        </set>
+        where access_day_id = #{accessDayId,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.tsn.serv.pub.entity.access.AccessHisDay">
+  update v_access_his_day
+  set day = #{day,jdbcType=VARCHAR},
+    hour = #{hour,jdbcType=VARCHAR},
+    access_path = #{accessPath,jdbcType=VARCHAR},
+    access_num = #{accessNum,jdbcType=INTEGER},
+    down_num = #{downNum,jdbcType=INTEGER}
+  where access_day_id = #{accessDayId,jdbcType=VARCHAR}
+</update>
+
+
+    <select id="selectByAccessDayId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_access_his_day
+        where access_day_id = #{accessDayId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAccessChart" resultType="java.util.Map">
+        SELECT `day` as dayTime,`hour` as hourTime, access_num as accessNum, down_num as downNum FROM v_access_his_day
+        WHERE 1 = 1
+        <if test="selectType == 0">
+            AND day like concat(#{monthDate, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="selectType == 1">
+            AND day &gt;= #{statDate,jdbcType=VARCHAR}
+            AND day &lt;= #{endDate,jdbcType=VARCHAR}
+        </if>
+        and
+        access_path = #{source, jdbcType=VARCHAR}
+        order by `day` asc
+    </select>
+
+    <select id="getAccessType" resultType="java.util.Map">
+        select
+          access_path as `key`,
+          access_path as display_name
+        from
+          v_access_his_day
+        where 1 = 1
+        <if test="selectType == 0">
+            DATE_FORMAT(day,'%Y%m%d') = DATE_FORMAT(#{dayDate, jdbcType=TIMESTAMP},'%Y%m%d')
+        </if>
+        <if test="selectType == 1">
+            <if test="statDate != null">
+                AND DATE_FORMAT(day,'%Y%m%d') &gt;= DATE_FORMAT(#{statDate,jdbcType=TIMESTAMP}},'%Y%m%d')
+            </if>
+            <if test="endDate != null">
+                AND DATE_FORMAT(day,'%Y%m%d') &lt;= DATE_FORMAT(#{endDate,jdbcType=TIMESTAMP}},'%Y%m%d')
+            </if>
+        </if>
+    </select>
+
+    <select id="selectListByDayHourPath" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_access_his_day
+        where
+        `day` = #{dayTo,jdbcType=VARCHAR}
+        and
+        `hour` = #{hourTo,jdbcType=VARCHAR}
+        and
+        access_path = #{path,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.node.NodeKeyMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.node.NodeKey" >
+    <id column="seri_no" property="seriNo" jdbcType="VARCHAR" />
+    <result column="key_batch_no" property="keyBatchNo" jdbcType="VARCHAR" />
+    <result column="inbound_tag" property="inboundTag" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="key_age" property="keyAge" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.tsn.serv.mem.entity.node.NodeKey" extends="BaseResultMap" >
+    <result column="key_arry" property="keyArry" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    seri_no, key_batch_no, status, key_age, create_date, update_date, is_del, inbound_tag
+  </sql>
+  <sql id="Blob_Column_List" >
+    key_arry
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_key
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getNodeKeyByAge0" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_key
+    where key_age = 0
+  </select>
+  
+  <select id="getNodeKeyByAge1" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_key
+    where key_age = 1
+  </select>
+  
+  <select id="getNodeKeysByMoreAge" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_key
+    where key_age &gt; #{keyAge,jdbcType=INTEGER} and is_del = 0 order by key_age
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_node_key
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    insert into v_mem_node_key (seri_no, inbound_tag, key_batch_no, status, 
+      key_age, create_date, is_del, 
+      key_arry)
+    values (#{seriNo,jdbcType=VARCHAR}, #{inboundTag,jdbcType=VARCHAR}, #{keyBatchNo,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{keyAge,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{isDel,jdbcType=TINYINT}, 
+      #{keyArry,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    insert into v_mem_node_key
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="seri_no != null" >
+        seri_no,
+      </if>
+      <if test="keyBatchNo != null" >
+        key_batch_no,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="keyAge != null" >
+        key_age,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="keyArry != null" >
+        key_arry,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="seri_no != null" >
+        #{seriNo,jdbcType=VARCHAR},
+      </if>
+      <if test="keyBatchNo != null" >
+        #{keyBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="keyAge != null" >
+        #{keyAge,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="keyArry != null" >
+        #{keyArry,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    update v_mem_node_key
+    <set >
+      <if test="keyBatchNo != null" >
+        key_batch_no = #{keyBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="keyAge != null" >
+        key_age = #{keyAge,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="keyArry != null" >
+        key_arry = #{keyArry,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByBatchNo" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    update v_mem_node_key
+    set is_del = #{isDel,jdbcType=TINYINT}, update_date = #{updateDate, jdbcType=TIMESTAMP}
+    where key_batch_no = #{keyBatchNo,jdbcType=VARCHAR}
+  </update>
+  
+   <update id="updateStatusByBatchNo" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    update v_mem_node_key
+    set status = #{status,jdbcType=TINYINT}, update_date = #{updateDate, jdbcType=TIMESTAMP}
+    where key_batch_no = #{keyBatchNo,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    update v_mem_node_key
+    set key_batch_no = #{keyBatchNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      key_age = #{keyAge,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=TINYINT},
+      key_arry = #{keyArry,jdbcType=LONGVARCHAR}
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    update v_mem_node_key
+    set key_batch_no = #{keyBatchNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      key_age = #{keyAge,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=TINYINT}
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </update>
+  
+    <update id="updateNodeKeyAgeIncr" parameterType="com.tsn.serv.mem.entity.node.NodeKey" >
+    update v_mem_node_key
+    set key_age = key_age + 1
+  </update>
+
+  <select id="nodeKeyList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_node_key
+    where 1 = 1
+    <if test="paramObj.pathName != null and paramObj.pathName != ''" >
+      and key_batch_no like concat('%',#{paramObj.pathName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  
+</mapper>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.kn</groupId>
+  <artifactId>kn-service</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>kn-service</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <parent>
+		<groupId>com.tsn</groupId>
+		<artifactId>tsn-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<docker.repostory>registry.cn-shanghai.aliyuncs.com</docker.repostory>
+		<docker.registry.name>hb_swarm</docker.registry.name>
+	</properties>
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-service-auth</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+		  <version>1.18.16</version>
+		  <scope>provided</scope>
+		</dependency>
+		
+		 <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-freemarker</artifactId>
+	    </dependency> 
+	
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-common-db-mysql</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-common-pay</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+	
+	    <dependency>
+	      <groupId>commons-fileupload</groupId>
+	      <artifactId>commons-fileupload</artifactId>
+	      <version>1.3.3</version>
+	    </dependency>
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-common-web</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-common-utils</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-common-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.7.0</version>
+		</dependency>
+        <dependency>
+            <groupId>com.vpn</groupId>
+            <artifactId>tsn-v2ray-sdk</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
+        
+        <dependency>
+		    <groupId>com.google.api.grpc</groupId>
+		    <artifactId>proto-google-common-protos</artifactId>
+		    <version>1.0.0</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.ini4j</groupId>
+            <artifactId>ini4j</artifactId>
+            <version>0.5.4</version>
+        </dependency>
+        
+        <dependency>
+	        <groupId>com.maxmind.geoip2</groupId>
+	        <artifactId>geoip2</artifactId>
+	        <version>2.14.0</version>
+	    </dependency>
+	    
+	   	<dependency>
+		  <groupId>com.stripe</groupId>
+		  <artifactId>stripe-java</artifactId>
+		  <version>19.45.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.tsn</groupId>
+			<artifactId>tsn-common-pay</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+        	<groupId>com.sun.jersey</groupId>
+        	<artifactId>jersey-client</artifactId>
+        </dependency>
+        
+		<!--快重启-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 可选 -->
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.jsoup/Jsoup -->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.13.1</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<failOnError>true</failOnError>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<compilerArgument>-nowarn</compilerArgument>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				
+				<executions>
+	                <execution>
+	                    <id>build-image</id>
+	                    <phase>package</phase>
+	                    <goals>
+	                        <goal>build</goal>
+	                    </goals>
+	                </execution>
+	                <execution>
+	                    <id>push-image</id>
+	                    <phase>deploy</phase>
+	                    <goals>
+	                        <goal>push</goal>
+	                    </goals>
+	                    <configuration>
+	                        <imageName>${docker.repostory}/${docker.registry.name}/${project.build.finalName}:${project.version}</imageName>
+	                    </configuration>
+	                </execution>   
+            	</executions>
+				<configuration>
+				 	<serverId>docker-aliyun</serverId>
+	                <registryUrl>${docker.repostory}</registryUrl>
+	                <!--install阶段也上传，否则只有deploy阶段上传-->
+	                <dockerHost>http://127.0.0.1:2375</dockerHost>
+	                <dockerDirectory>src/main/docker</dockerDirectory>
+	                <imageName>${docker.repostory}/${docker.registry.name}/${project.build.finalName}:${project.version}</imageName>
+	                <imageTags>
+	                    <imageTag>${project.version}</imageTag>
+	                </imageTags>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+			
+			<!-- <plugin>
+                 <groupId>org.mybatis.generator</groupId>
+                 <artifactId>mybatis-generator-maven-plugin</artifactId>
+                 <version>1.4.0</version>
+                 <configuration>
+                     <verbose>true</verbose>
+                   <overwrite>true</overwrite>
+                </configuration>
+            </plugin> -->
+
+		</plugins>
+		<finalName>kn-service</finalName>
+	</build>
+</project>

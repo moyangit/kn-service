@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.proxy.ProxyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.proxy.ProxyInfo" >
+    <id column="proxy_id" property="proxyId" jdbcType="VARCHAR" />
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="proxy_lvl" property="proxyLvl" jdbcType="VARCHAR" />
+    <result column="proxy_name" property="proxyName" jdbcType="VARCHAR" />
+    <result column="proxy_really_name" property="proxyReallyName" jdbcType="VARCHAR" />
+    <result column="proxy_card" property="proxyCard" jdbcType="VARCHAR" />
+    <result column="proxy_nick_name" property="proxyNickName" jdbcType="VARCHAR" />
+    <result column="proxy_phone" property="proxyPhone" jdbcType="VARCHAR" />
+    <result column="proxy_groupId" property="proxyGroupid" jdbcType="VARCHAR" />
+    <result column="rebate_config" property="rebateConfig" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    proxy_id, mem_type, proxy_lvl, proxy_name, proxy_really_name, proxy_card, proxy_nick_name, proxy_phone, 
+    proxy_groupId, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_proxy_Info 
+    where proxy_id = #{proxyId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectProxyAndGroupByProxyId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />,
+    g.rebate_config
+    from v_mem_proxy_Info a left join v_mem_proxy_group g on a.proxy_groupId = g.proxy_group_id 
+    where proxy_id = #{proxyId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_proxy_Info
+    where proxy_id = #{proxyId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.proxy.ProxyInfo" >
+    insert ignore into v_mem_proxy_Info (proxy_id, mem_type, proxy_lvl, proxy_name, 
+      proxy_really_name, proxy_card, proxy_nick_name, 
+      proxy_phone, proxy_groupId, create_time, 
+      update_time)
+    values (#{proxyId,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{proxyLvl,jdbcType=VARCHAR}, #{proxyName,jdbcType=VARCHAR}, 
+      #{proxyReallyName,jdbcType=VARCHAR}, #{proxyCard,jdbcType=VARCHAR}, #{proxyNickName,jdbcType=VARCHAR}, 
+      #{proxyPhone,jdbcType=VARCHAR}, #{proxyGroupid,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.proxy.ProxyInfo" >
+    insert into v_mem_proxy_Info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="proxyId != null" >
+        proxy_id,
+      </if>
+      <if test="memType != null" >
+        mem_type,
+      </if>
+      <if test="proxyName != null" >
+        proxy_name,
+      </if>
+      <if test="proxyReallyName != null" >
+        proxy_really_name,
+      </if>
+      <if test="proxyCard != null" >
+        proxy_card,
+      </if>
+      <if test="proxyNickName != null" >
+        proxy_nick_name,
+      </if>
+      <if test="proxyPhone != null" >
+        proxy_phone,
+      </if>
+      <if test="proxyGroupid != null" >
+        proxy_groupId,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="proxyId != null" >
+        #{proxyId,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyName != null" >
+        #{proxyName,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyReallyName != null" >
+        #{proxyReallyName,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyCard != null" >
+        #{proxyCard,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyNickName != null" >
+        #{proxyNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyPhone != null" >
+        #{proxyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyGroupid != null" >
+        #{proxyGroupid,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.proxy.ProxyInfo" >
+    update v_mem_proxy_Info
+    <set >
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyLvl != null" >
+        proxy_lvl = #{proxyLvl,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyName != null" >
+        proxy_name = #{proxyName,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyReallyName != null" >
+        proxy_really_name = #{proxyReallyName,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyCard != null" >
+        proxy_card = #{proxyCard,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyNickName != null" >
+        proxy_nick_name = #{proxyNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyPhone != null" >
+        proxy_phone = #{proxyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyGroupid != null" >
+        proxy_groupId = #{proxyGroupid,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where proxy_id = #{proxyId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.proxy.ProxyInfo" >
+    update v_mem_proxy_Info
+    set mem_type = #{memType,jdbcType=VARCHAR},
+      proxy_name = #{proxyName,jdbcType=VARCHAR},
+      proxy_really_name = #{proxyReallyName,jdbcType=VARCHAR},
+      proxy_card = #{proxyCard,jdbcType=VARCHAR},
+      proxy_nick_name = #{proxyNickName,jdbcType=VARCHAR},
+      proxy_phone = #{proxyPhone,jdbcType=VARCHAR},
+      proxy_groupId = #{proxyGroupid,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where proxy_id = #{proxyId,jdbcType=VARCHAR}
+  </update>
+</mapper>

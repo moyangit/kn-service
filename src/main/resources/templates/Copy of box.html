@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- 支付 -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<style>
+	
+body {
+	margin: 0 auto;
+	padding: 0px;
+	background: #050308;
+	margin: 8px;
+}
+	
+.content {
+	text-align: center;
+	margin: 0 auto;
+	padding: 6px;
+	max-width: 600px;
+	margin-bottom: 100px;
+}
+
+.content .title {
+	width: 147px;
+	height: 41px;
+	font-size: 29px;
+	font-family: PingFang SC-Regular, PingFang SC;
+	font-weight: 550;
+	color: #FFFFFF;
+	margin-top: 25px;
+	margin-bottom: 5px;
+	
+}
+
+.items {
+	text-align: left;
+}
+
+.items img {
+	width: 54px;
+	height: 54px;
+}
+
+.items .flexContent {
+	padding: 16px;
+	display: flex;
+	border-bottom: 1px solid #373738;
+}
+
+.items .item .itemHeader {
+}
+
+.items .item .itemContent{
+	flex: 1;
+	margin-left: 20px;
+}
+
+.items .item .itemContent .desc {
+	font-weight: 550;
+	font-size: 17px;
+	color:#FFFFFF
+}
+
+.items .item .itemContent .tagContent {
+	margin-top: 6px;
+}
+
+.items .item .itemContent .tagContent .tag {
+	width: 28px;
+	height: 20px;
+	
+	border-radius: 6px 6px 6px 6px;
+	opacity: 1;
+	padding: 2px;
+	font-size: 6px;
+	font-weight: 200;
+	color: #FFFFFF;
+	line-height: 5px;
+}
+
+.items .item .itemContent .tagContent .info{
+	width: 237px;
+	height: 17px;
+	font-size: 12px;
+	font-weight: 400;
+	color: #FFFFFF;
+	line-height: 5px;
+}
+
+.items .item .itemContent .tagContent a{
+	border-bottom: 1px solid gray;
+	text-decoration: none;
+}
+
+.youxi {
+	background-color: #18222f;
+}
+.youxi .tag {
+	background: #407CEA;
+}
+.meiti {
+	background-color: #261729;
+}
+.meiti .tag {
+	background: #E9667A;
+}
+.shejiao {
+	background-color: #181129;
+}
+.shejiao .tag{
+	background: #BD55D2;
+}
+.chengshi {
+	background-color: #221a18;
+}
+.chengshi .tag{
+	background: #E1A358;
+}
+
+.footer {
+	width: 100%;
+    height: 30px;
+    text-align: center;
+    padding-top: 9px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    color: white;
+    background: #161313;
+}
+
+.line {
+	width: 30px;
+	height: 2px;
+	background: #FDB41A;
+	opacity: 1;
+	filter: blur(undefinedpx);
+	vertical-align: middle;
+	display:inline-block;
+}
+
+.contentDesc {
+	height: 107px;
+    background: #221831;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    font-size: 13px;
+    padding-top: 9px;
+    line-height: 25px;
+    margin-top: 20px;
+}
+
+
+</style>
+</head>
+<body>
+
+	<div class="content">
+	
+		<div class="title">
+			黑豹百宝箱
+		</div>	
+		
+		<div class="items">
+			
+			<div class="item">
+				<div class="flexContent parent youxi" id="youxi">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">游戏达人，游戏资讯，游戏直播</div>
+						<div class="tagContent">
+							<span class="tag">动漫</span>
+							<span class="tag">游戏</span>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">英雄联盟手游</div>
+						<div class="tagContent">
+							<a href="https://wildrift.leagueoflegends.com/zh-tw/"><span class="info">英雄联盟的手游版本，可下载台服畅玩 >></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1-2.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">PUBG国际版</div>
+						<div class="tagContent">
+							<a href="https://www.twitch.tv"><span class="info">PUBU国际版，与全球各国的玩家一起吃鸡  >></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1-3.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Free Fire</div>
+						<div class="tagContent">
+							<a href="https://www.pixiv.net"><span class="info">海外很火的一款大逃杀荒岛生存射击游戏 >></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1-4.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Twitch</div>
+						<div class="tagContent">
+							<a href="https://www.pixiv.net"><span class="info">全球最火的游戏影音直播平台 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1-5.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Pixiv</div>
+						<div class="tagContent">
+							<a href="https://www.pixiv.net"><span class="info">日本最火的二次元虚拟社群网络，海量插画，小说资源 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo1-6.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">顶通漫画</div>
+						<div class="tagContent">
+							<a href="https://www.pixiv.net"><span class="info">年轻人的青春读物，提供最新鲜、有趣的全彩长条韩漫>></span></a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="item">
+				<div class="flexContent parent meiti">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">媒体达人，最新视频/资讯/赛事</div>
+						<div class="tagContent">
+							<span class="tag">视频</span>
+							<span class="tag">娱乐</span>
+							<span class="tag">学习</span>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Youtube</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球最大的视频搜索和分享视频 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Youtube</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球最大的视频搜索和分享视频 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Youtube</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球最大的视频搜索和分享视频 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Youtube</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球最大的视频搜索和分享视频 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Youtube</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球最大的视频搜索和分享视频 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-2.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Netflix</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全世界最大的视频流媒体平台，拥有全球最高质量的影视资源 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-3.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">SnapChat</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">海外最火爆的“阅后即焚”照片分享应用  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-4.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">HBO</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">美国著名的有线电视网络媒体，全天候播出电影、音乐、纪录片、体育赛事 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-5.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Pinterest</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">世界上最大的图片社交分享网站，国内花瓣网的鼻祖  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-6.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Dribbbble</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球最棒设计师们展示作品、同行交流、寻找灵感的网站 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-7.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">维基百科</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">世界各地的人民用不同的语言共同创建的百科全书  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-8.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Quora</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">知乎鼻祖”，全球最火的在线问答网站  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-9.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Quora</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">知乎鼻祖”，全球最火的在线问答网站  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-10.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">TED</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">众多科学、设计、文学、音乐等领域杰出人物的分享演讲平台  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-11.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">欧乐影院</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">海外华人的在线视频媒体平台，海量高清视频在线观看  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-12.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">直播吧</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">足球、篮球迷的直播，新闻资讯、原创报道平台   >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-13.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Discord</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">全球游戏玩家在游戏中沟通协作的首选工具 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo2-14.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Reddit</div>
+						<div class="tagContent">
+							<a href="https://www.Youtube.com"><span class="info">娱乐、社交及新闻网站，是获取全球新鲜事的好地方 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="item">
+				<div class="flexContent parent shejiao">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">社交达人，常用软件，成人资讯</div>
+						<div class="tagContent">
+							<span class="tag">成人</span>
+							<span class="tag">服务</span>
+							<span class="tag">社交</span>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Facebook</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">Google旗下的免费网络邮件服务 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-2.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Gmail</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">互联网上最大、影响最广泛的搜索引擎  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-3.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Line</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">日本和中国台湾最常用的即时通讯软件  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-4.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Telegram</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">全球的跨平台的即时通信软件，保密性极强  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-5.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Tinder</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">全世界单身年轻人约会（炮）平台  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-6.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Twitter</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">“社交媒体的鼻祖”，发现全球的新鲜事  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-7.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Whatsapp</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">全球最火热的聊天软件，可以交到世界各地的好友  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Spotify</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">歌曲库最全的正版流媒体音乐服务平台  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Amazon</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">美国最大的电商网站，也是海淘最热门的网站  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo3-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">Shopee</div>
+						<div class="tagContent">
+							<a href="https://www.facebook.com"><span class="info">主打东南亚市场，全球下载量第一的电商平台  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="item">
+				<div class="flexContent parent chengshi">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">都市达人，最新日报，最新时报</div>
+						<div class="tagContent">
+							<span class="tag">政治</span>
+							<span class="tag">新闻</span>
+						</div>
+					</div>
+				</div>
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4-1.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">华尔街日报</div>
+						<div class="tagContent">
+							<a href="http://cn.wsj.com"><span class="info">实时报道全球商业、经济、金融、财经等众多国际新闻 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4-2.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">纽约时报中文网</div>
+						<div class="tagContent">
+							<a href="http://cn.wsj.com"><span class="info">纽约时报旗下的首个中文媒介产品，提供全球时事、商业及文化的高水准报道  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4-3.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">BBC中文网</div>
+						<div class="tagContent">
+							<a href="http://cn.wsj.com"><span class="info">面向全球华人并每日更新的新闻资讯网站  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4-4.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">香港明报</div>
+						<div class="tagContent">
+							<a href="http://cn.wsj.com"><span class="info">香港的中文报纸，为全球华人提供最具公信力的新闻资讯  >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4-5.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">路透社</div>
+						<div class="tagContent">
+							<a href="http://cn.wsj.com"><span class="info">提供新闻报导给报刊、电视台等各式媒体，向来以迅速、准确享誉国际 >></span></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="flexContent child" style="display: none;">
+					<div class="itemHeader">
+						<div class="img">
+							<img alt="" src="/website/images/box/logo4-6.png"/>
+						</div>
+					</div>
+					
+					<div class="itemContent">
+						<div class="desc">万维读者</div>
+						<div class="tagContent">
+							<a href="http://cn.wsj.com"><span class="info">海外最具代表性的综合性中文网站之一  >></span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div style="margin-top:60px">
+			<div class="line"></div>
+				<div style="display:inline-block;verticle-align:middle;color:#FDB41A;font-weight: 550;">及时注册 享受奖励</div>
+			<div class="line"></div>
+		</div>
+		
+		<div class="contentDesc">
+		【百度搜索下载“豌豆英”】<br/>
+		建议使用国内网络下载，无需开启VPN<br/>
+		【豌豆英里面搜索“hi谷歌安装器”进行下载】 <br/>【安装谷歌框架】——即刻任意下载任何软件
+		</div>
+		
+	</div>
+	
+	<div class="footer" style="width: 100%;">
+		<span style="font-size: 12px;font-weight: 500;line-height: 5px;">没有喜欢的内容? 无法正常访问?</span> 
+		<a th:href="'https://mapi.heibaohouduan.com/website/page/customer?uId=' + ${uId}"><span style="font-size: 12px;font-weight: 500;color: #9062E9;line-height: 5px;">在线客服</span></a>
+		
+		<!-- <a href="https://chat.aiheconglink.com/chat/h5/chatLink.html?channelId=2O9dNy"><span style="font-size: 12px;font-weight: 500;color: #9062E9;line-height: 5px;">在线客服</span></a> -->
+		
+	</div>
+</body>
+<script>
+	
+	var objs = document.getElementsByClassName("parent");
+	for (var index in objs) {
+		objs[index].onclick = function(o) { 
+			var parentNode = findParent(o.target, "item")
+			if (!parentNode) {
+				return;
+			}
+			var children = parentNode.children;
+			for (var c in children) {
+				if (children[c].classList && children[c].classList.contains("child")) {
+					if(children[c].style.display == "none") {
+						children[c].style.display = "flex";
+					}else {
+						children[c].style.display = "none"
+					}
+				}
+			}
+		};
+	}
+	
+	function findParent(currNode, className) {
+		var parentNode = currNode.parentNode;
+		if (!parentNode) {
+			return;
+		}
+		
+		if (parentNode.classList && parentNode.classList.contains(className)) {
+			return parentNode;
+		}else {
+			return findParent(parentNode, className);
+		}
+	}
+</script>
+</html>

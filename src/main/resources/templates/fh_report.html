@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
+		<script src="https://www.layuicdn.com/layer-mobile-v2.0/layer.js"></script>
+		<style>
+			
+			body {
+				
+				margin: 0px;
+				background: #F6F7FB;
+			}
+			
+			.content {
+				background: white;
+			}
+			
+			.title {
+				font-size: 13px;
+				color: gray;
+				height: 40px;
+				padding-left: 10px; 
+				padding-top: 5px;
+			}
+			
+			.submit-content {
+				position: fixed;
+				bottom: 0px;
+				right: 0px;
+				left: 0px;
+				width: 100%;
+				height: 110px;
+				background: white;
+				margin: 0 auto;
+				text-align: center;
+			}
+			
+			.submit-content .button {
+				margin: 10px;
+				border-radius: 5px;
+				background: #04C9FE;
+				font-size: 15px;
+				padding: 10px;
+				color: white;
+			}
+			
+			.submit-content .button :hover {
+				color: wheat;
+			}
+			
+			.submit-content .notice {
+				color: #00A1DD;
+				padding-bottom: 10px;
+			}
+			
+			div {
+				position: relative;
+				line-height: 30px;
+			}
+			
+			div span {
+				margin-left: 10px
+			}
+			
+			input[type="radio"] {
+				width: 20px;
+				height: 20px;
+				opacity: 0;
+			}
+			
+			label {
+				position: absolute;
+				left: 5px;
+				top: 3px;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				border: 1px solid #999;
+	　　　　　　　cursor: pointer;
+			}
+			
+			/*设置选中的input的样式*/
+			/* + 是兄弟选择器,获取选中后的label元素*/
+			input:checked+label { 
+				background-color: #04C9FE;
+				border: 1px solid #04C9FE;
+			}
+			 /*添加的加号与label进行拼接(一个矩形边框去掉上和左的边框),再旋转45度*/
+			input:checked+label::after {
+				position: absolute;
+				content: "";
+				width: 5px;
+				height: 10px;
+				top: 3px;
+				left: 6px;
+				border: 2px solid #fff;
+				border-top: none;
+				border-left: none;
+				transform: rotate(45deg);
+			}
+			
+			.item {
+				margin-left: 5px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		
+		<div class="title">请选择举报该网站的理由</div>
+		<div class="content">
+			<div style="padding-top: 10px;"></div>
+			<div class="item" style="">
+				<input id="item1" type="radio" name="item" value="选项一">
+				<label for="item1"></label>
+				<span>色情</span>
+			</div>
+			<hr>
+			<div class="item">
+				<input id="item2" type="radio" name="item" value="选项二">
+				<label for="item2"></label>
+				<span>赌博</span>
+			</div>
+			<hr>
+			<div class="item">
+				<input id="item3" type="radio" name="item" value="选项二">
+				<label for="item3"></label>
+				<span>QQ盗号</span>
+			</div>
+			<hr>
+			<div class="item">
+				<input id="item4" type="radio" name="item" value="选项二">
+				<label for="item4"></label>
+				<span>诈骗</span>
+			</div>
+			<hr>
+			<div class="item">
+				<input id="item5" type="radio" name="item" value="选项二">
+				<label for="item5"></label>
+				<span>虚假投资理财</span>
+			</div>
+			<hr>
+			<div class="item">
+				<input id="item6" type="radio" name="item" value="选项二">
+				<label for="item6"></label>
+				<span>诱导分享</span>
+			</div>
+			<hr>
+			<div class="item">
+				<input id="item7" type="radio" name="item" value="选项二">
+				<label for="item7"></label>
+				<span>其他</span>
+			</div>
+			<hr>
+		</div>
+		<div class="submit-content">
+			<div class="button">提交举报</div>
+			<a class="notice" href="https://urlsec.qq.com/eviltype.html">举报通知</a>
+			<div style="margin-top: 10px;"></div>
+		</div>
+	</body>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+		
+		$(".button").click(function() {
+			 var val = $('input:radio[name="item"]:checked').val();
+			if(val){
+				window.location.href="/website/link/report_success.html"
+			}else {
+				//信息框
+				layer.open({
+				  content: '请选择举报理由'
+				  ,btn: '确定'
+				});
+			}
+			
+		})
+		
+	</script>
+</html>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.auth.mapper.app.AppVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.auth.entity.app.AppVersion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_type" property="appType" jdbcType="VARCHAR" />
+    <result column="app_version" property="appVersion" jdbcType="VARCHAR" />
+    <result column="version_no" property="versionNo" jdbcType="VARCHAR" />
+    <result column="version_desc" property="versionDesc" jdbcType="VARCHAR" />
+    <result column="downUrl" property="downurl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="is_new" property="isNew" jdbcType="TINYINT" />
+    <result column="force_update" property="forceUpdate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, app_type, app_version, version_no, version_desc, downUrl, create_time, is_new, force_update
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_app_version
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectLastByAppType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_app_version
+    where app_type = #{appType,jdbcType=INTEGER} and is_new = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from v_app_version
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.auth.entity.app.AppVersion" >
+    insert into v_app_version (id, app_type, app_version, 
+      version_no, version_desc, downUrl, 
+      create_time, is_new)
+    values (#{id,jdbcType=INTEGER}, #{appType,jdbcType=VARCHAR}, #{appVersion,jdbcType=VARCHAR}, 
+      #{versionNo,jdbcType=VARCHAR}, #{versionDesc,jdbcType=VARCHAR}, #{downurl,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{isNew,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.auth.entity.app.AppVersion" >
+    insert into v_app_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="appType != null" >
+        app_type,
+      </if>
+      <if test="appVersion != null" >
+        app_version,
+      </if>
+      <if test="versionNo != null" >
+        version_no,
+      </if>
+      <if test="versionDesc != null and versionDesc != ''" >
+        version_desc,
+      </if>
+      <if test="downurl != null" >
+        downUrl,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isNew != null" >
+        is_new,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appType != null" >
+        #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNo != null" >
+        #{versionNo,jdbcType=VARCHAR},
+      </if>
+      <if test="versionDesc != null and versionDesc != ''" >
+        #{versionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="downurl != null" >
+        #{downurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isNew != null" >
+        #{isNew,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.auth.entity.app.AppVersion" >
+    update v_app_version
+    <set >
+      <if test="appType != null" >
+        app_type = #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        app_version = #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNo != null" >
+        version_no = #{versionNo,jdbcType=VARCHAR},
+      </if>
+      <if test="versionDesc != null" >
+        version_desc = #{versionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="downurl != null" >
+        downUrl = #{downurl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isNew != null" >
+        is_new = #{isNew,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.auth.entity.app.AppVersion" >
+    update v_app_version
+    set app_type = #{appType,jdbcType=VARCHAR},
+      app_version = #{appVersion,jdbcType=VARCHAR},
+      version_no = #{versionNo,jdbcType=VARCHAR},
+      version_desc = #{versionDesc,jdbcType=VARCHAR},
+      downUrl = #{downurl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_new = #{isNew,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAppVersionByPage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM v_app_version
+    where is_new = '1'
+    <if test="paramObj.appType != null and paramObj.appType != ''" >
+      and app_type = #{paramObj.appType,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <update id="updateIsNew" parameterType="com.tsn.serv.auth.entity.app.AppVersion" >
+    update v_app_version
+    set
+        is_new = '0'
+    where app_type = #{appType,jdbcType=VARCHAR} and is_new = '1'
+  </update>
+</mapper>

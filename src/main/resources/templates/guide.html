@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- 支付 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<style>
+body {
+	padding: 0px !important;
+	margin: 0 auto;
+	background: #EBDDF8;
+	text-align: center;
+	max-width: 800px;
+}
+
+.header {
+	background-image: url(/website/images/guide/headerImg.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	height: 388px;
+	margin: 0 auto;
+}
+
+.header img {
+	margin-top: 23px;
+	width: 240px;
+	height: 133px;
+}
+
+.header .title {
+	margin: 0 auto;
+	width: 190px;
+	height: 23px;
+	border-radius: 26px 26px 26px 26px;
+	opacity: 1;
+	border: 1px solid #FFFFFF;
+	filter: blur(undefinedpx);
+	
+	font-size: 11px;
+	font-family: PingFangSC-Regular-, PingFangSC-Regular;
+	font-weight: normal;
+	color: #FFFFFF;
+	line-height: 20px;
+}
+
+.header .rule {
+    position: absolute;
+    right: 7px;
+    top: 145px;
+    width: 10px;
+    height: 50px;
+    font-size: 10px;
+    font-weight: normal;
+    color: #6856BC;
+    line-height: 11px;
+    border: 1px solid #B0448A;
+    border-radius: 5px;
+    background: #EBDDF8;
+    padding: 5px;
+    line-height: 13px;
+}
+
+.content {
+	margin-bottom: 100px;
+}
+	
+.content .title{
+	margin: 0 auto;
+	width: 100px;
+	height: 20px;
+	font-size: 14px;
+	font-weight: 550;
+	color: #666666;
+	background-image: url(/website/images/guide/btnback.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	border: 1px solid #EBDDF8;
+	padding: 16px;
+	border-radius: 5px;
+}
+
+.content .items .item {
+	margin: 0 auto;
+	width: 335px;
+	height: 139px;
+	background: #FFFFFF;
+	border-radius: 8px 8px 8px 8px;
+	opacity: 1;
+	filter: blur(undefinedpx);
+	margin-top: 20px;
+}
+
+.content .items .item .itemTitle{
+	margin: 0 auto;
+	width: 86px;
+	height: 31px;
+	font-size: 27px;
+	font-family: Helvetica-Bold-, Helvetica-Bold;
+	font-weight: 550;
+	color: #D8D8D8;
+}
+
+.content .items .item .itemDesc {
+	margin: 0 auto;
+	width: 240px;
+	height: 42px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #666666;
+}
+
+.line {
+	width: 30px;
+	height: 2px;
+	background: #4E3DB0;
+	opacity: 1;
+	filter: blur(undefinedpx);
+	vertical-align: middle;
+	display:inline-block;
+}
+
+</style>
+</head>
+<body>
+	<div class="header">
+		<div>
+			<img src="/website/images/guide/headerImg1.png"/>
+		</div>
+		<div class="title">
+			快来开启你的黑豹之旅吧！
+		</div>
+		<div class="rule">
+			活动规则
+		</div>
+	</div>	
+
+	<div class="content">
+		
+		<div class="title">
+			玩转黑豹指南
+		</div>
+		
+		<div class="items">
+			
+			<div class="item">
+				<div class="itemTitle">Step1</div>
+				<div style="margin-top: 5px;">
+					<div class="line"></div>
+					<div style="display:inline-block;verticle-align:middle;color:#4E3DB0;font-weight: 550;">及时注册 享受奖励</div>
+					<div class="line"></div>
+				</div>
+				<div class="itemDesc" style="margin-top: 20px;">
+					首次进入的用户，可以免费使用黑豹30分钟
+				</div>
+			</div>
+			
+			<div class="item">
+				<div class="itemTitle">Step2</div>
+				<div style="margin-top: 5px;">
+					<div class="line"></div>
+					<div style="display:inline-block;verticle-align:middle;color:#4E3DB0;font-weight: 550;">有福同享 才是死党</div>
+					<div class="line"></div>
+				</div>
+				<div class="itemDesc" style="margin-top: 20px;">
+					可以通过“分享”“做任务”来获取额外的免费使用时间
+				</div>
+			</div>
+			
+			<div class="item">
+				<div class="itemTitle">Step3</div>
+				<div style="margin-top: 5px;">
+					<div class="line"></div>
+					<div style="display:inline-block;verticle-align:middle;color:#4E3DB0;font-weight: 550;">开通会员 即刻优惠</div>
+					<div class="line"></div>
+				</div>
+				<div class="itemDesc" style="margin-top: 20px;">
+					首次续费用户，可以获取额外的优惠折扣
+				</div>
+			</div>
+			
+			<div class="item">
+				<div class="itemTitle">Step4</div>
+				<div style="margin-top: 5px;">
+					<div class="line"></div>
+					<div style="display:inline-block;verticle-align:middle;color:#4E3DB0;font-weight: 550;">“黑豹百宝箱” 应有尽有</div>
+					<div class="line"></div>
+				</div>
+				<div class="itemDesc" style="margin-top: 20px;">
+					“黑豹百宝箱”中可以查询大量最新信息和相关软件下载
+				</div>
+			</div>
+			
+			<div class="item" style="height:150px">
+				<div class="itemTitle">Step5</div>
+				<div style="margin-top: 5px;">
+					<div class="line"></div>
+					<div style="display:inline-block;verticle-align:middle;color:#4E3DB0;font-weight: 550;">黑豹客服 随时服务</div>
+					<div class="line"></div>
+				</div>
+				<div class="itemDesc" style="margin-top: 10px;text-align: left;padding-bottom:20px;line-height: 23px;">
+					<div>如果遇到问题，请及时客服</div>
+					<div>在线客服：<a th:href="'https://mapi.heibaohouduan.com/website/page/customer?uId=' + ${uId}" style="color:blue;text-decoration:underline;">点击联系</a></div>
+					<div th:if="${customer} != null">微信客服：<span th:text="${customer.cusText}"></span></div>
+				</div>
+				
+				
+				<!-- <a th:href="'https://mapi.heibaohouduan.com/website/page/customer?uId=' + ${uId}" style="color:blue;text-decoration:underline;">联系客服</a> -->
+			</div>
+			
+			
+		</div>
+		
+		<div></div>
+		
+	</div>
+</body>
+</html>

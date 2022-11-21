@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.pub.mapper.ad.AdvertMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.ad.Advert" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="ad_name" property="adName" jdbcType="VARCHAR" />
+    <result column="ad_desc" property="adDesc" jdbcType="VARCHAR" />
+    <result column="ad_pic" property="adPic" jdbcType="VARCHAR" />
+    <result column="skip_url" property="skipUrl" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="TINYINT" />
+    <result column="weight" property="weight" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ad_name, ad_desc, skip_url, seq, weight, status, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    ad_pic
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_advert
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_advert
+  </select>
+  
+  
+  <select id="selectListActiveStatus" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_advert
+    where status = 0
+  </select>
+  
+  <select id="getAdvertPage" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_advert
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from v_advert
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.pub.entity.ad.Advert" >
+    insert into v_advert (id, ad_name, ad_desc, skip_url,
+      seq, weight, create_time, status,
+      update_time, ad_pic)
+    values (#{id,jdbcType=BIGINT}, #{adName,jdbcType=VARCHAR}, #{adDesc,jdbcType=VARCHAR}, #{skipUrl,jdbcType=VARCHAR}, 
+      #{seq,jdbcType=TINYINT}, #{weight,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT},
+      #{updateTime,jdbcType=TIMESTAMP}, #{adPic,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.pub.entity.ad.Advert" >
+    insert into v_advert
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="adName != null" >
+        ad_name,
+      </if>
+      <if test="adDesc != null" >
+        ad_desc,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="adPic != null" >
+        ad_pic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="adName != null" >
+        #{adName,jdbcType=VARCHAR},
+      </if>
+      <if test="adDesc != null" >
+        #{adDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=TINYINT},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adPic != null" >
+        #{adPic,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.pub.entity.ad.Advert" >
+    update v_advert
+    <set >
+      <if test="adName != null" >
+        ad_name = #{adName,jdbcType=VARCHAR},
+      </if>
+      <if test="adDesc != null" >
+        ad_desc = #{adDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq,jdbcType=TINYINT},
+      </if>
+      <if test="skipUrl != null" >
+        skip_url = #{skipUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adPic != null" >
+        ad_pic = #{adPic,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tsn.serv.pub.entity.ad.Advert" >
+    update v_advert
+    set ad_name = #{adName,jdbcType=VARCHAR},
+      ad_desc = #{adDesc,jdbcType=VARCHAR},
+      skip_url = #{skipUrl,jdbcType=VARCHAR},
+      seq = #{seq,jdbcType=TINYINT},
+      weight = #{weight,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      ad_pic = #{adPic,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.pub.entity.ad.Advert" >
+    update v_advert
+    set ad_name = #{adName,jdbcType=VARCHAR},
+      ad_desc = #{adDesc,jdbcType=VARCHAR},
+      skip_url = #{skipUrl,jdbcType=VARCHAR},
+      seq = #{seq,jdbcType=TINYINT},
+      weight = #{weight,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.channel.ChannelStatisDayMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.channel.ChannelStatisDay" >
+    <id column="channel_record_id" property="channelRecordId" jdbcType="VARCHAR" />
+    <result column="day_time" property="dayTime" jdbcType="VARCHAR" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+    <result column="channel_guest_people_count" property="channelGuestPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_pay_people_count" property="channelPayPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_reg_people_count" property="channelRegPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_urge_task_people_count" property="channelUrgeTaskPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_sign_task_people_count" property="channelSignTaskPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_active_guest_people_count" property="channelActiveGuestPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_active_reg_people_count" property="channelActiveRegPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_credits_convert_people_count" property="channelCreditsConvertPeopleCount" jdbcType="INTEGER" />
+    <result column="channel_order_num" property="channelOrderNum" jdbcType="INTEGER" />
+    <result column="channel_sign_task_num" property="channelSignTaskNum" jdbcType="INTEGER" />
+    <result column="channel_urge_task_num" property="channelUrgeTaskNum" jdbcType="INTEGER" />
+    <result column="channel_credits_convert_num" property="channelCreditsConvertNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    channel_record_id, day_time, channel_code, channel_name, channel_guest_people_count, 
+    channel_pay_people_count, channel_reg_people_count, channel_urge_task_people_count, 
+    channel_sign_task_people_count, channel_active_guest_people_count, channel_active_reg_people_count, 
+    channel_credits_convert_people_count, channel_order_num, channel_sign_task_num, channel_urge_task_num, 
+    channel_credits_convert_num, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_channel_statistics_day
+    where channel_record_id = #{channelRecordId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getChannelStatisListByDay" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_channel_statistics_day
+    where channel_code = #{channelCode,jdbcType=VARCHAR} and day_time &gt;= #{startDay} and day_time &lt; #{endDay} order by day_time desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_channel_statistics_day
+    where channel_record_id = #{channelRecordId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.channel.ChannelStatisDay" >
+    insert into v_mem_channel_statistics_day (channel_record_id, day_time, channel_code, 
+      channel_name, channel_guest_people_count, channel_pay_people_count, 
+      channel_reg_people_count, channel_urge_task_people_count, 
+      channel_sign_task_people_count, channel_active_guest_people_count, 
+      channel_active_reg_people_count, channel_credits_convert_people_count, 
+      channel_order_num, channel_sign_task_num, channel_urge_task_num, 
+      channel_credits_convert_num, create_time, 
+      update_time)
+    values (#{channelRecordId,jdbcType=VARCHAR}, #{dayTime,jdbcType=VARCHAR}, #{channelCode,jdbcType=VARCHAR}, 
+      #{channelName,jdbcType=VARCHAR}, #{channelGuestPeopleCount,jdbcType=INTEGER}, #{channelPayPeopleCount,jdbcType=INTEGER}, 
+      #{channelRegPeopleCount,jdbcType=INTEGER}, #{channelUrgeTaskPeopleCount,jdbcType=INTEGER}, 
+      #{channelSignTaskPeopleCount,jdbcType=INTEGER}, #{channelActiveGuestPeopleCount,jdbcType=INTEGER}, 
+      #{channelActiveRegPeopleCount,jdbcType=INTEGER}, #{channelCreditsConvertPeopleCount,jdbcType=INTEGER}, 
+      #{channelOrderNum,jdbcType=INTEGER}, #{channelSignTaskNum,jdbcType=INTEGER}, #{channelUrgeTaskNum,jdbcType=INTEGER}, 
+      #{channelCreditsConvertNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <insert id="insertIgnore" parameterType="com.tsn.serv.mem.entity.channel.ChannelStatisDay" >
+  	insert ignore into v_mem_channel_statistics_day (channel_record_id, day_time, channel_code, 
+      channel_name, channel_guest_people_count, channel_pay_people_count, 
+      channel_reg_people_count, channel_urge_task_people_count, 
+      channel_sign_task_people_count, channel_active_guest_people_count, 
+      channel_active_reg_people_count, channel_credits_convert_people_count, 
+      channel_order_num, channel_sign_task_num, channel_urge_task_num, 
+      channel_credits_convert_num, create_time, 
+      update_time)
+    values (#{channelRecordId,jdbcType=VARCHAR}, #{dayTime,jdbcType=VARCHAR}, #{channelCode,jdbcType=VARCHAR}, 
+      #{channelName,jdbcType=VARCHAR}, #{channelGuestPeopleCount,jdbcType=INTEGER}, #{channelPayPeopleCount,jdbcType=INTEGER}, 
+      #{channelRegPeopleCount,jdbcType=INTEGER}, #{channelUrgeTaskPeopleCount,jdbcType=INTEGER}, 
+      #{channelSignTaskPeopleCount,jdbcType=INTEGER}, #{channelActiveGuestPeopleCount,jdbcType=INTEGER}, 
+      #{channelActiveRegPeopleCount,jdbcType=INTEGER}, #{channelCreditsConvertPeopleCount,jdbcType=INTEGER}, 
+      #{channelOrderNum,jdbcType=INTEGER}, #{channelSignTaskNum,jdbcType=INTEGER}, #{channelUrgeTaskNum,jdbcType=INTEGER}, 
+      #{channelCreditsConvertNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.channel.ChannelStatisDay" >
+    insert into v_mem_channel_statistics_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="channelRecordId != null" >
+        channel_record_id,
+      </if>
+      <if test="dayTime != null" >
+        day_time,
+      </if>
+      <if test="channelCode != null" >
+        channel_code,
+      </if>
+      <if test="channelName != null" >
+        channel_name,
+      </if>
+      <if test="channelGuestPeopleCount != null" >
+        channel_guest_people_count,
+      </if>
+      <if test="channelPayPeopleCount != null" >
+        channel_pay_people_count,
+      </if>
+      <if test="channelRegPeopleCount != null" >
+        channel_reg_people_count,
+      </if>
+      <if test="channelUrgeTaskPeopleCount != null" >
+        channel_urge_task_people_count,
+      </if>
+      <if test="channelSignTaskPeopleCount != null" >
+        channel_sign_task_people_count,
+      </if>
+      <if test="channelActiveGuestPeopleCount != null" >
+        channel_active_guest_people_count,
+      </if>
+      <if test="channelActiveRegPeopleCount != null" >
+        channel_active_reg_people_count,
+      </if>
+      <if test="channelCreditsConvertPeopleCount != null" >
+        channel_credits_convert_people_count,
+      </if>
+      <if test="channelOrderNum != null" >
+        channel_order_num,
+      </if>
+      <if test="channelSignTaskNum != null" >
+        channel_sign_task_num,
+      </if>
+      <if test="channelUrgeTaskNum != null" >
+        channel_urge_task_num,
+      </if>
+      <if test="channelCreditsConvertNum != null" >
+        channel_credits_convert_num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="channelRecordId != null" >
+        #{channelRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="dayTime != null" >
+        #{dayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null" >
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null" >
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelGuestPeopleCount != null" >
+        #{channelGuestPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelPayPeopleCount != null" >
+        #{channelPayPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelRegPeopleCount != null" >
+        #{channelRegPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelUrgeTaskPeopleCount != null" >
+        #{channelUrgeTaskPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelSignTaskPeopleCount != null" >
+        #{channelSignTaskPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelActiveGuestPeopleCount != null" >
+        #{channelActiveGuestPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelActiveRegPeopleCount != null" >
+        #{channelActiveRegPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelCreditsConvertPeopleCount != null" >
+        #{channelCreditsConvertPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelOrderNum != null" >
+        #{channelOrderNum,jdbcType=INTEGER},
+      </if>
+      <if test="channelSignTaskNum != null" >
+        #{channelSignTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="channelUrgeTaskNum != null" >
+        #{channelUrgeTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="channelCreditsConvertNum != null" >
+        #{channelCreditsConvertNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.channel.ChannelStatisDay" >
+    update v_mem_channel_statistics_day
+    <set >
+      <if test="dayTime != null" >
+        day_time = #{dayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null" >
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null" >
+        channel_name = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelGuestPeopleCount != null" >
+        channel_guest_people_count = #{channelGuestPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelPayPeopleCount != null" >
+        channel_pay_people_count = #{channelPayPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelRegPeopleCount != null" >
+        channel_reg_people_count = #{channelRegPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelUrgeTaskPeopleCount != null" >
+        channel_urge_task_people_count = #{channelUrgeTaskPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelSignTaskPeopleCount != null" >
+        channel_sign_task_people_count = #{channelSignTaskPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelActiveGuestPeopleCount != null" >
+        channel_active_guest_people_count = #{channelActiveGuestPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelActiveRegPeopleCount != null" >
+        channel_active_reg_people_count = #{channelActiveRegPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelCreditsConvertPeopleCount != null" >
+        channel_credits_convert_people_count = #{channelCreditsConvertPeopleCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelOrderNum != null" >
+        channel_order_num = #{channelOrderNum,jdbcType=INTEGER},
+      </if>
+      <if test="channelSignTaskNum != null" >
+        channel_sign_task_num = #{channelSignTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="channelUrgeTaskNum != null" >
+        channel_urge_task_num = #{channelUrgeTaskNum,jdbcType=INTEGER},
+      </if>
+      <if test="channelCreditsConvertNum != null" >
+        channel_credits_convert_num = #{channelCreditsConvertNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where channel_record_id = #{channelRecordId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.channel.ChannelStatisDay" >
+    update v_mem_channel_statistics_day
+    set day_time = #{dayTime,jdbcType=VARCHAR},
+      channel_code = #{channelCode,jdbcType=VARCHAR},
+      channel_name = #{channelName,jdbcType=VARCHAR},
+      channel_guest_people_count = #{channelGuestPeopleCount,jdbcType=INTEGER},
+      channel_pay_people_count = #{channelPayPeopleCount,jdbcType=INTEGER},
+      channel_reg_people_count = #{channelRegPeopleCount,jdbcType=INTEGER},
+      channel_urge_task_people_count = #{channelUrgeTaskPeopleCount,jdbcType=INTEGER},
+      channel_sign_task_people_count = #{channelSignTaskPeopleCount,jdbcType=INTEGER},
+      channel_active_guest_people_count = #{channelActiveGuestPeopleCount,jdbcType=INTEGER},
+      channel_active_reg_people_count = #{channelActiveRegPeopleCount,jdbcType=INTEGER},
+      channel_credits_convert_people_count = #{channelCreditsConvertPeopleCount,jdbcType=INTEGER},
+      channel_order_num = #{channelOrderNum,jdbcType=INTEGER},
+      channel_sign_task_num = #{channelSignTaskNum,jdbcType=INTEGER},
+      channel_urge_task_num = #{channelUrgeTaskNum,jdbcType=INTEGER},
+      channel_credits_convert_num = #{channelCreditsConvertNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where channel_record_id = #{channelRecordId,jdbcType=VARCHAR}
+  </update>
+  
+    <update id="updateStatisForType" >
+    update v_mem_channel_statistics_day
+    set ${typeName} = IFNULL(${typeName},0) + 1, update_time = now()
+    where channel_code = #{channelCode,jdbcType=VARCHAR} and day_time = #{dayTime,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,33 @@
+.control.has-label-left .input:focus+label, .control.has-label-left .select>select:focus+label, .control.has-label-left .textarea:focus+label {
+    opacity: 1;
+    color: #1c1e1f;
+}
+
+.enter-from-left{
+	width: 200px !important;
+}
+
+.tsn-margin-top {
+    	margin-top: 10px
+    
+    }
+    
+    .notice {
+    	color:white;
+    }
+    
+    .tsn-margin {
+    	margin:20px;
+    }
+    
+    .tsn-margin-sm {
+    	margin:10px;
+    }
+    
+    .tsn-padding-sm {
+    	padding:15px;
+    }
+    
+    .cards {
+	    padding-top: 0px;
+	}

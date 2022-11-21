@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.mem.mapper.notice.MemNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.notice.MemNotice">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="is_details" jdbcType="VARCHAR" property="isDetails" />
+        <result column="is_jump" jdbcType="VARCHAR" property="isJump" />
+        <result column="button_name" jdbcType="VARCHAR" property="buttonName" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  id, title, keyword, content, is_details, is_jump, button_name, url, type, status
+</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+  delete from v_mem_notice
+  where id = #{id,jdbcType=INTEGER}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.mem.entity.notice.MemNotice">
+  insert into v_mem_notice (id, title, keyword,
+    content, is_details, is_jump,
+    button_name, url, type,
+    status)
+  values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
+    #{content,jdbcType=VARCHAR}, #{isDetails,jdbcType=VARCHAR}, #{isJump,jdbcType=VARCHAR},
+    #{buttonName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+    #{status,jdbcType=VARCHAR})
+</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.tsn.serv.mem.entity.notice.MemNotice">
+        insert into v_mem_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="keyword != null">
+                keyword,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="isDetails != null">
+                is_details,
+            </if>
+            <if test="isJump != null">
+                is_jump,
+            </if>
+            <if test="buttonName != null">
+                button_name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="keyword != null">
+                #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="isDetails != null">
+                #{isDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="isJump != null">
+                #{isJump,jdbcType=VARCHAR},
+            </if>
+            <if test="buttonName != null">
+                #{buttonName,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.tsn.serv.mem.entity.notice.MemNotice">
+        update v_mem_notice
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="keyword != null">
+                keyword = #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="isDetails != null">
+                is_details = #{isDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="isJump != null">
+                is_jump = #{isJump,jdbcType=VARCHAR},
+            </if>
+            <if test="buttonName != null">
+                button_name = #{buttonName,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="update" parameterType="com.tsn.serv.mem.entity.notice.MemNotice">
+  update v_mem_notice
+  set title = #{title,jdbcType=VARCHAR},
+    keyword = #{keyword,jdbcType=VARCHAR},
+    content = #{content,jdbcType=VARCHAR},
+    is_details = #{isDetails,jdbcType=VARCHAR},
+    is_jump = #{isJump,jdbcType=VARCHAR},
+    button_name = #{buttonName,jdbcType=VARCHAR},
+    url = #{url,jdbcType=VARCHAR},
+    type = #{type,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR}
+  where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_mem_notice
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="id != null" >
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="title != null and title != ''" >
+                and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="keyword != null and keyword != ''" >
+                and keyword = #{keyword,jdbcType=VARCHAR}
+            </if>
+            <if test="content != null and content != ''" >
+                and content = #{content,jdbcType=VARCHAR}
+            </if>
+            <if test="isDetails != null and isDetails != ''" >
+                and is_details = #{isDetails,jdbcType=VARCHAR}
+            </if>
+            <if test="isJump != null and isJump != ''" >
+                and is_jump = #{isJump,jdbcType=VARCHAR}
+            </if>
+            <if test="buttonName != null and buttonName != ''" >
+                and button_name = #{buttonName,jdbcType=VARCHAR}
+            </if>
+            <if test="url != null and url != ''" >
+                and url = #{url,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null and type != ''" >
+                and type = #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''" >
+                and status = #{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </sql>
+
+    <delete id="deleteMemNoticeById" parameterType="java.util.List">
+        DELETE FROM v_mem_notice WHERE id IN
+        <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+            #{item, jdbcType=INTEGER}
+        </foreach>
+    </delete>
+
+    <select id="getMemNoticeListByPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select * from v_mem_notice where 1 = 1
+        <if test="paramObj.title != null and paramObj.title != ''">
+            and title LIKE CONCAT('%',#{paramObj.title,jdbcType=VARCHAR},'%')
+        </if>
+  </select>
+
+    <!-- 安卓、IOS查询轮播公告 -->
+    <select id="getMemNoticeByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select title, keyword, content, is_details, is_jump, button_name, url from v_mem_notice where (type = '0' or type = #{type,jdbcType=VARCHAR}) and status = '0'
+    </select>
+</mapper>

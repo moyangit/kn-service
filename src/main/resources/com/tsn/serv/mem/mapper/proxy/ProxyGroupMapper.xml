@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.proxy.ProxyGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.proxy.ProxyGroup" >
+    <id column="proxy_group_id" property="proxyGroupId" jdbcType="INTEGER" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="is_default" property="isDefault" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.tsn.serv.mem.entity.proxy.ProxyGroup" extends="BaseResultMap" >
+    <result column="rebate_config" property="rebateConfig" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    proxy_group_id, group_name
+  </sql>
+  <sql id="Blob_Column_List" >
+    rebate_config
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_proxy_group
+    where proxy_group_id = #{proxyGroupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from v_mem_proxy_group
+    where proxy_group_id = #{proxyGroupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.proxy.ProxyGroup" >
+    insert into v_mem_proxy_group (proxy_group_id, group_name, rebate_config
+      )
+    values (#{proxyGroupId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{rebateConfig,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.proxy.ProxyGroup" >
+    insert into v_mem_proxy_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="proxyGroupId != null" >
+        proxy_group_id,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
+      <if test="rebateConfig != null" >
+        rebate_config,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="proxyGroupId != null" >
+        #{proxyGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="rebateConfig != null" >
+        #{rebateConfig,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.proxy.ProxyGroup" >
+    update v_mem_proxy_group
+    <set >
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="rebateConfig != null" >
+        rebate_config = #{rebateConfig,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where proxy_group_id = #{proxyGroupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tsn.serv.mem.entity.proxy.ProxyGroup" >
+    update v_mem_proxy_group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      rebate_config = #{rebateConfig,jdbcType=LONGVARCHAR}
+    where proxy_group_id = #{proxyGroupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.proxy.ProxyGroup" >
+    update v_mem_proxy_group
+    set group_name = #{groupName,jdbcType=VARCHAR}
+    where proxy_group_id = #{proxyGroupId,jdbcType=INTEGER}
+  </update>
+
+  <select id="proxyGroupList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="ResultMapWithBLOBs">
+    select * from v_mem_proxy_group where 1 = 1
+    <if test="paramObj.groupName != null and paramObj.groupName != ''">
+      and group_name like concat('%',#{paramObj.groupName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.mem.GuestInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.mem.GuestInfo" >
+    <id column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="mem_name" property="memName" jdbcType="VARCHAR" />
+    <result column="mem_phone" property="memPhone" jdbcType="VARCHAR" />
+    <result column="mem_avatar" property="memAvatar" jdbcType="VARCHAR" />
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="device_no" property="deviceNo" jdbcType="VARCHAR" />
+    <result column="device_type" property="deviceType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="suspen_date" property="suspenDate" jdbcType="TIMESTAMP" />
+    <result column="reg_date" property="regDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="last_use_time" property="lastUseTime" jdbcType="TIMESTAMP" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    mem_id, mem_name, mem_phone, mem_avatar, mem_type, device_no, device_type, status, 
+    suspen_date, reg_date, remarks, last_use_time, channel_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_guest_info
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getGuestByDeviceNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_guest_info
+    where device_no = #{deviceNo,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_guest_info
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.mem.GuestInfo" >
+    insert into v_mem_guest_info (mem_id, mem_name, mem_phone, 
+      mem_avatar, mem_type, device_no, 
+      device_type, status, suspen_date, 
+      reg_date, remarks, last_use_time, channel_code
+      )
+    values (#{memId,jdbcType=VARCHAR}, #{memName,jdbcType=VARCHAR}, #{memPhone,jdbcType=VARCHAR}, 
+      #{memAvatar,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{deviceNo,jdbcType=VARCHAR}, 
+      #{deviceType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{suspenDate,jdbcType=TIMESTAMP}, 
+      #{regDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{lastUseTime,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+   <insert id="insertByIgnore" parameterType="com.tsn.serv.mem.entity.mem.GuestInfo" >
+    insert ignore into v_mem_guest_info (mem_id, mem_name, mem_phone, 
+      mem_avatar, mem_type, device_no, 
+      device_type, status, suspen_date, 
+      reg_date, remarks, last_use_time, channel_code
+      )
+    values (#{memId,jdbcType=VARCHAR}, #{memName,jdbcType=VARCHAR}, #{memPhone,jdbcType=VARCHAR}, 
+      #{memAvatar,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{deviceNo,jdbcType=VARCHAR}, 
+      #{deviceType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{suspenDate,jdbcType=TIMESTAMP}, 
+      #{regDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{lastUseTime,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR}
+      )
+  </insert> 
+  
+  
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.mem.GuestInfo" >
+    insert into v_mem_guest_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="memName != null" >
+        mem_name,
+      </if>
+      <if test="memPhone != null" >
+        mem_phone,
+      </if>
+      <if test="memAvatar != null" >
+        mem_avatar,
+      </if>
+      <if test="memType != null" >
+        mem_type,
+      </if>
+      <if test="deviceNo != null" >
+        device_no,
+      </if>
+      <if test="deviceType != null" >
+        device_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="suspenDate != null" >
+        suspen_date,
+      </if>
+      <if test="regDate != null" >
+        reg_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="lastUseTime != null" >
+        last_use_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null" >
+        #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null" >
+        #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memAvatar != null" >
+        #{memAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceNo != null" >
+        #{deviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="suspenDate != null" >
+        #{suspenDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDate != null" >
+        #{regDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUseTime != null" >
+        #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.mem.GuestInfo" >
+    update v_mem_guest_info
+    <set >
+      <if test="memName != null" >
+        mem_name = #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null" >
+        mem_phone = #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memAvatar != null" >
+        mem_avatar = #{memAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceNo != null" >
+        device_no = #{deviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null" >
+        device_type = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="suspenDate != null" >
+        suspen_date = #{suspenDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDate != null" >
+        reg_date = #{regDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUseTime != null" >
+        last_use_time = #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.mem.GuestInfo" >
+    update v_mem_guest_info
+    set mem_name = #{memName,jdbcType=VARCHAR},
+      mem_phone = #{memPhone,jdbcType=VARCHAR},
+      mem_avatar = #{memAvatar,jdbcType=VARCHAR},
+      mem_type = #{memType,jdbcType=VARCHAR},
+      device_no = #{deviceNo,jdbcType=VARCHAR},
+      device_type = #{deviceType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      suspen_date = #{suspenDate,jdbcType=TIMESTAMP},
+      reg_date = #{regDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      last_use_time = #{lastUseTime,jdbcType=TIMESTAMP}
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.mem.mapper.mem.NewUserMapper">
+
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.mem.NewUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="old_account" jdbcType="VARCHAR" property="oldAccount" />
+    <result column="new_account" jdbcType="VARCHAR" property="newAccount" />
+    <result column="wx_code" jdbcType="VARCHAR" property="wxCode" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+  id, old_account, new_account, wx_code, status, create_date
+</sql>
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
+  delete from new_user
+  where id = #{id,jdbcType=INTEGER}
+</delete>
+
+
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.mem.NewUser">
+  insert into new_user (id, old_account, new_account, wx_code,
+    status, create_date)
+  values (#{id,jdbcType=INTEGER}, #{oldAccount,jdbcType=VARCHAR}, #{newAccount,jdbcType=VARCHAR}, #{wxCode,jdbcType=VARCHAR},
+    #{status,jdbcType=CHAR}, #{createDate,jdbcType=TIMESTAMP})
+</insert>
+
+
+  <insert id="insertDynamic" parameterType="com.tsn.serv.mem.entity.mem.NewUser">
+    insert into new_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="oldAccount != null">
+        old_account,
+      </if>
+      <if test="newAccount != null">
+        new_account,
+      </if>
+      <if test="wxCode != null">
+        wx_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="oldAccount != null">
+        #{oldAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="newAccount != null">
+        #{newAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="wxCode != null">
+        #{wxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateDynamic" parameterType="com.tsn.serv.mem.entity.mem.NewUser">
+    update new_user
+    <set>
+      <if test="oldAccount != null">
+        old_account = #{oldAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="newAccount != null">
+        new_account = #{newAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="wxCode != null">
+        wx_code = #{wxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="update" parameterType="com.tsn.serv.mem.entity.mem.NewUser">
+  update new_user
+  set old_account = #{oldAccount,jdbcType=VARCHAR},
+    new_account = #{newAccount,jdbcType=VARCHAR},
+    wx_code = #{wxCode,jdbcType=VARCHAR},
+    status = #{status,jdbcType=CHAR},
+    create_date = #{createDate,jdbcType=TIMESTAMP}
+  where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  new_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectNewUserByOldAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from new_user where old_account = #{oldAccount,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectNewUserByNewAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from new_user where new_account = #{newAccount,jdbcType=VARCHAR}
+  </select>
+
+  <select id="newUserList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from new_user
+    where 1 = 1
+    <if test="paramObj.selectData != null and paramObj.selectData != ''">
+      and (
+      old_account like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      or
+      new_account like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      or
+      wx_code like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="paramObj.status != null and paramObj.status != ''">
+      and status = #{paramObj.status,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.statDate != null and paramObj.statDate != ''">
+      AND DATE_FORMAT(create_date,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="paramObj.endDate != null and paramObj.endDate != ''">
+      AND DATE_FORMAT(create_date,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+    </if>
+    order by create_date desc
+  </select>
+</mapper>

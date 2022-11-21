@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.auth.mapper.sys.SysRoleMapper" >
+
+  <resultMap id="BaseResultMap" type="com.tsn.serv.auth.entity.sys.SysRole">
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="depart_id" jdbcType="VARCHAR" property="departId" />
+    <result column="permiss_code_arr" jdbcType="VARCHAR" property="permissCodeArr" />
+    <result column="is_used" jdbcType="INTEGER" property="isUsed" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="is_sys" jdbcType="VARCHAR" property="isSys" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+  role_id, role_code, role_name, depart_id, permiss_code_arr, is_used, sort, is_sys, create_time
+</sql>
+
+  <delete id="delete" parameterType="java.lang.String">
+  delete from t_sys_role
+  where role_id = #{roleId,jdbcType=INTEGER}
+</delete>
+
+
+  <insert id="insert" parameterType="com.tsn.serv.auth.entity.sys.SysRole">
+  insert into t_sys_role (role_id, role_code, role_name, 
+    depart_id, permiss_code_arr, is_used, 
+    sort, is_sys, create_time)
+  values (#{roleId,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+    #{departId,jdbcType=VARCHAR}, #{permissCodeArr,jdbcType=VARCHAR}, #{isUsed,jdbcType=INTEGER}, 
+    #{sort,jdbcType=INTEGER}, #{isSys,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+</insert>
+
+
+  <insert id="insertDynamic" parameterType="com.tsn.serv.auth.entity.sys.SysRole">
+    insert into t_sys_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="roleCode != null">
+        role_code,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="departId != null">
+        depart_id,
+      </if>
+      <if test="permissCodeArr != null">
+        permiss_code_arr,
+      </if>
+      <if test="isUsed != null">
+        is_used,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="isSys != null">
+        is_sys,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="roleCode != null">
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="departId != null">
+        #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissCodeArr != null">
+        #{permissCodeArr,jdbcType=VARCHAR},
+      </if>
+      <if test="isUsed != null">
+        #{isUsed,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isSys != null">
+        #{isSys,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateDynamic" parameterType="com.tsn.serv.auth.entity.sys.SysRole">
+    update t_sys_role
+    <set>
+      <if test="roleCode != null">
+        role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="departId != null">
+        depart_id = #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissCodeArr != null">
+        permiss_code_arr = #{permissCodeArr,jdbcType=VARCHAR},
+      </if>
+      <if test="isUsed != null">
+        is_used = #{isUsed,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isSys != null">
+        is_sys = #{isSys,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="update" parameterType="com.tsn.serv.auth.entity.sys.SysRole">
+  update t_sys_role
+  set role_code = #{roleCode,jdbcType=VARCHAR},
+    role_name = #{roleName,jdbcType=VARCHAR},
+    depart_id = #{departId,jdbcType=VARCHAR},
+    permiss_code_arr = #{permissCodeArr,jdbcType=VARCHAR},
+    is_used = #{isUsed,jdbcType=INTEGER},
+    sort = #{sort,jdbcType=INTEGER},
+    is_sys = #{isSys,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP}
+  where role_id = #{roleId,jdbcType=INTEGER}
+</update>
+
+
+  <select id="selectByRoleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  t_sys_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRoles" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_sys_role
+  </select>
+
+  <select id="getRolesByCodes" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from t_sys_role where role_code in
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+  <select id="sysRoleList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select * from t_sys_role
+    WHERE 1 = 1
+    <if test="paramObj.selectData != null and paramObj.selectData != ''">
+      AND (
+      role_code LIKE CONCAT('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      OR
+      role_name LIKE CONCAT('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      )
+    </if>
+  </select>
+
+  <delete id="deleteSysRoleById" parameterType="java.util.List">
+    DELETE FROM t_sys_role WHERE role_id IN
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=INTEGER}
+    </foreach>
+  </delete>
+
+</mapper>

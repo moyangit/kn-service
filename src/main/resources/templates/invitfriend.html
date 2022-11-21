@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<!-- ZUI 标准版压缩后的 CSS 文件 -->
+<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/zui/1.10.0/css/zui.min.css">
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<!-- ZUI Javascript 依赖 jQuery -->
+<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/lib/jquery/jquery.js"></script>
+<!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/js/zui.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<style>
+body {
+	padding: 0px !important;
+	margin: 0 auto;
+	background: #0d0d0c;
+	text-align: center;
+	max-width: 800px;
+}
+
+
+.activity {
+	padding:50px;
+}
+	
+.activity .title{
+	margin: 0 auto;
+    font-size: 14px;
+    font-weight: 550;
+    color: #d6ae3c;
+    border: 1px solid #514f52;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.activity .items .item {
+	margin: 0 auto;
+    height: 139px;
+    background: #ffffff05;
+    border-radius: 8px 8px 8px 8px;
+    opacity: 1;
+    filter: blur(undefinedpx);
+    margin-top: 20px;
+    padding: 0px 0 !important;
+    border-bottom: 1px solid #3a3636 !important;
+}
+
+.activity .items .item .itemTitle{
+	margin: 0 auto;
+	width: 86px;
+	height: 31px;
+	font-size: 27px;
+	font-family: Helvetica-Bold-, Helvetica-Bold;
+	font-weight: 550;
+	color: #D8D8D8;
+}
+
+.activity .items .item .itemDesc {
+	margin: 0 auto;
+    padding: 30px;
+    width: 240px;
+    height: 42px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #d6ae3c;
+}
+
+.line {
+	width: 30px;
+	height: 2px;
+	background: #4E3DB0;
+	opacity: 1;
+	filter: blur(undefinedpx);
+	vertical-align: middle;
+	display:inline-block;
+}
+
+
+.invitInfo {
+	padding:50px;
+	color:#d6ae3c;
+}
+
+.invitInfo p {
+	color: #a8a5a0;
+    font-size: 9px;
+    padding: 5px;
+}
+
+.invitInfo .invitCode{
+	padding: 6px;
+    background: #3e4141;
+}
+
+.shareUrl {
+    resize: auto;
+    overflow: auto;
+    border: 1px solid #423e3e;
+    margin: 0 auto;
+    height: 88px;
+    background: #19151505;
+    border-radius: 8px 8px 8px 8px;
+    opacity: 1;
+    filter: blur(undefinedpx);
+    margin-top: 20px;
+    word-wrap: break-word;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: left;
+    font-size: 10px;
+    padding: 10px;
+    color: #cac9c6;
+}
+.shareUrl::after{
+    content: attr(aria-placeholder);
+    color: gray;
+}
+
+
+.copyLink {
+	width: 100px;
+    font-size: 12px;
+    padding: 5px;
+    background: #222323;
+    margin: 0 auto;
+    margin-top: 5px;
+    border-radius: 4px;
+}
+
+.invitNum {
+    padding-left: 50px;
+    text-align: left;
+    color: #ffc107;
+    font-size: 13px;
+    padding-top: 30px;
+    text-decoration: underline;
+}
+
+.content {
+	background: #19162f;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+#qrcode{
+    border: 6px solid #d3b346;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+</style>
+
+</head>
+<body>
+
+	<div class="invitInfo">
+		<span class="invitCode" th:text="${memInfo.inviterCode}"></span>
+		<p>邀请码</p>
+		
+		<div class="shareUrl" style="display:none" th:text="${shareUrl}">
+		</div>
+		
+		<div id="qrcode">
+			
+		</div>
+		
+		<div class="copyLink">复制链接</div>
+	</div>
+
+	
+	<div class="content">
+		
+		<div class="invitNum">
+			<div style="float:left">邀请总人数:<span th:text="${invitNum}"></span></div>
+			<div style="float: right;
+    margin-right: 50px;
+    text-decoration: underline;
+    color: #ffc107;
+    font-size: 13px;cursor: pointer;" id="invitList">邀请明细</div>
+		</div>
+		
+		
+		<div class="activity">
+		
+			<div class="title">
+				活动介绍
+			</div>
+			
+			<div class="items">
+				
+				<div class="item" style="height:150px">
+					<div class="itemDesc" style="margin-top: 10px;text-align: left;padding-bottom:20px;line-height: 23px;">
+						<div>分享1人获取30分钟。</div>
+						<div>分享50人免费获取一个月时长。</div>
+						<div>分享100人免费获取三个月时长。</div>
+						<div>分享1000人免费获取一年时长。</div>
+					</div>
+					<!-- <a th:href="'https://mapi.heibaohouduan.com/page/customer?uId=' + ${uId}" style="color:blue;text-decoration:underline;">联系客服</a> -->
+				</div>
+				
+				
+			</div>
+			
+			<div></div>
+			
+		</div>
+	
+	</div>
+	
+	
+
+	
+</body>
+
+<script th:inline="javascript">
+	// 取资费类型
+    const shareUrl = [[${shareUrl}]];
+    
+</script>
+
+<script>
+
+$(function() {
+	
+	//h5复制文本到剪切板
+	function copyContentH5(content) {
+	    var copyDom = document.createElement('div');
+	    copyDom.innerText=content;
+	    copyDom.style.position='absolute';
+	    copyDom.style.top='0px';
+	    copyDom.style.right='-9999px';
+	    document.body.appendChild(copyDom);
+	    //创建选中范围
+	    var range = document.createRange();
+	    range.selectNode(copyDom);
+	    //移除剪切板中内容
+	    window.getSelection().removeAllRanges();
+	    //添加新的内容到剪切板
+	    window.getSelection().addRange(range);
+	    //复制
+	    var successful = document.execCommand('copy');
+	    copyDom.parentNode.removeChild(copyDom);
+	    try{
+	        if (successful) {
+	        	new $.zui.Messager('复制成功', {
+	            }).show();
+	        }
+	    } catch(err){
+	    }
+	}
+	
+	$(".invitCode").click(function(){
+		copyContentH5($(this).text())
+	})
+	
+	$(".copyLink").click(function(){
+		copyContentH5($(".shareUrl").text());
+	})
+	
+	$('#qrcode').qrcode({
+			render: "canvas", // 设置渲染方式(有两种方式 table和canvas，默认是canvas）
+			width: 200, // 宽度
+			height: 200, // 高度
+			background: "#FFFFFF", // 背景颜色
+			foreground: "#000000", // 前景颜色
+			correctLevel: 0, // 纠错等级 
+			text: shareUrl,
+		});
+	
+	$("#invitList").click(function(){
+		document.location.href="/page/invitfriendlist.html"
+	})
+})
+
+</script>
+</html>

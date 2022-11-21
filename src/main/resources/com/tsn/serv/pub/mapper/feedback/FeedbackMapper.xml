@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.pub.mapper.feedback.FeedbackMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.feedback.Feedback">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="mem_id" jdbcType="VARCHAR" property="memId" />
+        <result column="mem_phone" jdbcType="VARCHAR" property="memPhone" />
+        <result column="mem_name" jdbcType="VARCHAR" property="memName" />
+        <result column="app_type" jdbcType="VARCHAR" property="appType" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  id, mem_id, mem_phone, mem_name, app_type, device_type, remarks, create_time
+</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+  delete from v_service_feedback
+  where id = #{id,jdbcType=INTEGER}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.pub.entity.feedback.Feedback">
+  insert into v_service_feedback (id, mem_id, mem_phone,
+    mem_name, app_type, device_type,
+    remarks, create_time)
+  values (#{id,jdbcType=INTEGER}, #{memId,jdbcType=VARCHAR}, #{memPhone,jdbcType=VARCHAR},
+    #{memName,jdbcType=VARCHAR}, #{appType,jdbcType=VARCHAR}, #{deviceType,jdbcType=VARCHAR},
+    #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.tsn.serv.pub.entity.feedback.Feedback">
+        insert into v_service_feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memId != null">
+                mem_id,
+            </if>
+            <if test="memPhone != null">
+                mem_phone,
+            </if>
+            <if test="memName != null">
+                mem_name,
+            </if>
+            <if test="appType != null">
+                app_type,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="memId != null">
+                #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="memPhone != null">
+                #{memPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="memName != null">
+                #{memName,jdbcType=VARCHAR},
+            </if>
+            <if test="appType != null">
+                #{appType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.tsn.serv.pub.entity.feedback.Feedback">
+        update v_service_feedback
+        <set>
+            <if test="memId != null">
+                mem_id = #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="memPhone != null">
+                mem_phone = #{memPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="memName != null">
+                mem_name = #{memName,jdbcType=VARCHAR},
+            </if>
+            <if test="appType != null">
+                app_type = #{appType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                device_type = #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="update" parameterType="com.tsn.serv.pub.entity.feedback.Feedback">
+  update v_service_feedback
+  set mem_id = #{memId,jdbcType=VARCHAR},
+    mem_phone = #{memPhone,jdbcType=VARCHAR},
+    mem_name = #{memName,jdbcType=VARCHAR},
+    app_type = #{appType,jdbcType=VARCHAR},
+    device_type = #{deviceType,jdbcType=VARCHAR},
+    remarks = #{remarks,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP}
+  where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_service_feedback
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="id != null" >
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="memId != null and memId != ''" >
+                and mem_id = #{memId,jdbcType=VARCHAR}
+            </if>
+            <if test="memPhone != null and memPhone != ''" >
+                and mem_phone = #{memPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="memName != null and memName != ''" >
+                and mem_name = #{memName,jdbcType=VARCHAR}
+            </if>
+            <if test="appType != null and appType != ''" >
+                and app_type = #{appType,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceType != null and deviceType != ''" >
+                and device_type = #{deviceType,jdbcType=VARCHAR}
+            </if>
+            <if test="remarks != null and remarks != ''" >
+                and remarks = #{remarks,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getFeedbackPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_service_feedback
+        where 1 = 1
+        <if test="paramObj.selectData != null and paramObj.selectData != ''">
+            and mem_phone like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="paramObj.deviceType != null and paramObj.deviceType != ''">
+            and device_type = #{paramObj.deviceType,jdbcType=VARCHAR}
+        </if>
+        <if test="paramObj.statDate != null and paramObj.statDate != ''">
+            AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="paramObj.endDate != null and paramObj.endDate != ''">
+            AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+        </if>
+        order by create_time desc
+    </select>
+
+</mapper>

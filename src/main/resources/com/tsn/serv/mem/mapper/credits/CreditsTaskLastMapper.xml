@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.credits.CreditsTaskLastMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="sign_value_type" property="signValueType" jdbcType="TINYINT" />
+    <result column="sign_task_value" property="signTaskValue" jdbcType="INTEGER" />
+    <result column="sign_task_last_time" property="signTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="ad_view_value_type" property="adViewValueType" jdbcType="TINYINT" />
+    <result column="ad_view_task_value" property="adViewTaskValue" jdbcType="INTEGER" />
+    <result column="ad_view_task_last_time" property="adViewTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="url_save_value_type" property="urlSaveValueType" jdbcType="TINYINT" />
+    <result column="url_save_task_value" property="urlSaveTaskValue" jdbcType="INTEGER" />
+    <result column="url_save_task_last_time" property="urlSaveTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="url_fill_value_type" property="urlFillValueType" jdbcType="TINYINT" />
+    <result column="url_fill_task_value" property="urlFillTaskValue" jdbcType="INTEGER" />
+    <result column="url_fill_task_last_time" property="urlFillTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="app_share_value_type" property="appShareValueType" jdbcType="TINYINT" />
+    <result column="app_share_task_value" property="appShareTaskValue" jdbcType="INTEGER" />
+    <result column="app_share_task_last_time" property="appShareTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="fq_fill_value_type" property="fqFillValueType" jdbcType="TINYINT" />
+    <result column="fq_fill_task_value" property="fqFillTaskValue" jdbcType="INTEGER" />
+    <result column="fq_fill_task_last_time" property="fqFillTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="friend_invite_value_type" property="friendInviteValueType" jdbcType="TINYINT" />
+    <result column="friend_invite_task_value" property="friendInviteTaskValue" jdbcType="INTEGER" />
+    <result column="friend_invite_task_last_time" property="friendInviteTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="google_evaluate_value_type" property="googleEvaluateValueType" jdbcType="TINYINT" />
+    <result column="google_evaluate_task_value" property="googleEvaluateTaskValue" jdbcType="INTEGER" />
+    <result column="google_evaluate_task_last_time" property="googleEvaluateTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="ad_down_value_type" property="adDownValueType" jdbcType="TINYINT" />
+    <result column="ad_down_task_value" property="adDownTaskValue" jdbcType="INTEGER" />
+    <result column="ad_down_task_last_time" property="adDownTaskLastTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ad_stimulate_value_type" property="adStimulateValueType" jdbcType="TINYINT" />
+    <result column="ad_stimulate_task_value" property="adStimulateValue" jdbcType="INTEGER" />
+    <result column="ad_stimulate_task_last_time" property="adStimulateLastTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.tsn.serv.mem.entity.credits.CreditsTaskLast" extends="BaseResultMap" >
+    <result column="extend" property="extend" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mem_id, sign_value_type, sign_task_value, sign_task_last_time, ad_view_value_type, 
+    ad_view_task_value, ad_view_task_last_time, url_save_value_type, url_save_task_value, 
+    url_save_task_last_time, url_fill_value_type, url_fill_task_value, url_fill_task_last_time, 
+    app_share_value_type, app_share_task_value, app_share_task_last_time, fq_fill_value_type, 
+    fq_fill_task_value, fq_fill_task_last_time, friend_invite_value_type, friend_invite_task_value, 
+    friend_invite_task_last_time, google_evaluate_value_type, google_evaluate_task_value, 
+    google_evaluate_task_last_time, ad_down_value_type, ad_down_task_value, ad_down_task_last_time, 
+    update_time,ad_stimulate_value_type,ad_stimulate_task_value,ad_stimulate_task_last_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    extend
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_credits_task_last
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCreditsTaskLast" resultMap="ResultMapWithBLOBs" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_credits_task_last
+    where mem_id = #{memId,jdbcType=VARCHAR}
+    <if test="taskType != null and taskType == 'sign'">
+    	and sign_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'ad_view'">
+    	and ad_view_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'url_save'">
+    	and url_save_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'url_fill'">
+    	and url_fill_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'app_share'">
+    	and app_share_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'fq_fill'">
+    	and fq_fill_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'friend_invite'">
+    	and friend_invite_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'google_evaluate'">
+    	and google_evaluate_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+    <if test="taskType != null and taskType == 'ad_down'">
+    	and ad_down_task_last_time like CONCAT(#{receiveTiem,jdbcType=VARCHAR},"%")
+    </if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_credits_task_last
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    insert into v_mem_credits_task_last (id, mem_id, sign_value_type, 
+      sign_task_value, sign_task_last_time, ad_view_value_type, 
+      ad_view_task_value, ad_view_task_last_time, 
+      url_save_value_type, url_save_task_value, url_save_task_last_time, 
+      url_fill_value_type, url_fill_task_value, url_fill_task_last_time, 
+      app_share_value_type, app_share_task_value, app_share_task_last_time, 
+      fq_fill_value_type, fq_fill_task_value, fq_fill_task_last_time, 
+      friend_invite_value_type, friend_invite_task_value, 
+      friend_invite_task_last_time, google_evaluate_value_type, 
+      google_evaluate_task_value, google_evaluate_task_last_time, 
+      ad_down_value_type, ad_down_task_value, ad_down_task_last_time, 
+      update_time, extend,ad_stimulate_value_type,ad_stimulate_task_value,ad_stimulate_task_last_time)
+    values (#{id,jdbcType=VARCHAR}, #{memId,jdbcType=VARCHAR}, #{signValueType,jdbcType=TINYINT}, 
+      #{signTaskValue,jdbcType=INTEGER}, #{signTaskLastTime,jdbcType=TIMESTAMP}, #{adViewValueType,jdbcType=TINYINT}, 
+      #{adViewTaskValue,jdbcType=INTEGER}, #{adViewTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{urlSaveValueType,jdbcType=TINYINT}, #{urlSaveTaskValue,jdbcType=INTEGER}, #{urlSaveTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{urlFillValueType,jdbcType=TINYINT}, #{urlFillTaskValue,jdbcType=INTEGER}, #{urlFillTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{appShareValueType,jdbcType=TINYINT}, #{appShareTaskValue,jdbcType=INTEGER}, #{appShareTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{fqFillValueType,jdbcType=TINYINT}, #{fqFillTaskValue,jdbcType=INTEGER}, #{fqFillTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{friendInviteValueType,jdbcType=TINYINT}, #{friendInviteTaskValue,jdbcType=INTEGER}, 
+      #{friendInviteTaskLastTime,jdbcType=TIMESTAMP}, #{googleEvaluateValueType,jdbcType=TINYINT}, 
+      #{googleEvaluateTaskValue,jdbcType=INTEGER}, #{googleEvaluateTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{adDownValueType,jdbcType=TINYINT}, #{adDownTaskValue,jdbcType=INTEGER}, #{adDownTaskLastTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{extend,jdbcType=LONGVARCHAR}, #{adStimulateValueType,jdbcType=TINYINT}, 
+      #{adStimulateTaskValue,jdbcType=INTEGER}, #{adStimulateTaskLastTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    insert into v_mem_credits_task_last
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="signValueType != null" >
+        sign_value_type,
+      </if>
+      <if test="signTaskValue != null" >
+        sign_task_value,
+      </if>
+      <if test="signTaskLastTime != null" >
+        sign_task_last_time,
+      </if>
+      <if test="adViewValueType != null" >
+        ad_view_value_type,
+      </if>
+      <if test="adViewTaskValue != null" >
+        ad_view_task_value,
+      </if>
+      <if test="adViewTaskLastTime != null" >
+        ad_view_task_last_time,
+      </if>
+      <if test="urlSaveValueType != null" >
+        url_save_value_type,
+      </if>
+      <if test="urlSaveTaskValue != null" >
+        url_save_task_value,
+      </if>
+      <if test="urlSaveTaskLastTime != null" >
+        url_save_task_last_time,
+      </if>
+      <if test="urlFillValueType != null" >
+        url_fill_value_type,
+      </if>
+      <if test="urlFillTaskValue != null" >
+        url_fill_task_value,
+      </if>
+      <if test="urlFillTaskLastTime != null" >
+        url_fill_task_last_time,
+      </if>
+      <if test="appShareValueType != null" >
+        app_share_value_type,
+      </if>
+      <if test="appShareTaskValue != null" >
+        app_share_task_value,
+      </if>
+      <if test="appShareTaskLastTime != null" >
+        app_share_task_last_time,
+      </if>
+      <if test="fqFillValueType != null" >
+        fq_fill_value_type,
+      </if>
+      <if test="fqFillTaskValue != null" >
+        fq_fill_task_value,
+      </if>
+      <if test="fqFillTaskLastTime != null" >
+        fq_fill_task_last_time,
+      </if>
+      <if test="friendInviteValueType != null" >
+        friend_invite_value_type,
+      </if>
+      <if test="friendInviteTaskValue != null" >
+        friend_invite_task_value,
+      </if>
+      <if test="friendInviteTaskLastTime != null" >
+        friend_invite_task_last_time,
+      </if>
+      <if test="googleEvaluateValueType != null" >
+        google_evaluate_value_type,
+      </if>
+      <if test="googleEvaluateTaskValue != null" >
+        google_evaluate_task_value,
+      </if>
+      <if test="googleEvaluateTaskLastTime != null" >
+        google_evaluate_task_last_time,
+      </if>
+      <if test="adDownValueType != null" >
+        ad_down_value_type,
+      </if>
+      <if test="adDownTaskValue != null" >
+        ad_down_task_value,
+      </if>
+      <if test="adDownTaskLastTime != null" >
+        ad_down_task_last_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="extend != null" >
+        extend,
+      </if>
+      <if test="adStimulateValueType != null" >
+        ad_stimulate_value_type, 
+      </if>
+      <if test="adStimulateTaskValue != null" >
+      	ad_stimulate_task_value,
+      </if>
+      <if test="adStimulateTaskLastTime != null" >
+        ad_stimulate_task_last_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="signValueType != null" >
+        #{signValueType,jdbcType=TINYINT},
+      </if>
+      <if test="signTaskValue != null" >
+        #{signTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="signTaskLastTime != null" >
+        #{signTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adViewValueType != null" >
+        #{adViewValueType,jdbcType=TINYINT},
+      </if>
+      <if test="adViewTaskValue != null" >
+        #{adViewTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="adViewTaskLastTime != null" >
+        #{adViewTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="urlSaveValueType != null" >
+        #{urlSaveValueType,jdbcType=TINYINT},
+      </if>
+      <if test="urlSaveTaskValue != null" >
+        #{urlSaveTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="urlSaveTaskLastTime != null" >
+        #{urlSaveTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="urlFillValueType != null" >
+        #{urlFillValueType,jdbcType=TINYINT},
+      </if>
+      <if test="urlFillTaskValue != null" >
+        #{urlFillTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="urlFillTaskLastTime != null" >
+        #{urlFillTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appShareValueType != null" >
+        #{appShareValueType,jdbcType=TINYINT},
+      </if>
+      <if test="appShareTaskValue != null" >
+        #{appShareTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="appShareTaskLastTime != null" >
+        #{appShareTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fqFillValueType != null" >
+        #{fqFillValueType,jdbcType=TINYINT},
+      </if>
+      <if test="fqFillTaskValue != null" >
+        #{fqFillTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="fqFillTaskLastTime != null" >
+        #{fqFillTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="friendInviteValueType != null" >
+        #{friendInviteValueType,jdbcType=TINYINT},
+      </if>
+      <if test="friendInviteTaskValue != null" >
+        #{friendInviteTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="friendInviteTaskLastTime != null" >
+        #{friendInviteTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="googleEvaluateValueType != null" >
+        #{googleEvaluateValueType,jdbcType=TINYINT},
+      </if>
+      <if test="googleEvaluateTaskValue != null" >
+        #{googleEvaluateTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="googleEvaluateTaskLastTime != null" >
+        #{googleEvaluateTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adDownValueType != null" >
+        #{adDownValueType,jdbcType=TINYINT},
+      </if>
+      <if test="adDownTaskValue != null" >
+        #{adDownTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="adDownTaskLastTime != null" >
+        #{adDownTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extend != null" >
+        #{extend,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="adStimulateValueType != null" >
+        #{adStimulateValueType,jdbcType=TINYINT}, 
+      </if>
+      <if test="adStimulateTaskValue != null" >
+      	#{adStimulateTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="adStimulateTaskLastTime != null" >
+        #{adStimulateTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    update v_mem_credits_task_last
+    <set >
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="signValueType != null" >
+        sign_value_type = #{signValueType,jdbcType=TINYINT},
+      </if>
+      <if test="signTaskValue != null" >
+        sign_task_value = #{signTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="signTaskLastTime != null" >
+        sign_task_last_time = #{signTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adViewValueType != null" >
+        ad_view_value_type = #{adViewValueType,jdbcType=TINYINT},
+      </if>
+      <if test="adViewTaskValue != null" >
+        ad_view_task_value = #{adViewTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="adViewTaskLastTime != null" >
+        ad_view_task_last_time = #{adViewTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="urlSaveValueType != null" >
+        url_save_value_type = #{urlSaveValueType,jdbcType=TINYINT},
+      </if>
+      <if test="urlSaveTaskValue != null" >
+        url_save_task_value = #{urlSaveTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="urlSaveTaskLastTime != null" >
+        url_save_task_last_time = #{urlSaveTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="urlFillValueType != null" >
+        url_fill_value_type = #{urlFillValueType,jdbcType=TINYINT},
+      </if>
+      <if test="urlFillTaskValue != null" >
+        url_fill_task_value = #{urlFillTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="urlFillTaskLastTime != null" >
+        url_fill_task_last_time = #{urlFillTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appShareValueType != null" >
+        app_share_value_type = #{appShareValueType,jdbcType=TINYINT},
+      </if>
+      <if test="appShareTaskValue != null" >
+        app_share_task_value = #{appShareTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="appShareTaskLastTime != null" >
+        app_share_task_last_time = #{appShareTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fqFillValueType != null" >
+        fq_fill_value_type = #{fqFillValueType,jdbcType=TINYINT},
+      </if>
+      <if test="fqFillTaskValue != null" >
+        fq_fill_task_value = #{fqFillTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="fqFillTaskLastTime != null" >
+        fq_fill_task_last_time = #{fqFillTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="friendInviteValueType != null" >
+        friend_invite_value_type = #{friendInviteValueType,jdbcType=TINYINT},
+      </if>
+      <if test="friendInviteTaskValue != null" >
+        friend_invite_task_value = #{friendInviteTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="friendInviteTaskLastTime != null" >
+        friend_invite_task_last_time = #{friendInviteTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="googleEvaluateValueType != null" >
+        google_evaluate_value_type = #{googleEvaluateValueType,jdbcType=TINYINT},
+      </if>
+      <if test="googleEvaluateTaskValue != null" >
+        google_evaluate_task_value = #{googleEvaluateTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="googleEvaluateTaskLastTime != null" >
+        google_evaluate_task_last_time = #{googleEvaluateTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adDownValueType != null" >
+        ad_down_value_type = #{adDownValueType,jdbcType=TINYINT},
+      </if>
+      <if test="adDownTaskValue != null" >
+        ad_down_task_value = #{adDownTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="adDownTaskLastTime != null" >
+        ad_down_task_last_time = #{adDownTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extend != null" >
+        extend = #{extend,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="adStimulateValueType != null" >
+        ad_stimulate_value_type = #{adStimulateValueType,jdbcType=TINYINT}, 
+      </if>
+      <if test="adStimulateTaskValue != null" >
+      	ad_stimulate_task_value = #{adStimulateTaskValue,jdbcType=INTEGER},
+      </if>
+      <if test="adStimulateTaskLastTime != null" >
+        ad_stimulate_task_last_time = #{adStimulateTaskLastTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    update v_mem_credits_task_last
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      sign_value_type = #{signValueType,jdbcType=TINYINT},
+      sign_task_value = #{signTaskValue,jdbcType=INTEGER},
+      sign_task_last_time = #{signTaskLastTime,jdbcType=TIMESTAMP},
+      ad_view_value_type = #{adViewValueType,jdbcType=TINYINT},
+      ad_view_task_value = #{adViewTaskValue,jdbcType=INTEGER},
+      ad_view_task_last_time = #{adViewTaskLastTime,jdbcType=TIMESTAMP},
+      url_save_value_type = #{urlSaveValueType,jdbcType=TINYINT},
+      url_save_task_value = #{urlSaveTaskValue,jdbcType=INTEGER},
+      url_save_task_last_time = #{urlSaveTaskLastTime,jdbcType=TIMESTAMP},
+      url_fill_value_type = #{urlFillValueType,jdbcType=TINYINT},
+      url_fill_task_value = #{urlFillTaskValue,jdbcType=INTEGER},
+      url_fill_task_last_time = #{urlFillTaskLastTime,jdbcType=TIMESTAMP},
+      app_share_value_type = #{appShareValueType,jdbcType=TINYINT},
+      app_share_task_value = #{appShareTaskValue,jdbcType=INTEGER},
+      app_share_task_last_time = #{appShareTaskLastTime,jdbcType=TIMESTAMP},
+      fq_fill_value_type = #{fqFillValueType,jdbcType=TINYINT},
+      fq_fill_task_value = #{fqFillTaskValue,jdbcType=INTEGER},
+      fq_fill_task_last_time = #{fqFillTaskLastTime,jdbcType=TIMESTAMP},
+      friend_invite_value_type = #{friendInviteValueType,jdbcType=TINYINT},
+      friend_invite_task_value = #{friendInviteTaskValue,jdbcType=INTEGER},
+      friend_invite_task_last_time = #{friendInviteTaskLastTime,jdbcType=TIMESTAMP},
+      google_evaluate_value_type = #{googleEvaluateValueType,jdbcType=TINYINT},
+      google_evaluate_task_value = #{googleEvaluateTaskValue,jdbcType=INTEGER},
+      google_evaluate_task_last_time = #{googleEvaluateTaskLastTime,jdbcType=TIMESTAMP},
+      ad_down_value_type = #{adDownValueType,jdbcType=TINYINT},
+      ad_down_task_value = #{adDownTaskValue,jdbcType=INTEGER},
+      ad_down_task_last_time = #{adDownTaskLastTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+        ad_stimulate_value_type = #{adStimulateValueType,jdbcType=TINYINT}, 
+      	ad_stimulate_task_value = #{adStimulateTaskValue,jdbcType=INTEGER},
+        ad_stimulate_task_last_time = #{adStimulateTaskLastTime,jdbcType=TIMESTAMP},
+      extend = #{extend,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    update v_mem_credits_task_last
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      sign_value_type = #{signValueType,jdbcType=TINYINT},
+      sign_task_value = #{signTaskValue,jdbcType=INTEGER},
+      sign_task_last_time = #{signTaskLastTime,jdbcType=TIMESTAMP},
+      ad_view_value_type = #{adViewValueType,jdbcType=TINYINT},
+      ad_view_task_value = #{adViewTaskValue,jdbcType=INTEGER},
+      ad_view_task_last_time = #{adViewTaskLastTime,jdbcType=TIMESTAMP},
+      url_save_value_type = #{urlSaveValueType,jdbcType=TINYINT},
+      url_save_task_value = #{urlSaveTaskValue,jdbcType=INTEGER},
+      url_save_task_last_time = #{urlSaveTaskLastTime,jdbcType=TIMESTAMP},
+      url_fill_value_type = #{urlFillValueType,jdbcType=TINYINT},
+      url_fill_task_value = #{urlFillTaskValue,jdbcType=INTEGER},
+      url_fill_task_last_time = #{urlFillTaskLastTime,jdbcType=TIMESTAMP},
+      app_share_value_type = #{appShareValueType,jdbcType=TINYINT},
+      app_share_task_value = #{appShareTaskValue,jdbcType=INTEGER},
+      app_share_task_last_time = #{appShareTaskLastTime,jdbcType=TIMESTAMP},
+      fq_fill_value_type = #{fqFillValueType,jdbcType=TINYINT},
+      fq_fill_task_value = #{fqFillTaskValue,jdbcType=INTEGER},
+      fq_fill_task_last_time = #{fqFillTaskLastTime,jdbcType=TIMESTAMP},
+      friend_invite_value_type = #{friendInviteValueType,jdbcType=TINYINT},
+      friend_invite_task_value = #{friendInviteTaskValue,jdbcType=INTEGER},
+      friend_invite_task_last_time = #{friendInviteTaskLastTime,jdbcType=TIMESTAMP},
+      google_evaluate_value_type = #{googleEvaluateValueType,jdbcType=TINYINT},
+      google_evaluate_task_value = #{googleEvaluateTaskValue,jdbcType=INTEGER},
+      google_evaluate_task_last_time = #{googleEvaluateTaskLastTime,jdbcType=TIMESTAMP},
+      ad_down_value_type = #{adDownValueType,jdbcType=TINYINT},
+      ad_down_task_value = #{adDownTaskValue,jdbcType=INTEGER},
+      ad_down_task_last_time = #{adDownTaskLastTime,jdbcType=TIMESTAMP},
+      ad_stimulate_value_type = #{adStimulateValueType,jdbcType=TINYINT}, 
+      	ad_stimulate_task_value = #{adStimulateTaskValue,jdbcType=INTEGER},
+        ad_stimulate_task_last_time = #{adStimulateTaskLastTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <update id="updateByTaskType" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    update v_mem_credits_task_last
+    <set >
+      <if test="taskType != null" >
+        <if test="taskType == 'sign'">
+        	sign_value_type = #{valueType,jdbcType=TINYINT},
+	        sign_task_value = #{taskValue,jdbcType=INTEGER},
+	        sign_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+        </if>
+        <if test="taskType == 'ad_view'" >
+	        ad_view_value_type = #{valueType,jdbcType=TINYINT},
+	        ad_view_task_value = #{taskValue,jdbcType=INTEGER},
+	        ad_view_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+        </if>
+        <if test="taskType == 'url_save'" >
+	        url_save_value_type = #{valueType,jdbcType=TINYINT},
+	        url_save_task_value = #{taskValue,jdbcType=INTEGER},
+	        url_save_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'url_fill'" >
+	        url_fill_value_type = #{valueType,jdbcType=TINYINT},
+	        url_fill_task_value = #{taskValue,jdbcType=INTEGER},
+	        url_fill_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'app_share'" >
+	        app_share_value_type = #{valueType,jdbcType=TINYINT},
+	        app_share_task_value = #{taskValue,jdbcType=INTEGER},
+	        app_share_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'fq_fill'" >
+	        fq_fill_value_type = #{valueType,jdbcType=TINYINT},
+	        fq_fill_task_value = #{taskValue,jdbcType=INTEGER},
+	        fq_fill_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'friend_invite'" >
+	        friend_invite_value_type = #{valueType,jdbcType=TINYINT},
+	        friend_invite_task_value = #{taskValue,jdbcType=INTEGER},
+	        friend_invite_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'google_evaluate'" >
+	        google_evaluate_value_type = #{valueType,jdbcType=TINYINT},
+	        google_evaluate_task_value = #{taskValue,jdbcType=INTEGER},
+	        google_evaluate_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'ad_down'" >
+	        ad_down_value_type = #{valueType,jdbcType=TINYINT},
+	        ad_down_task_value = #{taskValue,jdbcType=INTEGER},
+	        ad_down_task_last_time = #{receiveTiem,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="taskType == 'ad_stimulate'" >
+	        ad_stimulate_value_type = #{adStimulateValueType,jdbcType=TINYINT}, 
+	      	ad_stimulate_task_value = #{adStimulateTaskValue,jdbcType=INTEGER},
+	        ad_stimulate_task_last_time = #{adStimulateTaskLastTime,jdbcType=TIMESTAMP},
+	    </if>
+      </if>
+        update_time = now()
+    </set>
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="insertByTaskType" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    insert into v_mem_credits_task_last (
+    	id, mem_id, 
+		<if test="taskType != null" >
+	        <if test="taskType == 'sign'">
+	        	sign_value_type,
+		        sign_task_value,
+		        sign_task_last_time
+	        </if>
+	        <if test="taskType == 'ad_view'" >
+		        ad_view_value_type,
+		        ad_view_task_value,
+		        ad_view_task_last_time
+	        </if>
+	        <if test="taskType == 'url_save'" >
+		        url_save_value_type,
+		        url_save_task_value,
+		        url_save_task_last_time
+		    </if>
+		    <if test="taskType == 'url_fill'" >
+		        url_fill_value_type,
+		        url_fill_task_value,
+		        url_fill_task_last_time
+		    </if>
+		    <if test="taskType == 'app_share'" >
+		        app_share_value_type,
+		        app_share_task_value,
+		        app_share_task_last_time
+		    </if>
+		    <if test="taskType == 'fq_fill'" >
+		        fq_fill_value_type,
+		        fq_fill_task_value,
+		        fq_fill_task_last_time
+		    </if>
+		    <if test="taskType == 'friend_invite'" >
+		        friend_invite_value_type,
+		        friend_invite_task_value,
+		        friend_invite_task_last_time
+		    </if>
+		    <if test="taskType == 'google_evaluate'" >
+		        google_evaluate_value_type,
+		        google_evaluate_task_value,
+		        google_evaluate_task_last_time
+		    </if>
+		    <if test="taskType == 'ad_down'" >
+		        ad_down_value_type,
+		        ad_down_task_value,
+		        ad_down_task_last_time
+		    </if>
+		    <if test="taskType == 'ad_stimulate'" >
+		        ad_stimulate_value_type,
+				ad_stimulate_task_value,
+				ad_stimulate_task_last_time
+		    </if>
+	      </if>
+      )
+    values (UUID_SHORT(), #{memId,jdbcType=VARCHAR},
+			<if test="taskType != null" >
+		        <if test="taskType == 'sign'">
+		        	#{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+		        </if>
+		        <if test="taskType == 'ad_view'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+		        </if>
+		        <if test="taskType == 'url_save'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'url_fill'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'app_share'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'fq_fill'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'friend_invite'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'google_evaluate'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'ad_down'" >
+			        #{valueType,jdbcType=TINYINT},
+			        #{taskValue,jdbcType=INTEGER},
+			        #{receiveTiem,jdbcType=TIMESTAMP}
+			    </if>
+			    <if test="taskType == 'ad_stimulate'" >
+			        #{adStimulateValueType,jdbcType=TINYINT},
+			        #{adStimulateTaskValue,jdbcType=INTEGER},
+			        #{adStimulateTaskLastTime,jdbcType=TIMESTAMP}
+			    </if>
+		      </if>)
+  </update>
+  
+  
+  <update id="updateTaskLastTime" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskLast" >
+    update v_mem_credits_task_last
+    <set >
+      <if test="taskType != null" >
+        <if test="taskType == 'sign'">
+	        sign_task_last_time = NULL,
+        </if>
+        <if test="taskType == 'ad_view'" >
+	        ad_view_task_last_time = NULL,
+        </if>
+        <if test="taskType == 'url_save'" >
+	        url_save_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'url_fill'" >
+	        url_fill_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'app_share'" >
+	        app_share_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'fq_fill'" >
+	        fq_fill_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'friend_invite'" >
+	        friend_invite_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'google_evaluate'" >
+	        google_evaluate_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'ad_down'" >
+	        ad_down_task_last_time = NULL,
+	    </if>
+	    <if test="taskType == 'ad_stimulate'" >
+	        ad_stimulate_task_last_time = NULL,
+	    </if>
+      </if>
+        update_time = now()
+    </set>
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  
+  
+</mapper>

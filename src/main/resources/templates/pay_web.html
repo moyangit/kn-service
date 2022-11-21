@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- 支付 -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<link href="//unpkg.com/layui@2.7.4/dist/css/layui.css" rel="stylesheet">
+<title></title>
+<style>
+
+body {
+	margin: 0px !important;
+}
+
+.content {
+	text-align: center;
+	margin: 0px auto;
+}
+
+.contentHeader {
+	background-image: url(/website/images/pay/header.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	height: 200px;
+}
+
+.headerTitle {
+	position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.headerTitleImg {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.header_desc {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #FFFFFFFF;
+	font: 20px;
+}
+
+.headerDesc2 {
+	font-size: 20px;
+	font-family: SourceHanSansCN-Regular-, SourceHanSansCN-Regular;
+	font-weight: normal;
+	color: #8b8484;
+}
+
+.vip {
+	font-size: 30px;
+	font-family: SourceHanSansCN-Bold-, SourceHanSansCN-Bold;
+	font-weight: 600;
+    color: #736d6d;
+}
+
+.headerDesc {
+	font-size: 30px;
+	font-family: PingFang HK-Medium, PingFang HK;
+	font-weight: 500;
+	color: #FFFFFF;
+	line-height: 66px;
+}
+
+.contentBody {
+	height: 793px;
+	background: #7f78e2;
+	border-radius: 29px 29px 0px 0px;
+	margin-top: -30px
+}
+
+.contentBody .item {
+	margin-top: 10px;
+    margin-right: 20px;
+    margin-bottom: 0px;
+    margin-left: 20px;
+	background: #FFFFFF;
+	border-radius: 16px 16px 16px 16px;
+}
+
+.contentBody .item .zkai {
+	position: relative;
+	width:100%;
+	height: 200px;
+}
+
+.contentBody .item .bihe {
+	position: relative;
+	width:100%;
+	height: 60px;
+}
+
+.contentBody .item .zkai .title {
+	position: absolute;
+	left: 16px;
+    top: 30px;
+	font-size: 16px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #000000;
+	line-height: 0px;
+}
+
+.contentBody .item .zkai .zhekou {
+	position: absolute;
+    right: 16px;
+    top: 13px;
+    font-size: 16px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 30px;
+    width: 100px;
+    height: 31px;
+    background: #EB672C;
+    border-radius: 26px 0px 0px 26px;
+    opacity: 1;
+}
+
+.contentBody .item .zkai .price {
+	padding-top:50px;
+	font-size: 40px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #EB672C;
+}
+
+.contentBody .item .zkai .desc{
+	font-size: 13px;
+	font-family: PingFang HK-Medium, PingFang HK;
+	font-weight: 500;
+	color: #999999;
+}
+
+.contentBody .item .zkai .butpay{
+	margin-left:30px;
+	margin-right:30px;
+	height: 45px;
+	font-size: 16px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #FFFFFF;
+	background: #7f6cf8;
+	line-height:43px;
+	border-radius: 12px 12px 12px 12px;
+}
+
+.contentBody .item .bihe .title {
+	position: absolute;
+	left: 16px;
+    top: 30px;
+	font-size: 16px;
+	font-family: PingFang HK-Semibold, PingFang HK;
+	font-weight: 600;
+	color: #000000;
+	line-height: 0px;
+}
+
+.contentBody .item .bihe .zhekou {
+	position: absolute;
+    right: 16px;
+    top: 13px;
+    font-size: 16px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 30px;
+    width: 100px;
+    height: 31px;
+    background: #EB672C;
+    border-radius: 26px 0px 0px 26px;
+    opacity: 1;
+}
+
+.contentBody .item .bihe .price {
+	position: absolute;
+    right: 16px;
+    top: 13px;
+    font-size: 25px;
+    font-family: PingFang HK-Semibold, PingFang HK;
+    font-weight: 600;
+    color: #000000;
+    line-height: 30px;
+    width: 100px;
+    height: 31px;
+}
+
+.tsn-margin-top-sm {
+	margin-top:5px;
+}
+
+.tsn-margin-top-xl {
+	margin-top:10px;
+}
+
+.tsn-margin-top-xxl {
+	margin-top:15px;
+}
+
+.hide {
+	display:none;
+}
+
+			.layui-input-block {
+			    margin-left: 90px !important;
+			    min-height: 36px;
+			}
+			
+			.layui-form-label {
+			    position: relative;
+			    float: left;
+			    display: block;
+			    padding: 9px 15px;
+			    width: 54px !important;
+			    font-weight: 400;
+			    line-height: 20px;
+			    text-align: right;
+			}
+			
+			.layui-btn {
+			    background-color: #7f79ab !important;
+			    border-radius: 15px !important;
+			    padding: 0 70px !important;
+			}
+			
+			.loginStatus {
+				font-size: 10px;
+				color: #FFFFFF;
+				text-decoration: underline;
+				margin-top:50px
+			}
+
+</style>
+<!-- <script src="https://js.stripe.com/v3/"></script> -->
+</head>
+<body>
+	<div class="content">
+
+		<div class="contentHeader">
+			<div class="headerTitle">
+				<div class="vip">VIP</div>
+				<div class="headerDesc">会员中心</div>
+				<div class="headerDesc2">享折扣优惠</div>
+			</div>
+		</div>
+		
+		<div class="contentBody" style="padding-top: 40px;">
+				<div class="taocanTitle">会员套餐</div>
+				
+				<div class="item">
+				    <div class="zkai">
+						<div class="title">永久(VIP)</div>
+						<div class="zhekou">4.0折</div>
+						<div class="price tsn-margin-top-sm"><span>¥</span><span class="">530.00</span></div>
+						<div class="desc tsn-margin-top-sm">原价¥1325.00，立省¥795.00!</div>
+						<div class="butpay tsn-margin-top-xl" attr-charge-id="14">马上订购</div>
+					</div>
+					<div class="bihe hide">
+						<div class="title">永久(VIP)</div>
+						<div class="price"><span>¥</span><span class="">530.00</span></div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="zkai hide">
+						<div class="title">年卡(VIP)</div>
+						<div class="zhekou">5.0折</div>
+						<div class="price tsn-margin-top-sm"><span>¥</span><span class="">265.00</span></div>
+						<div class="desc tsn-margin-top-sm">原价¥530.00，立省¥265.00!</div>
+						<div class="butpay tsn-margin-top-xl" attr-charge-id="13">马上订购</div>
+					</div>
+					<div class="bihe">
+						<div class="title">年卡(VIP)</div>
+						<div class="price"><span>¥</span><span class="">265.00</span></div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="zkai hide">
+						<div class="title">半年卡(VIP)</div>
+						<div class="zhekou">6.0折</div>
+						<div class="price tsn-margin-top-sm"><span>¥</span><span class="">135.00</span></div>
+						<div class="desc tsn-margin-top-sm">原价¥225.00，立省¥90.00!</div>
+						<div class="butpay tsn-margin-top-xl" attr-charge-id="12">马上订购</div>
+					</div>
+					<div class="bihe">
+						<div class="title">半年卡(VIP)</div>
+						<div class="price"><span>¥</span><span class="">135.00</span></div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="zkai hide">
+						<div class="title">季卡(VIP)</div>
+						<div class="zhekou">8.0折</div>
+						<div class="price tsn-margin-top-sm"><span>¥</span><span class="">70.00</span></div>
+						<div class="desc tsn-margin-top-sm">原价¥225.00，立省¥90.00!</div>
+						<div class="butpay tsn-margin-top-xl" attr-charge-id="11">马上订购</div>
+					</div>
+					<div class="bihe">
+						<div class="title">季卡(VIP)</div>
+						<div class="price"><span>¥</span><span class="">70.00</span></div>
+					</div>
+				</div>
+				
+				<div class="item">
+					<div class="zkai hide">
+						<div class="title">月卡(VIP)</div>
+						<div class="zhekou">8.0折</div>
+						<div class="price tsn-margin-top-sm"><span>¥</span><span class="">25.00</span></div>
+						<div class="desc tsn-margin-top-sm">原价¥32.00，立省¥6.00!</div>
+						<div class="butpay tsn-margin-top-xl" attr-charge-id="10">马上订购</div>
+					</div>
+					<div class="bihe">
+						<div class="title">月卡(VIP)</div>
+						<div class="price"><span>¥</span><span class="">25.00</span></div>
+					</div>
+				</div>
+				
+				<div id="loginContent" style = "display: none;padding:10px;text-align: left">
+					<form class="layui-form">
+						  <div class="layui-form-item">
+						    <label class="layui-form-label">账号</label>
+						    <div class="layui-input-block">
+						      <input type="text" name="userPhone" id="userPhone"  placeholder="请输入手机号" autocomplete="off" class="layui-input">
+						    </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <label class="layui-form-label">密码</label>
+						    <div class="layui-input-block"> 
+						      <input type="password" name="password" id="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+						    </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <div class="layui-input-block">
+						      <button class="layui-btn" id="loginBtn">登录</button>
+						    </div>
+						  </div>
+					</form>
+				 </div>
+				 <div class="loginStatus">未登录,请点击登录</div>
+		</div>
+		
+		
+	</div>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.3.0/layer.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	<script th:inline="javascript">
+			// 取资费类型
+		    const chargeList = [[${chargeList}]];
+		    
+		    var reToken = [[${reToken}]];
+		    
+		    const pk = [[${pk}]]
+	</script>
+
+
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		           
+		  $(function() {
+			  
+			  	var token = $.cookie('token')
+				
+				if (!token) {
+					$(".loginStatus").show();
+				}else{
+					$(".loginStatus").hide();
+				}
+			  	
+			  	var oriUrl = window.location.host;
+				
+				//var loginApi = "https://" + oriUrl + "/auth_api"
+				//var payApi = "https://" + oriUrl + "/mem_api"
+				
+				var loginApi = "http://" + oriUrl + ""
+				var payApi = "http://" + oriUrl + ""
+		        	   
+	   			
+	   	        let charge = {};
+	   	        
+	   	        var stripe = {};
+	   	        if (pk) {
+	   	        	stripe = Stripe(pk)
+	   	        }
+	   	        
+	   	        event();
+		   	        
+	   	        function event() {
+	   	        	
+	   	        	$(".butpay").click(function(){
+	   	        		charge.chargeType = $(this).attr("attr-charge-id");
+	   	        		
+	   	        		for (var index in chargeList) {
+	   	        			if (chargeList[index].chargeType == charge.chargeType) {
+	   	        				charge.chargeId = chargeList[index].chargeId
+	   	        			}
+	   	        		}
+	   	        	 	if (!charge.chargeType || !charge.chargeId) {
+		   	            	layer.msg('系统错误');
+		   					return false
+		   				}
+	   	        	 	
+			   	   		  if (!token) {
+			   				  
+			   				  var index = layer.open({
+			   					  type: 1,
+			   					  title:"用户登录",
+			   					  content: $("#loginContent")
+			   					});
+			   					layer.full(index);
+			   				  
+			   				  return false;
+			   			  }
+	   	        	 	
+	   	        		chargeOrder($(this));
+	   	        	})
+	   	        	
+	   	        	$(".item").click(function() {
+	   	        		$(this).find(".zkai").removeClass("hide");
+	   	        		$(this).find(".bihe").addClass("hide");
+	   	        		$(this).siblings().find(".zkai").addClass("hide");
+	   	        		$(this).siblings().find(".bihe").removeClass("hide");
+	   	        	})
+	   	        	
+	   	        	$(".loginStatus").click(function(){
+				
+						var index = layer.open({
+							  type: 1,
+							  title:"用户登录",
+							  content: $("#loginContent")
+							});
+							layer.full(index);
+						  
+						  return false;
+						
+					})
+	   	        	
+	   	        	
+	   	        	$("#loginBtn").click(function(){
+				
+						var userPhone =$("#userPhone").val();
+						var pwd = $("#password").val();
+						if (!userPhone || !pwd) {
+							layer.msg('请输入必填字段');
+							return false;
+						}
+						
+						var user = {
+							userPhone:userPhone,
+							grantType: 'password',
+							password:pwd
+						}
+						
+						$.ajax({
+				             type : "POST",
+				             url : loginApi + "/auth/token",
+				             beforeSend: function(request) {
+				             },
+				             contentType: "application/json; charset=utf-8",
+				             dataType : "json",
+				             data : JSON.stringify(user),
+				             success : function(res) {
+				            	 if (res.code == '000000') {
+				            		 layer.closeAll();
+				            		 var accessToken = res.data.accessToken;
+				            		 token = accessToken;
+				            		 $.cookie('token', token);
+				            		 window.location.reload();
+				            		 return false;
+				            	 }
+				            	 
+				            	 if (res.code == "100999") {
+				            		 layer.msg('账号密码错误');
+				            		 return false;
+				                   } else if (res.code === "100998") {
+				                	 layer.msg('账号不存在');
+				                	 return false;
+				                   }
+				            		 
+				             },
+				             error : function() {
+				            	 layer.msg('网络异常');
+				             },
+				             complete : function() {
+				             }
+				         });
+						
+						return false;
+					})
+	   	        }
+		   	
+		   	     function isPhone() {
+		             var sUserAgent = navigator.userAgent.toLowerCase();
+		             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+		             var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+		             var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+		             var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+		             var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+		             var bIsAndroid = sUserAgent.match(/android/i) == "android";
+		             var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+		             var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+		             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+		                 return true;
+		             } else {
+		            	 return false;
+		             }
+		         }
+		   	
+		   	        // 生成支付订单，获取sessionId
+		   	        function chargeOrder(obj) {
+			   	         charge.payType="alipay";
+	            		 charge.reToken=reToken;
+			   	         $.ajax({
+			                 type : "POST",
+			                 url : payApi + "/order/charge",
+			                 beforeSend: function(request) {
+			                	 obj.text("正在支付..")
+			                	 obj.addClass("disable");
+			                     request.setRequestHeader("V-Auth", "bea_us " + token);
+			                 },
+			                 contentType: "application/json; charset=utf-8",
+			                 dataType : "json",
+			                 data : JSON.stringify(charge),
+			                 success : function(msg) {
+			                	 if (msg.code == '000000') {
+			                		 
+			                		 	window.location.href=msg.data.qrcode;
+		   	                            
+		   							} else if (msg.code == '100991') {
+		   								layer.msg('用户未登录');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},2000)
+		   							} else if (msg.code == '100991') {
+		   								layer.msg('用户未登录');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},2000)
+		   							} else if (msg.code == 'R1002' || msg.code == 'R1004') {
+		   								layer.msg('页面操作已超时,稍后操作');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},1000)
+		   							} else {
+		   								layer.msg('服务器繁忙');
+		   								setTimeout(function(){
+		   									window.location.reload();
+		   								},1000)
+		   							}
+			                 },
+			                 error: function(e) {
+			                	alert(e.status) 
+			                 },
+			                 complete : function() {
+			                	 obj.text("立即支付")
+			                	 obj.removeClass("disable");
+			                 }
+			             });
+			   	             
+			   			}
+		        	   
+		           })
+	
+		/*]]>*/
+	</script>
+</body>
+</html>

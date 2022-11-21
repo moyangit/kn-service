@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- 支付 -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<style>
+.content {
+	text-align: center;
+	margin: 0px auto;
+}
+
+.contentHeader {
+	background-image: url(/website/images/header_back.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	height: 800px;
+}
+
+.headerTitleImg {
+	padding-top: 50px;
+	padding-bottom: 27px;
+}
+
+.header_desc {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #FFFFFFFF;
+	font: 20px;
+}
+
+.headerTitle {
+	padding: 0 30px 0 30px;
+}
+
+.headerTitleContent {
+	margin: 21px 0 21px 0;
+}
+
+.headerTitleContent p {
+	color: #FFFFFFFF;
+	font-size: 12px !important;
+}
+
+/* .headerTitleContent * {
+				box-sizing: border-box;
+			} */
+.headerTitleContent .box {
+	/* float: left;
+	width: 50%; */
+	padding-bottom: 17px;
+	/* height: 200px; */
+}
+
+.headerTitleContent .box .boxContent {
+	padding: 10px;
+	margin: 0 auto;
+	/* width: 75%; */
+	/* height: 77px; */
+	background: RGBA(56, 55, 79, 1);
+	border-radius: 15px;
+}
+
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.taocanTitle {
+	font-size: 20px;
+	font-family: Source Han Sans CN;
+	font-weight: 400;
+	line-height: 14px;
+	color: #000000;
+	opacity: 1;
+}
+
+.line {
+	height: 0px;
+	border: 1px solid #F2DDB2;
+	opacity: 1;
+}
+
+.contentTitleContent .box {
+	float: left;
+	width: 50%;
+	padding-bottom: 17px;
+	position: relative;
+}
+
+.contentTitleContent .box .tcContent {
+	padding: 10px 10px 0px 10px;
+	margin: 0 auto;
+	width: 75%;
+	height: 120px;
+	background-color: #FEF9F2FF;
+	border: 1px solid #E5E5E5;
+	opacity: 1;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.contentTitleContent .box .tcContent:hover {
+	border-color: #d2b6b6;
+}
+
+.contentTitleContent .box .tcContentBorder {
+	border-color: #d2b6b6;
+}
+
+.tcTitle {
+	font-size: 16px;
+	font-family: 蘋方-簡;
+	font-weight: normal;
+	line-height: 22px;
+	color: #000000;
+	opacity: 1;
+}
+
+.tcSourcePrice {
+	font-size: 10px;
+	margin-top: 5px;
+	font-family: 蘋方-簡;
+	font-weight: normal;
+	line-height: 14px;
+	color: #999999;
+	opacity: 1;
+	text-decoration: line-through;
+}
+
+.tcFinalPrice {
+	color: #F29808FF;
+	margin-top: 5px;
+	font-size: 25px;
+}
+
+.tcMonth {
+	margin-top: 15px;
+	height: 14px;
+	font-size: 10px;
+	font-weight: normal;
+	color: #CA983E;
+	opacity: 1;
+	line-height: 12px;
+}
+
+.monthBack {
+	width: 60%;
+	background: #FBF0DC;
+	opacity: 1;
+	border-radius: 8px;
+	margin: 0px 30% 0px 20%;
+}
+
+.payButton {
+	text-align: center;
+	margin: 0 auto;
+	padding: 10px 90px 10px 90px;
+	width: 100px;
+	height: 24px;
+	font-size: 18px;
+	font-family: Microsoft YaHei;
+	font-weight: 400;
+	color: #000000;
+	opacity: 1;
+	background-image: linear-gradient(to right, #F5D794FF, #F0B42AFF);
+	border-radius: 20px;
+	cursor: pointer;
+}
+
+.tcTag {
+	width: 37px;
+	height: 18px;
+	font-size: 10px;
+	color: #FFFFFF;
+	opacity: 1;
+	background: url(/website/images/tag.png) no-repeat left top;
+	position: absolute;
+	top: -6%;
+	right: 12%;
+}
+
+.disable {
+    pointer-events: none;
+}
+</style>
+<!-- <script src="https://js.stripe.com/v3/"></script> -->
+</head>
+<body>
+	<div class="content">
+
+		<div class="contentHeader">
+			<div class="headerTitleImg">
+				<img src="/website/images/title_logo.png" />
+			</div>
+
+			<div class="headerTitle">
+				<span><img src="/website/images/title_pre.png" /></span><span
+					class="header_desc">专属客服</span><span><img
+					src="/website/images/title_pre.png" /></span>
+			</div>
+			
+			<div class="headerTitleContent clearfix">
+				<div class="box">
+					<div class="boxContent">
+						<img id="cusPic" src="" width="100%" height="100%" />
+						<p>根据图片信息添加客服进行咨询</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="contentBody" style="padding-top: 40px;">
+
+			</div>
+
+			<!-- <div class="payButton" id="startPay">
+				<span>立即支付</span>
+			</div> -->
+
+			<div style="padding-top: 40px;"></div>
+		</div>
+	</div>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.3.0/layer.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	<script th:inline="javascript">
+			const customerList = [[${customerList}]];
+		</script>
+
+
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		           
+		           $(function() {
+		        	   
+		        	   customerInfo = customerList[0];
+		        	   
+		        	   $("#cusPic").attr("src","data:image/jpeg;base64," + customerInfo.cusPic)
+		        	   
+		        	   
+		           })
+	
+		/*]]>*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.mem.mapper.credits.CreditsTaskMapper">
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.credits.CreditsTask">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_type" jdbcType="VARCHAR" property="taskType" />
+    <result column="task_awards_type" jdbcType="TINYINT" property="taskAwardsType" />
+    <result column="task_cycle_limit" jdbcType="INTEGER" property="taskCycleLimit" />
+    <result column="task_val" jdbcType="INTEGER" property="taskVal" />
+    <result column="task_limit" jdbcType="INTEGER" property="taskLimit" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="task_order" jdbcType="INTEGER" property="taskOrder" />
+    <result column="task_status" jdbcType="TINYINT" property="taskStatus" />
+    <result column="task_describe" jdbcType="VARCHAR" property="taskDescribe" />
+    <result column="button_name" jdbcType="VARCHAR" property="buttonName" />
+    <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_name, task_type, task_awards_type, task_cycle_limit, task_val, task_limit, 
+    create_time, update_time,task_order,task_status, task_describe, button_name, device_type
+  </sql>
+  
+  <select id="selectCreditsTaskByTaskType" parameterType="com.tsn.serv.mem.entity.credits.CreditsTask" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task
+    where task_type = #{taskType,jdbcType=VARCHAR} and device_type = #{deviceType,jdbcType=VARCHAR}
+  </select>
+
+    <select id="getCreditsTaskByTaskType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from v_mem_credits_task
+        where task_type = #{taskType,jdbcType=VARCHAR} and device_type = #{deviceType,jdbcType=VARCHAR}
+    </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task
+    <where>
+    	<if test="paramObj.taskName != null and paramObj.taskName != ''">
+	      AND task_name = #{paramObj.taskName,jdbcType=VARCHAR}
+	    </if>
+	      <if test="paramObj.taskType != null and paramObj.taskType != ''">
+	        and task_type = #{paramObj.taskType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="paramObj.taskAwardsType != null">
+	        and task_awards_type = #{paramObj.taskAwardsType,jdbcType=TINYINT}
+	      </if>
+	      <if test="paramObj.taskStatus != null">
+	        and task_status = #{paramObj.taskStatus,jdbcType=INTEGER}
+	      </if>
+	      <if test="paramObj.taskCycleLimit != null">
+	        and task_cycle_limit = #{paramObj.taskCycleLimit,jdbcType=INTEGER}
+	      </if>
+	      <if test="paramObj.taskVal != null">
+	        and task_val = #{paramObj.taskVal,jdbcType=INTEGER}
+	      </if>
+	      <if test="paramObj.taskLimit != null">
+	        and task_limit = #{paramObj.taskLimit,jdbcType=INTEGER}
+	      </if>
+	      <if test="paramObj.createTime != null">
+	        and create_time = #{paramObj.createTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="paramObj.updateTime != null">
+	        and update_time = #{paramObj.updateTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="paramObj.deviceType != null and paramObj.deviceType != ''">
+	        and device_type = #{paramObj.deviceType,jdbcType=VARCHAR}
+	      </if>
+    </where> 
+	    ORDER BY task_order asc
+  </select>
+  
+  <select id="selectCreditsTaskByEntity" parameterType="com.tsn.serv.mem.entity.credits.CreditsTask" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task
+    <where>
+    	<if test="taskName != null and taskName != ''">
+	        and task_name = #{taskName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="taskType != null and taskType != ''">
+	        and task_type = #{taskType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="taskAwardsType != null">
+	        and task_awards_type = #{taskAwardsType,jdbcType=TINYINT}
+	      </if>
+	      <if test="taskCycleLimit != null">
+	        and task_cycle_limit = #{taskCycleLimit,jdbcType=INTEGER}
+	      </if>
+	      <if test="taskVal != null">
+	        and task_val = #{taskVal,jdbcType=INTEGER}
+	      </if>
+	      <if test="taskStatus != null">
+	        and task_status = #{taskStatus,jdbcType=INTEGER}
+	      </if>
+	      <if test="taskLimit != null">
+	        and task_limit = #{taskLimit,jdbcType=INTEGER}
+	      </if>
+	      <if test="createTime != null">
+	        and create_time = #{createTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="updateTime != null">
+	        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="deviceType != null and deviceType != ''">
+	        and device_type = #{deviceType,jdbcType=VARCHAR}
+	      </if>
+    </where> 
+	    ORDER BY task_order asc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from v_mem_credits_task
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.credits.CreditsTask">
+    insert into v_mem_credits_task (id, task_name, task_type, 
+      task_awards_type, task_cycle_limit, task_val, 
+      task_limit, create_time, update_time, task_order, task_status, task_describe, button_name,
+      device_type)
+    values (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, 
+      #{taskAwardsType,jdbcType=TINYINT}, #{taskCycleLimit,jdbcType=INTEGER}, #{taskVal,jdbcType=INTEGER}, 
+      #{taskLimit,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{taskStatus,jdbcType=TINYINT}, #{taskOrder,jdbcType=INTEGER},#{taskDescribe,jdbcType=VARCHAR}, #{deviceType,jdbcType=VARCHAR}, 
+      #{deviceType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsTask">
+    insert into v_mem_credits_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="taskType != null">
+        task_type,
+      </if>
+      <if test="taskAwardsType != null">
+        task_awards_type,
+      </if>
+      <if test="taskCycleLimit != null">
+        task_cycle_limit,
+      </if>
+      <if test="taskVal != null">
+        task_val,
+      </if>
+      <if test="taskLimit != null">
+        task_limit,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="taskOrder != null">
+        task_order,
+      </if>
+      <if test="taskStatus != null">
+        task_status,
+      </if>
+      <if test="taskDescribe != null">
+        task_describe,
+      </if>
+      <if test="buttonName != null">
+        button_name,
+      </if>
+      <if test="deviceType != null">
+        device_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskAwardsType != null">
+        #{taskAwardsType,jdbcType=TINYINT},
+      </if>
+      <if test="taskCycleLimit != null">
+        #{taskCycleLimit,jdbcType=INTEGER},
+      </if>
+      <if test="taskVal != null">
+        #{taskVal,jdbcType=INTEGER},
+      </if>
+      <if test="taskLimit != null">
+        #{taskLimit,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskOrder != null">
+        #{taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=TINYINT},
+      </if>
+      <if test="taskDescribe != null">
+        #{taskDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonName != null">
+        #{buttonName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsTask">
+    update v_mem_credits_task
+    <set>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskAwardsType != null">
+        task_awards_type = #{taskAwardsType,jdbcType=TINYINT},
+      </if>
+      <if test="taskCycleLimit != null">
+        task_cycle_limit = #{taskCycleLimit,jdbcType=INTEGER},
+      </if>
+      <if test="taskVal != null">
+        task_val = #{taskVal,jdbcType=INTEGER},
+      </if>
+      <if test="taskLimit != null">
+        task_limit = #{taskLimit,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskOrder != null">
+        task_order = #{taskOrder,jdbcType=INTEGER},
+      </if>
+      <if test="taskStatus != null">
+        task_status = #{taskStatus,jdbcType=TINYINT},
+      </if>
+      <if test="taskDescribe != null">
+        task_describe = #{taskDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonName != null">
+        button_name = #{buttonName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null">
+        device_type = #{deviceType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.credits.CreditsTask">
+    update v_mem_credits_task
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      task_type = #{taskType,jdbcType=VARCHAR},
+      task_awards_type = #{taskAwardsType,jdbcType=TINYINT},
+      task_cycle_limit = #{taskCycleLimit,jdbcType=INTEGER},
+      task_val = #{taskVal,jdbcType=INTEGER},
+      task_limit = #{taskLimit,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+        task_order = #{taskOrder,jdbcType=INTEGER},
+        task_status = #{taskStatus,jdbcType=TINYINT},
+        task_describe = #{taskDescribe,jdbcType=VARCHAR},
+        device_type = #{deviceType,jdbcType=VARCHAR},
+        button_name = #{buttonName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

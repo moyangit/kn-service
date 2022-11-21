@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.credits.CreditsMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.credits.Credits" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="credits_val" property="creditsVal" jdbcType="INTEGER" />
+    <result column="credits_total_val" property="creditsTotalVal" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="count_lock" property="countLock" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mem_id, credits_val, credits_total_val, create_time, update_time, count_lock
+  </sql>
+  
+  <select id="selectCreditsByMemId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_credits
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.credits.Credits" >
+    insert into v_mem_credits (id, mem_id, credits_val, 
+      credits_total_val, create_time, update_time, count_lock
+      )
+    values (UUID_SHORT(), #{memId,jdbcType=VARCHAR}, #{creditsVal,jdbcType=INTEGER}, 
+      #{creditsTotalVal,jdbcType=INTEGER}, now(), #{updateTime,jdbcType=TIMESTAMP}, #{countLock,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.credits.Credits" >
+    insert into v_mem_credits
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="creditsVal != null" >
+        credits_val,
+      </if>
+      <if test="creditsTotalVal != null" >
+        credits_total_val,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="countLock != null" >
+        count_lock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="creditsVal != null" >
+        #{creditsVal,jdbcType=INTEGER},
+      </if>
+      <if test="creditsTotalVal != null" >
+        #{creditsTotalVal,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="countLock != null" >
+        #{countLock,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.credits.Credits" >
+    update v_mem_credits
+    <set >
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="creditsVal != null" >
+        credits_val = #{creditsVal,jdbcType=INTEGER},
+      </if>
+      <if test="creditsTotalVal != null" >
+        credits_total_val = #{creditsTotalVal,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="countLock != null" >
+        count_lock = #{countLock,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.credits.Credits" >
+    update v_mem_credits
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      credits_val = #{creditsVal,jdbcType=INTEGER},
+      credits_total_val = #{creditsTotalVal,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      count_lock = #{countLock,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateCreditsByMemId" parameterType="com.tsn.serv.mem.entity.credits.Credits" >
+    update v_mem_credits
+    set 
+      credits_val = credits_val + #{creditsVal,jdbcType=INTEGER},
+      credits_total_val = credits_total_val + #{creditsTotalVal,jdbcType=INTEGER},
+      update_time = now(),
+      count_lock = #{countLock,jdbcType=INTEGER} + 1
+    where mem_id = #{memId,jdbcType=VARCHAR} and count_lock = #{countLock,jdbcType=INTEGER}
+  </update>
+</mapper>

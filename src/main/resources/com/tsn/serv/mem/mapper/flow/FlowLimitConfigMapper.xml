@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.flow.FlowLimitConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.flow.FlowLimitConfig" >
+    <id column="uuid" property="uuid" jdbcType="VARCHAR" />
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="max_day_use_flow" property="maxDayUseFlow" jdbcType="BIGINT" />
+    <result column="day_up_flow_limit" property="dayUpFlowLimit" jdbcType="BIGINT" />
+    <result column="day_down_flow_limit" property="dayDownFlowLimit" jdbcType="BIGINT" />
+    <result column="max_month_use_flow" property="maxMonthUseFlow" jdbcType="BIGINT" />
+    <result column="month_up_flow_limit" property="monthUpFlowLimit" jdbcType="BIGINT" />
+    <result column="month_down_flow_limit" property="monthDownFlowLimit" jdbcType="BIGINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uuid, mem_type, max_day_use_flow, day_up_flow_limit, day_down_flow_limit, max_month_use_flow, 
+    month_up_flow_limit, month_down_flow_limit, create_user_id, create_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_flow_limit_config
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectFlowLimitAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_flow_limit_config
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_flow_limit_config
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.flow.FlowLimitConfig" >
+    insert into v_mem_flow_limit_config (uuid, mem_type, max_day_use_flow, 
+      day_up_flow_limit, day_down_flow_limit, max_month_use_flow, 
+      month_up_flow_limit, month_down_flow_limit, create_user_id, 
+      create_date)
+    values (#{uuid,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{maxDayUseFlow,jdbcType=BIGINT}, 
+      #{dayUpFlowLimit,jdbcType=BIGINT}, #{dayDownFlowLimit,jdbcType=BIGINT}, #{maxMonthUseFlow,jdbcType=BIGINT}, 
+      #{monthUpFlowLimit,jdbcType=BIGINT}, #{monthDownFlowLimit,jdbcType=BIGINT}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.flow.FlowLimitConfig" >
+    insert into v_mem_flow_limit_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="memType != null" >
+        mem_type,
+      </if>
+      <if test="maxDayUseFlow != null" >
+        max_day_use_flow,
+      </if>
+      <if test="dayUpFlowLimit != null" >
+        day_up_flow_limit,
+      </if>
+      <if test="dayDownFlowLimit != null" >
+        day_down_flow_limit,
+      </if>
+      <if test="maxMonthUseFlow != null" >
+        max_month_use_flow,
+      </if>
+      <if test="monthUpFlowLimit != null" >
+        month_up_flow_limit,
+      </if>
+      <if test="monthDownFlowLimit != null" >
+        month_down_flow_limit,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="maxDayUseFlow != null" >
+        #{maxDayUseFlow,jdbcType=BIGINT},
+      </if>
+      <if test="dayUpFlowLimit != null" >
+        #{dayUpFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="dayDownFlowLimit != null" >
+        #{dayDownFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="maxMonthUseFlow != null" >
+        #{maxMonthUseFlow,jdbcType=BIGINT},
+      </if>
+      <if test="monthUpFlowLimit != null" >
+        #{monthUpFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="monthDownFlowLimit != null" >
+        #{monthDownFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.flow.FlowLimitConfig" >
+    update v_mem_flow_limit_config
+    <set >
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="maxDayUseFlow != null" >
+        max_day_use_flow = #{maxDayUseFlow,jdbcType=BIGINT},
+      </if>
+      <if test="dayUpFlowLimit != null" >
+        day_up_flow_limit = #{dayUpFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="dayDownFlowLimit != null" >
+        day_down_flow_limit = #{dayDownFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="maxMonthUseFlow != null" >
+        max_month_use_flow = #{maxMonthUseFlow,jdbcType=BIGINT},
+      </if>
+      <if test="monthUpFlowLimit != null" >
+        month_up_flow_limit = #{monthUpFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="monthDownFlowLimit != null" >
+        month_down_flow_limit = #{monthDownFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+    </set>
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.flow.FlowLimitConfig" >
+    update v_mem_flow_limit_config
+    set mem_type = #{memType,jdbcType=VARCHAR},
+      max_day_use_flow = #{maxDayUseFlow,jdbcType=BIGINT},
+      day_up_flow_limit = #{dayUpFlowLimit,jdbcType=BIGINT},
+      day_down_flow_limit = #{dayDownFlowLimit,jdbcType=BIGINT},
+      max_month_use_flow = #{maxMonthUseFlow,jdbcType=BIGINT},
+      month_up_flow_limit = #{monthUpFlowLimit,jdbcType=BIGINT},
+      month_down_flow_limit = #{monthDownFlowLimit,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=DATE}
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="limitConfigList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_flow_limit_config
+    where 1 = 1
+    <if test="paramObj.memType != null and paramObj.memType != ''" >
+      and mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

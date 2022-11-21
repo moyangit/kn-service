@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="list" style="min-width: 10rem">
+  <a class="item with-avatar multi-lines">
+    <div class="avatar circle">
+      <i class="icon icon-user"></i>
+    </div>
+    <div class="content">
+      <div class="title" th:text="${userName}"></div>
+      <div class="subtitle" th:text="${memType}">普通用户</div>
+    </div>
+  </a>
+  <a class="item with-avatar" href="/page/subscribe.html">
+    <div class="avatar text-gray"><i class="icon-list-ul"></i></div>
+    <div class="title">线路订阅</div>
+  </a>
+  <a class="item with-avatar" href="/page/paycenter.html">
+    <div class="avatar text-gray"><i class="icon-shopping-cart"></i></div>
+    <div class="title">套餐充值</div>
+  </a>
+  <a class="item with-avatar" href="/page/msgcenter.html">
+    <div class="avatar text-gray"><i class="icon icon-comments"></i></div>
+    <div class="title">我的消息</div>
+  </a>
+  <a class="item with-avatar" href="/page/invitfriend.html">
+    <div class="avatar text-gray"><i class="icon-qrcode"></i></div>
+    <div class="title">好友分享</div>
+  </a>
+  <a class="item with-avatar" href="/page/updatepwd.html">
+    <div class="avatar text-gray"><i class="icon-cog"></i></div>
+    <div class="title">密码修改</div>
+  </a>
+
+</div>
+
+<div class="list-item compact gray with-avatar dock dock-bottom" id="logout">
+  <div class="avatar text-gray"><i class="icon icon-signout"></i></div>
+  <div class="title">退出</div>
+</div>
+<script type="text/javascript">
+	$("#logout").click(function(){
+		$.cookie('v-token', null);
+		$.cookie('v-token-type', null);
+		window.location.href="/page/login.html"
+		
+	})
+
+</script>
+</html>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.pub.mapper.access.AccessHisMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.access.AccessHis">
+        <id column="access_id" jdbcType="VARCHAR" property="accessId" />
+        <result column="access_ip" jdbcType="VARCHAR" property="accessIp" />
+        <result column="access_path" jdbcType="VARCHAR" property="accessPath" />
+        <result column="source_code" jdbcType="VARCHAR" property="sourceCode" />
+        <result column="source_term_type" jdbcType="VARCHAR" property="sourceTermType" />
+        <result column="source_area" jdbcType="VARCHAR" property="sourceArea" />
+        <result column="source_area_name" jdbcType="VARCHAR" property="sourceAreaName" />
+        <result column="access_time" jdbcType="TIMESTAMP" property="accessTime" />
+        <result column="access_last_time" jdbcType="TIMESTAMP" property="accessLastTime" />
+        <result column="remain_time" jdbcType="BIGINT" property="remainTime" />
+        <result column="create_time" jdbcType="BIGINT" property="createTime" />
+        <result column="is_down" jdbcType="VARCHAR" property="isDown" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  access_id, access_ip, access_path, source_code, source_term_type, source_area, source_area_name, access_time,
+  access_last_time, remain_time, create_time, is_down
+</sql>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  delete from v_access_his
+  where access_id = #{accessId,jdbcType=VARCHAR}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.pub.entity.access.AccessHis">
+  insert into v_access_his (access_id, access_ip, access_path, source_code, source_term_type,
+    source_area, source_area_name, access_time,
+    access_last_time, remain_time, create_time, is_down)
+  values (#{accessId,jdbcType=VARCHAR}, #{accessIp,jdbcType=VARCHAR}, #{accessPath,jdbcType=VARCHAR}, #{sourceCode,jdbcType=VARCHAR}, #{sourceTermType,jdbcType=VARCHAR},
+    #{sourceArea,jdbcType=VARCHAR}, #{sourceAreaName,jdbcType=VARCHAR}, #{accessTime,jdbcType=TIMESTAMP},
+    #{accessLastTime,jdbcType=TIMESTAMP}, #{remainTime,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP}, #{isDown,jdbcType=VARCHAR})
+</insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.pub.entity.access.AccessHis">
+        update v_access_his
+        <set>
+            <if test="accessIp != null">
+                access_ip = #{accessIp,jdbcType=VARCHAR},
+            </if>
+            <if test="accessPath != null">
+                access_path = #{accessPath,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceTermType != null">
+                source_term_type = #{sourceTermType,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceArea != null">
+                source_area = #{sourceArea,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceAreaName != null">
+                source_area_name = #{sourceAreaName,jdbcType=VARCHAR},
+            </if>
+            <if test="accessTime != null">
+                access_time = #{accessTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accessLastTime != null">
+                access_last_time = #{accessLastTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remainTime != null">
+                remain_time = #{remainTime,jdbcType=BIGINT},
+            </if>
+            <if test="isDown != null">
+                is_down = #{isDown,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where access_id = #{accessId,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.tsn.serv.pub.entity.access.AccessHis">
+  update v_access_his
+  set access_ip = #{accessIp,jdbcType=VARCHAR},
+  	access_path = #{accessPath,jdbcType=VARCHAR},
+    source_term_type = #{sourceTermType,jdbcType=VARCHAR},
+    source_area = #{sourceArea,jdbcType=VARCHAR},
+    source_area_name = #{sourceAreaName,jdbcType=VARCHAR},
+    access_time = #{accessTime,jdbcType=TIMESTAMP},
+    access_last_time = #{accessLastTime,jdbcType=TIMESTAMP},
+    remain_time = #{remainTime,jdbcType=BIGINT},
+    is_down = #{isDown,jdbcType=VARCHAR}
+  where access_id = #{accessId,jdbcType=VARCHAR}
+</update>
+
+
+    <select id="selectByAccessId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_access_his
+        where access_id = #{accessId,jdbcType=VARCHAR}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="accessId != null and accessId != ''" >
+                and access_id = #{accessId,jdbcType=VARCHAR}
+            </if>
+            <if test="accessIp != null and accessIp != ''" >
+                and access_ip = #{accessIp,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceTermType != null and sourceTermType != ''" >
+                and source_term_type = #{sourceTermType,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceArea != null and sourceArea != ''" >
+                and source_area = #{sourceArea,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceAreaName != null and sourceAreaName != ''" >
+                and source_area_name = #{sourceAreaName,jdbcType=VARCHAR}
+            </if>
+            <if test="accessTime != null" >
+                and access_time = #{accessTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="accessLastTime != null" >
+                and access_last_time = #{accessLastTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remainTime != null" >
+                and remain_time = #{remainTime,jdbcType=BIGINT}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAccessByLastHour" resultType="java.util.Map">
+        select
+					a.accessNum,
+					a.accessPath,
+					IFNULL(b.downNum,0) as downNum
+				from (
+					SELECT
+            count(*) as accessNum,
+            substring_index(access_path,'/', 1) as accessPath
+        FROM `v_access_his`
+        WHERE
+          create_time > DATE_SUB(NOW(),INTERVAL  1 HOUR)
+        GROUP BY accessPath
+				) as a
+				left join (
+				SELECT
+            count(*) as downNum,
+            substring_index(access_path,'/', 1) as accessPath
+        FROM `v_access_his`
+        WHERE
+          create_time > DATE_SUB(NOW(),INTERVAL  1 HOUR)
+				AND
+					is_down = '1'
+				GROUP BY accessPath
+				) as b on a.accessPath = b.accessPath
+    </select>
+
+    <select id="selectAccessByHour" parameterType="java.util.Date" resultType="java.util.Map">
+        select
+					a.accessNum,
+					a.accessPath,
+					IFNULL(b.downNum,0) as downNum
+				from (
+					SELECT
+            count(*) as accessNum,
+            substring_index(access_path,'/', 1) as accessPath
+        FROM `v_access_his`
+        WHERE
+          date_format(create_time, '%Y-%m-%d %H') = date_format(#{hourDate,jdbcType=TIMESTAMP}, '%Y-%m-%d %H')
+        GROUP BY accessPath
+				) as a
+				left join (
+				SELECT
+            count(*) as downNum,
+            substring_index(access_path,'/', 1) as accessPath
+        FROM `v_access_his`
+        WHERE
+          date_format(create_time, '%Y-%m-%d %H') = date_format(#{hourDate,jdbcType=TIMESTAMP}, '%Y-%m-%d %H')
+				AND
+					is_down = '1'
+				GROUP BY accessPath
+				) as b on a.accessPath = b.accessPath
+    </select>
+
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.pub.mapper.complaint.ComplaintTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.complaint.ComplaintType">
+        <id column="complaint_type_id" jdbcType="INTEGER" property="complaintTypeId" />
+        <result column="complaint_type_name" jdbcType="VARCHAR" property="complaintTypeName" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  complaint_type_id, complaint_type_name, status
+</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+  delete from v_service_complaint_type
+  where complaint_type_id = #{complaintTypeId,jdbcType=INTEGER}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.pub.entity.complaint.ComplaintType">
+  insert into v_service_complaint_type (complaint_type_id, complaint_type_name, status
+    )
+  values (#{complaintTypeId,jdbcType=INTEGER}, #{complaintTypeName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+    )
+</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.tsn.serv.pub.entity.complaint.ComplaintType">
+        insert into v_service_complaint_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="complaintTypeId != null">
+                complaint_type_id,
+            </if>
+            <if test="complaintTypeName != null">
+                complaint_type_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="complaintTypeId != null">
+                #{complaintTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="complaintTypeName != null">
+                #{complaintTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.tsn.serv.pub.entity.complaint.ComplaintType">
+        update v_service_complaint_type
+        <set>
+            <if test="complaintTypeName != null">
+                complaint_type_name = #{complaintTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where complaint_type_id = #{complaintTypeId,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="update" parameterType="com.tsn.serv.pub.entity.complaint.ComplaintType">
+  update v_service_complaint_type
+  set complaint_type_name = #{complaintTypeName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+  where complaint_type_id = #{complaintTypeId,jdbcType=INTEGER}
+</update>
+
+
+    <select id="selectByComplaintTypeId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_service_complaint_type
+        where complaint_type_id = #{complaintTypeId,jdbcType=INTEGER}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="complaintTypeId != null" >
+                and complaint_type_id = #{complaintTypeId,jdbcType=INTEGER}
+            </if>
+            <if test="complaintTypeName != null and complaintTypeName != ''" >
+                and complaint_type_name = #{complaintTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''" >
+                and status = #{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAllComplaintType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_service_complaint_type
+        where status = '0'
+    </select>
+
+    <select id="getComplaintTypePage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_service_complaint_type
+        where status = '0'
+    </select>
+</mapper>

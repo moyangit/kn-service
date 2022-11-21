@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.charge.MemChargeMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.charge.MemCharge" >
+    <id column="charge_id" property="chargeId" jdbcType="VARCHAR" />
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="charge_type" property="chargeType" jdbcType="VARCHAR" />
+    <result column="charge_rule" property="chargeRule" jdbcType="TINYINT" />
+    <result column="charge_money" property="chargeMoney" jdbcType="DECIMAL" />
+    <result column="discount" property="discount" jdbcType="INTEGER" />
+    <result column="opera_user_id" property="operaUserId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="final_money" property="finalMoney" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    charge_id, mem_type, charge_type, charge_rule, charge_money, discount, opera_user_id, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_charge
+    where charge_id = #{chargeId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectMemChargeByMemType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />, convert(charge_money * 0.01 * discount,decimal(10,2)) as final_money
+    from v_mem_charge
+    where mem_type = #{memType,jdbcType=VARCHAR} order by charge_type
+  </select>
+  
+  <select id="selectMemChargeOneByType" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_charge
+    where mem_type = #{memType,jdbcType=VARCHAR} and charge_type = #{chargeType,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_charge
+    where charge_id = #{chargeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.charge.MemCharge" >
+    insert into v_mem_charge (charge_id, mem_type, charge_type, 
+      charge_rule, charge_money, discount, 
+      opera_user_id, create_time, update_time
+      )
+    values (#{chargeId,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{chargeType,jdbcType=VARCHAR}, 
+      #{chargeRule,jdbcType=TINYINT}, #{chargeMoney,jdbcType=DECIMAL}, #{discount,jdbcType=INTEGER}, 
+      #{operaUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.charge.MemCharge" >
+    insert into v_mem_charge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="charge_id != null" >
+        charge_id,
+      </if>
+      <if test="memType != null" >
+        mem_type,
+      </if>
+      <if test="chargeType != null" >
+        charge_type,
+      </if>
+      <if test="chargeRule != null" >
+        charge_rule,
+      </if>
+      <if test="chargeMoney != null" >
+        charge_money,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="operaUserId != null" >
+        opera_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="charge_id != null" >
+        #{chargeId,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeRule != null" >
+        #{chargeRule,jdbcType=TINYINT},
+      </if>
+      <if test="chargeMoney != null" >
+        #{chargeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="operaUserId != null" >
+        #{operaUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.charge.MemCharge" >
+    update v_mem_charge
+    <set >
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        charge_type = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeRule != null" >
+        charge_rule = #{chargeRule,jdbcType=TINYINT},
+      </if>
+      <if test="chargeMoney != null" >
+        charge_money = #{chargeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="operaUserId != null" >
+        opera_user_id = #{operaUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where charge_id = #{chargeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.charge.MemCharge" >
+    update v_mem_charge
+    set mem_type = #{memType,jdbcType=VARCHAR},
+      charge_type = #{chargeType,jdbcType=VARCHAR},
+      charge_rule = #{chargeRule,jdbcType=TINYINT},
+      charge_money = #{chargeMoney,jdbcType=DECIMAL},
+      discount = #{discount,jdbcType=INTEGER},
+      opera_user_id = #{operaUserId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where charge_id = #{chargeId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getMenChargeList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM v_mem_charge
+    WHERE
+      1 =1
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      AND mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.chargeType != null and paramObj.chargeType != ''">
+      AND charge_type = #{paramObj.chargeType,jdbcType=VARCHAR}
+    </if>
+    ORDER BY mem_type,charge_type ASC
+  </select>
+</mapper>

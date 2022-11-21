@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.flow.FlowLimitMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    <id column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="flow_limit_type" property="flowLimitType" jdbcType="VARCHAR" />
+    <result column="total_use_up_flow" property="totalUseUpFlow" jdbcType="BIGINT" />
+    <result column="total_use_down_flow" property="totalUseDownFlow" jdbcType="BIGINT" />
+    <result column="totalUseFlow" property="totalUseFlow" jdbcType="BIGINT" />
+    <result column="cy_use_up_flow" property="cyUseUpFlow" jdbcType="BIGINT" />
+    <result column="cy_use_down_flow" property="cyUseDownFlow" jdbcType="BIGINT" />
+    <result column="cy_use_total_flow" property="cyUseTotalFlow" jdbcType="BIGINT" />
+    <result column="is_limit" property="isLimit" jdbcType="TINYINT" />
+    <result column="cy_start_time" property="cyStartTime" jdbcType="TIMESTAMP" />
+    <result column="curr_cy_start_time" property="currCyStartTime" jdbcType="TIMESTAMP" />
+    <result column="curr_cy_end_time" property="currCyEndTime" jdbcType="TIMESTAMP" />
+    <result column="max_up_flow_limit" property="maxUpFlowLimit" jdbcType="BIGINT" />
+    <result column="max_down_flow_limit" property="maxDownFlowLimit" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="limit_upload_time" property="limitUploadTime" jdbcType="TIMESTAMP" />
+    <result column="first_limit_hap_time" property="firstLimitHapTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.tsn.serv.mem.entity.flow.FlowLimit" extends="BaseResultMap" >
+    <result column="host_flow" property="hostFlow" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    mem_id, total_use_up_flow, total_use_down_flow, flow_limit_type, cy_use_up_flow, cy_use_down_flow, cy_use_total_flow, is_limit, 
+    cy_start_time, curr_cy_start_time, curr_cy_end_time, max_up_flow_limit, max_down_flow_limit, 
+    create_time, update_time, limit_upload_time, first_limit_hap_time, host_flow, mem_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />, total_use_up_flow + total_use_down_flow as totalUseFlow
+    from v_mem_flow_limit
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByUserId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />, total_use_up_flow + total_use_down_flow as totalUseFlow
+    from v_mem_flow_limit
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_flow_limit
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    insert into v_mem_flow_limit (mem_id, mem_type, flow_limit_type, total_use_up_flow, total_use_down_flow, cy_use_up_flow, 
+      cy_use_down_flow, cy_use_total_flow, is_limit, 
+      cy_start_time, curr_cy_start_time, curr_cy_end_time, 
+      max_up_flow_limit, max_down_flow_limit, create_time, 
+      update_time, host_flow)
+    values (#{memId,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{flowLimitType,jdbcType=VARCHAR}, #{totalUseUpFlow,jdbcType=VARCHAR}, #{totalUseDownFlow,jdbcType=VARCHAR}, #{cyUseUpFlow,jdbcType=BIGINT}, 
+      #{cyUseDownFlow,jdbcType=BIGINT}, #{cyUseTotalFlow,jdbcType=BIGINT}, #{isLimit,jdbcType=TINYINT}, 
+      #{cyStartTime,jdbcType=TIMESTAMP}, #{currCyStartTime,jdbcType=TIMESTAMP}, #{currCyEndTime,jdbcType=TIMESTAMP}, 
+      #{maxUpFlowLimit,jdbcType=BIGINT}, #{maxDownFlowLimit,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP},#{hostFlow,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    update v_mem_flow_limit
+    <set >
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="flowLimitType != null" >
+        flow_limit_type = #{flowLimitType,jdbcType=VARCHAR},
+      </if>
+      <if test="cyUseUpFlow != null" >
+        cy_use_up_flow = #{cyUseUpFlow,jdbcType=BIGINT},
+      </if>
+      <if test="cyUseDownFlow != null" >
+        cy_use_down_flow = #{cyUseDownFlow,jdbcType=BIGINT},
+      </if>
+      <if test="cyUseTotalFlow != null" >
+        cy_use_total_flow = #{cyUseTotalFlow,jdbcType=BIGINT},
+      </if>
+      <if test="isLimit != null" >
+        is_limit = #{isLimit,jdbcType=TINYINT},
+      </if>
+      <if test="cyStartTime != null" >
+        cy_start_time = #{cyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currCyStartTime != null" >
+        curr_cy_start_time = #{currCyStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currCyEndTime != null" >
+        curr_cy_end_time = #{currCyEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maxUpFlowLimit != null" >
+        max_up_flow_limit = #{maxUpFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="maxDownFlowLimit != null" >
+        max_down_flow_limit = #{maxDownFlowLimit,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstLimitHapTime != null" >
+        first_limit_hap_time = #{firstLimitHapTime,jdbcType=TIMESTAMP},
+      </if>
+      
+    </set>
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    update v_mem_flow_limit
+    set flow_limit_type = #{flowLimitType,jdbcType=VARCHAR},
+      mem_type = #{memType,jdbcType=VARCHAR},
+      cy_use_up_flow = #{cyUseUpFlow,jdbcType=BIGINT},
+      cy_use_down_flow = #{cyUseDownFlow,jdbcType=BIGINT},
+      cy_use_total_flow = #{cyUseTotalFlow,jdbcType=BIGINT},
+      is_limit = #{isLimit,jdbcType=TINYINT},
+      cy_start_time = #{cyStartTime,jdbcType=TIMESTAMP},
+      curr_cy_start_time = #{currCyStartTime,jdbcType=TIMESTAMP},
+      curr_cy_end_time = #{currCyEndTime,jdbcType=TIMESTAMP},
+      max_up_flow_limit = #{maxUpFlowLimit,jdbcType=BIGINT},
+      max_down_flow_limit = #{maxDownFlowLimit,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      limit_upload_time = #{limitUploadTime,jdbcType=TIMESTAMP}
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateMemFlowByMemIdAnd" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    update v_mem_flow_limit
+    set total_use_up_flow = total_use_up_flow + #{currUseUpFlow,jdbcType=BIGINT}, total_use_down_flow = total_use_down_flow + #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_up_flow = cy_use_up_flow + #{currUseUpFlow,jdbcType=BIGINT},
+      cy_use_down_flow = cy_use_down_flow + #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_total_flow = cy_use_up_flow + cy_use_down_flow,
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      limit_upload_time = #{limitUploadTime,jdbcType=TIMESTAMP},
+      host_flow =
+	CASE
+			WHEN REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" ) IS NULL THEN
+			JSON_ARRAY_APPEND(
+				host_flow,
+				'$',
+				JSON_OBJECT( "ip", #{host,jdbcType=VARCHAR}, "upFlow", #{currUseUpFlow,jdbcType=BIGINT}, "downFlow", #{currUseDownFlow,jdbcType=BIGINT} )) 
+			ELSE JSON_SET(
+				host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "upFlow" ),
+				json_extract(
+					host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "upFlow" )) + #{currUseUpFlow,jdbcType=BIGINT},
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "downFlow" ),
+				json_extract(
+					host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "downFlow" )) + #{currUseDownFlow,jdbcType=BIGINT}
+			) 
+		END
+    where mem_id = #{memId,jdbcType=VARCHAR} and curr_cy_start_time &lt;= #{limitUploadTime,jdbcType=VARCHAR} and curr_cy_end_time &gt; #{limitUploadTime,jdbcType=VARCHAR};
+  </update>
+  
+  <update id="updateMemFlowNoHostByMemId" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    update v_mem_flow_limit
+    set total_use_up_flow = total_use_up_flow + #{currUseUpFlow,jdbcType=BIGINT}, total_use_down_flow = total_use_down_flow + #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_up_flow = cy_use_up_flow + #{currUseUpFlow,jdbcType=BIGINT},
+      cy_use_down_flow = cy_use_down_flow + #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_total_flow = cy_use_up_flow + cy_use_down_flow,
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      limit_upload_time = #{limitUploadTime,jdbcType=TIMESTAMP}
+    where mem_id = #{memId,jdbcType=VARCHAR} and curr_cy_start_time &lt;= #{updateTime,jdbcType=VARCHAR} and curr_cy_end_time &gt; #{updateTime,jdbcType=VARCHAR};
+  </update>
+
+  <update id="updateAndResetMemFlowByMemId" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    update v_mem_flow_limit
+    set total_use_up_flow = total_use_up_flow + #{currUseUpFlow,jdbcType=BIGINT}, total_use_down_flow = total_use_down_flow + #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_up_flow = #{currUseUpFlow,jdbcType=BIGINT},
+      cy_use_down_flow = #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_total_flow = cy_use_up_flow + cy_use_down_flow,
+      host_flow =
+	CASE
+			WHEN REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" ) IS NULL THEN
+			JSON_ARRAY_APPEND(
+				host_flow,
+				'$',
+				JSON_OBJECT( "ip", #{host,jdbcType=VARCHAR}, "upFlow", #{currUseUpFlow,jdbcType=BIGINT}, "downFlow", #{currUseDownFlow,jdbcType=BIGINT} )) 
+			ELSE JSON_SET(
+				host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "upFlow" ),
+				json_extract(
+					host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "upFlow" )) + #{currUseUpFlow,jdbcType=BIGINT},
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "downFlow" ),
+				json_extract(
+					host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "downFlow" )) + #{currUseDownFlow,jdbcType=BIGINT}
+			) 
+		END,
+      curr_cy_start_time = DATE_ADD(cy_start_time,INTERVAL timestampdiff(month,cy_start_time,#{updateTime,jdbcType=VARCHAR}) MONTH),
+      curr_cy_end_time = DATE_ADD(curr_cy_start_time, interval 1 MONTH),
+      is_limit = #{isLimit,jdbcType=TINYINT},
+      max_up_flow_limit = #{maxUpFlowLimit,jdbcType=BIGINT},
+      max_down_flow_limit = #{maxDownFlowLimit,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      limit_upload_time = #{limitUploadTime,jdbcType=TIMESTAMP},
+      first_limit_hap_time = null
+    where mem_id = #{memId,jdbcType=VARCHAR};
+  </update>
+  
+  <update id="updateAndResetMemFlowNoHostByMemId" parameterType="com.tsn.serv.mem.entity.flow.FlowLimit" >
+    update v_mem_flow_limit
+    set total_use_up_flow = total_use_up_flow + #{currUseUpFlow,jdbcType=BIGINT}, total_use_down_flow = total_use_down_flow + #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_up_flow = #{currUseUpFlow,jdbcType=BIGINT},
+      cy_use_down_flow = #{currUseDownFlow,jdbcType=BIGINT},
+      cy_use_total_flow = cy_use_up_flow + cy_use_down_flow,
+      curr_cy_start_time = DATE_ADD(cy_start_time,INTERVAL timestampdiff(month,cy_start_time,#{updateTime,jdbcType=VARCHAR}) MONTH),
+      curr_cy_end_time = DATE_ADD(curr_cy_start_time, interval 1 MONTH),
+      is_limit = #{isLimit,jdbcType=TINYINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      limit_upload_time = #{limitUploadTime,jdbcType=TIMESTAMP},
+      first_limit_hap_time = null
+    where mem_id = #{memId,jdbcType=VARCHAR};
+  </update>
+
+  <select id="getFolwPage" resultType="java.util.Map" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select
+      a.mem_id as memId,
+      a.total_use_up_flow + a.total_use_down_flow AS useTotalTraffic,
+      a.total_use_up_flow as totalUseUpFlow,
+      a.total_use_down_flow as totalUseDownFlow,
+      a.flow_limit_type as flowLimitType,
+      a.cy_use_up_flow as cyUseUpFlow,
+      a.cy_use_down_flow as cyUseDownFlow,
+      a.cy_use_total_flow as cyUseTotalFlow,
+      a.is_limit as isLimit,
+      a.cy_start_time as cyStartTime,
+      a.curr_cy_start_time as currCyStartTime,
+      a.curr_cy_end_time as currCyEndTime,
+      a.max_up_flow_limit as maxUpFlowLimit,
+      a.max_down_flow_limit as maxDownFlowLimit,
+      a.create_time as createTime,
+      a.update_time as updateTime,
+      a.limit_upload_time as limitUploadTime,
+      a.first_limit_hap_time as firstLimitHapTime,
+      a.host_flow as hostFlow,
+      a.mem_type as memType,
+      b.mem_phone as memPhone
+    from v_mem_flow_limit as a
+    left join v_mem_info as b on a.mem_id = b.mem_id
+    left join v_mem_flow_limit_config as c on a.mem_type = c.mem_type
+    where 1=1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and b.mem_phone = #{paramObj.memPhone, jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.exceed == 1">
+      and a.total_use_up_flow + a.total_use_down_flow &gt; c.max_month_use_flow
+    </if>
+    order by update_time desc
+  </select>
+  
+</mapper>

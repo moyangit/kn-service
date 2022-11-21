@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<style>
+body {
+	padding: 0px !important;
+	margin: 0 auto;
+	background: #2c2b2d;
+	text-align: center;
+	max-width: 800px;
+}
+
+
+.content {
+	margin-bottom: 100px;
+	padding:50px;
+}
+	
+.content .title{
+	    margin: 0 auto;
+    width: 100px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 550;
+    color: #d6ae3c;
+    border: 1px solid #514f52;
+    padding: 16px;
+    border-radius: 5px;
+}
+
+.content .items .item {
+	margin: 0 auto;
+	height: 139px;
+	background: #ffffff05;
+	border-radius: 8px 8px 8px 8px;
+	opacity: 1;
+	filter: blur(undefinedpx);
+	margin-top: 20px;
+}
+
+.content .items .item .itemTitle{
+	margin: 0 auto;
+	width: 86px;
+	height: 31px;
+	font-size: 27px;
+	font-family: Helvetica-Bold-, Helvetica-Bold;
+	font-weight: 550;
+	color: #D8D8D8;
+}
+
+.content .items .item .itemDesc {
+	margin: 0 auto;
+    padding: 30px;
+    width: 240px;
+    height: 42px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #d6ae3c;
+}
+
+.line {
+	width: 30px;
+	height: 2px;
+	background: #4E3DB0;
+	opacity: 1;
+	filter: blur(undefinedpx);
+	vertical-align: middle;
+	display:inline-block;
+}
+
+</style>
+</head>
+<body>
+
+	<div class="content">
+		
+		<div class="title">
+			客服联系方式
+		</div>
+		
+		<div class="items">
+			
+			<div class="item" style="height:150px">
+				<div class="itemDesc" style="margin-top: 10px;text-align: left;padding-bottom:20px;line-height: 23px;">
+					<div>如果遇到问题，请及时客服</div>
+					<div>邮箱：kyecs@protonmail.com</div>
+					<div>电报：kyecs</div>
+					<div>在线客服：<a href="javascript:void(0);" style="color:#938e89">点击联系</a></div>
+				</div>
+				<!-- <a th:href="'https://mapi.heibaohouduan.com/page/customer?uId=' + ${uId}" style="color:blue;text-decoration:underline;">联系客服</a> -->
+			</div>
+			
+			
+		</div>
+		
+		<div></div>
+		
+	</div>
+</body>
+</html>

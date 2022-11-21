@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.account.MemAccountRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.account.MemAccountRecord" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="account_no" property="accountNo" jdbcType="VARCHAR" />
+    <result column="record_type" property="recordType" jdbcType="VARCHAR" />
+    <result column="record_way" property="recordWay" jdbcType="TINYINT" />
+    <result column="record_status" property="recordStatus" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="order_content" property="orderContent" jdbcType="LONGVARCHAR" />
+    <result column="order_pay_type" property="orderPayType" jdbcType="VARCHAR" />
+    <result column="change_money" property="changeMoney" jdbcType="DECIMAL" />
+    <result column="balance_money" property="balanceMoney" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="mem_phone" property="memPhone" jdbcType="VARCHAR" />
+    <result column="mem_name" property="memName" jdbcType="VARCHAR" />
+    <result column="out_mem_id" property="outMemId" jdbcType="VARCHAR" />
+    <result column="out_mem_phone" property="outMemPhone" jdbcType="VARCHAR" />
+    <result column="out_mem_name" property="outMemName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, account_no, record_type, record_way, record_status, order_no, order_content, order_pay_type, 
+    change_money, balance_money, remark, mem_id, mem_phone, mem_name, out_mem_id, out_mem_phone, 
+    out_mem_name, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_account_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_account_record
+    where
+      account_no = #{paramObj.accountNo,jdbcType=VARCHAR}
+    and
+      record_status = #{paramObj.recordStatus, jdbcType=VARCHAR}
+    <if test="paramObj.recordType != null and paramObj.recordType != ''">
+      and record_type = #{paramObj.recordType, jdbcType=VARCHAR}
+    </if>
+    order by create_time desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from v_mem_account_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.account.MemAccountRecord" >
+    insert into v_mem_account_record (record_id, account_no, record_type, 
+      record_way, record_status, order_no, order_content,
+      order_pay_type, change_money, balance_money, 
+      remark, mem_id, mem_phone, 
+      mem_name, out_mem_id, out_mem_phone, 
+      out_mem_name, create_time, update_time
+      )
+    values (uuid_short(), #{accountNo,jdbcType=VARCHAR}, #{recordType,jdbcType=VARCHAR}, 
+      #{recordWay,jdbcType=TINYINT}, #{recordStatus,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderContent,jdbcType=LONGVARCHAR},
+      #{orderPayType,jdbcType=VARCHAR}, #{changeMoney,jdbcType=DECIMAL}, #{balanceMoney,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR}, #{memId,jdbcType=VARCHAR}, #{memPhone,jdbcType=VARCHAR}, 
+      #{memName,jdbcType=VARCHAR}, #{outMemId,jdbcType=VARCHAR}, #{outMemPhone,jdbcType=VARCHAR}, 
+      #{outMemName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.account.MemAccountRecord" >
+    insert into v_mem_account_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="accountNo != null" >
+        account_no,
+      </if>
+      <if test="recordType != null" >
+        record_type,
+      </if>
+      <if test="recordWay != null" >
+        record_way,
+      </if>
+      <if test="recordStatus != null" >
+        record_status,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="orderPayType != null" >
+        order_pay_type,
+      </if>
+      <if test="changeMoney != null" >
+        change_money,
+      </if>
+      <if test="balanceMoney != null" >
+        balance_money,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="memPhone != null" >
+        mem_phone,
+      </if>
+      <if test="memName != null" >
+        mem_name,
+      </if>
+      <if test="outMemId != null" >
+        out_mem_id,
+      </if>
+      <if test="outMemPhone != null" >
+        out_mem_phone,
+      </if>
+      <if test="outMemName != null" >
+        out_mem_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordId != null" >
+        #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null" >
+        #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        #{recordType,jdbcType=VARCHAR},
+      </if>
+      <if test="recordWay != null" >
+        #{recordWay,jdbcType=TINYINT},
+      </if>
+      <if test="recordStatus != null" >
+        #{recordStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPayType != null" >
+        #{orderPayType,jdbcType=VARCHAR},
+      </if>
+      <if test="changeMoney != null" >
+        #{changeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceMoney != null" >
+        #{balanceMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null" >
+        #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null" >
+        #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="outMemId != null" >
+        #{outMemId,jdbcType=VARCHAR},
+      </if>
+      <if test="outMemPhone != null" >
+        #{outMemPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="outMemName != null" >
+        #{outMemName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.account.MemAccountRecord" >
+    update v_mem_account_record
+    <set >
+      <if test="accountNo != null" >
+        account_no = #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        record_type = #{recordType,jdbcType=VARCHAR},
+      </if>
+      <if test="recordWay != null" >
+        record_way = #{recordWay,jdbcType=TINYINT},
+      </if>
+      <if test="recordStatus != null" >
+        record_status = #{recordStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPayType != null" >
+        order_pay_type = #{orderPayType,jdbcType=VARCHAR},
+      </if>
+      <if test="changeMoney != null" >
+        change_money = #{changeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceMoney != null" >
+        balance_money = #{balanceMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null" >
+        mem_phone = #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null" >
+        mem_name = #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="outMemId != null" >
+        out_mem_id = #{outMemId,jdbcType=VARCHAR},
+      </if>
+      <if test="outMemPhone != null" >
+        out_mem_phone = #{outMemPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="outMemName != null" >
+        out_mem_name = #{outMemName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.account.MemAccountRecord" >
+    update v_mem_account_record
+    set account_no = #{accountNo,jdbcType=VARCHAR},
+      record_type = #{recordType,jdbcType=VARCHAR},
+      record_way = #{recordWay,jdbcType=TINYINT},
+      record_status = #{recordStatus,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      order_pay_type = #{orderPayType,jdbcType=VARCHAR},
+      change_money = #{changeMoney,jdbcType=DECIMAL},
+      balance_money = #{balanceMoney,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      mem_id = #{memId,jdbcType=VARCHAR},
+      mem_phone = #{memPhone,jdbcType=VARCHAR},
+      mem_name = #{memName,jdbcType=VARCHAR},
+      out_mem_id = #{outMemId,jdbcType=VARCHAR},
+      out_mem_phone = #{outMemPhone,jdbcType=VARCHAR},
+      out_mem_name = #{outMemName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getPcAccRecordPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    select
+      record_id AS recordId,
+      account_no AS accountNo,
+      record_type AS recordType,
+      record_way AS recordWay,
+      record_status AS recordStatus,
+      order_no AS orderNo,
+      order_content AS orderContent,
+      order_pay_type AS orderPayType,
+      change_money AS changeMoney,
+      balance_money AS balanceMoney,
+      remark AS remark,
+      mem_id AS memId,
+      mem_phone AS memPhone,
+      mem_name AS memName,
+      out_mem_id AS outMemId,
+      out_mem_phone AS outMemPhone,
+      out_mem_name AS outMemName,
+      create_time AS createTime,
+      update_time AS updateTime
+    from v_mem_account_record
+    where record_status = '1' and record_type = '40'
+    <if test="paramObj.selectData != null and paramObj.selectData != ''">
+      AND mem_phone LIKE CONCAT('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+    </if>
+    order by create_time desc
+  </select>
+
+  <select id="getPcAccRecord" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from v_mem_account_record
+    where record_status = '1' and record_type = '40' and mem_id = #{paramObj.memId,jdbcType=VARCHAR}
+    <if test="paramObj.searchData != null and paramObj.searchData != ''">
+      and (
+      mem_phone like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+      or
+      mem_name like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="paramObj.selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="paramObj.selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 0">
+
+    </if>
+    order by create_time desc
+  </select>
+
+  <select id="getRebateOrder" resultMap="BaseResultMap" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_account_record
+    where record_status = '1' and record_type = '40'
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and mem_phone = #{paramObj.memPhone, jdbcType=VARCHAR}
+    </if>
+    order by create_time desc
+  </select>
+  
+    <select id="getAccDetailsPage" resultMap="BaseResultMap" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_account_record
+    where
+      record_status = '1'
+    and
+      (record_type = '40' or record_type = '50')
+    and
+      account_no = #{paramObj.accountNo,jdbcType=VARCHAR}
+    and
+      DATE_FORMAT(create_time,'%Y-%m') = #{paramObj.monthDate,jdbcType=VARCHAR}
+    order by create_time desc
+  </select>
+
+  <select id="getAccRecordSum" resultType="java.util.Map" parameterType="java.lang.String">
+select a.*,b.* from
+(
+  select IFNULL(sum(change_money),0) as totalSum
+  from v_mem_account_record
+  where record_type = '40'
+  and mem_id = #{userId, jdbcType=VARCHAR}
+) as a,
+(
+  select IFNULL(sum(change_money),0) as yesterdaySum
+  from v_mem_account_record
+  where record_type = '40'
+  and DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+  and mem_id = #{userId, jdbcType=VARCHAR}
+) as b
+  </select>
+</mapper>

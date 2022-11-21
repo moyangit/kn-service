@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			
+			.content {
+				text-align: center;
+				margin: 0px auto;
+				background-color: #1D192B;
+				max-width: 450px;
+			}
+			
+			.pay-list {
+				color: #E5E5E5;
+			}
+			
+			.back-top {
+				position: relative;
+			}
+			
+			.pay-list .pay-item {
+				width: auto;
+				margin: 10px 20px;
+				height: 90px;
+				border: 1px solid #3E3D4E;
+				opacity: 1;
+				border-radius: 8px;
+				text-align: left;
+				position: relative;
+			}
+			
+			 .pay-list .check {
+			 	width: auto;
+			 	margin: 10px 20px;
+			 	height: 90px;
+			 	border: 1px transparent solid;
+			 	background: #1D192B;
+			 	opacity: 1;
+			 	border-radius: 8px;
+			 	text-align: left;
+			 	position: relative;
+			 }
+			 
+			 .pay-list .check:after{
+			 	content:'';
+			 	position: absolute;
+			 	top: -3px; bottom: -3px;
+			 	left: -3px; right: -3px;
+			 	background: linear-gradient(135deg,#83F6B8, #132190);
+			 	border-radius: 8px;
+			 	z-index: -1;
+			  }
+			
+			.pay-list .pay-item .payName {
+				margin: 5px 0px 10px 20px;
+				width: 50px;
+				height: 22px;
+				font-size: 16px;
+				font-family: 蘋方-簡;
+				font-weight: normal;
+				line-height: 22px;
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			.pay-list .pay-item .price {
+				margin: 0px 0px 5px 10px;
+				width: 66px;
+				height: 41px;
+				font-size: 29px;
+				font-family: 蘋方-簡;
+				font-weight: normal;
+				line-height: 41px;
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			.pay-list .pay-item .desc {
+				position: absolute;
+				left: 100px;
+				top: 51px;
+				width: 96px;
+				text-align: center;
+				border-radius: 5px;
+				font-size: 10px;
+				font-family: 蘋方-簡;
+				font-weight: normal;
+				line-height: 14px;
+				color: #CA983E;
+				opacity: 1;
+				background: #FBF0DC;
+			}
+			
+			.pay-list .pay-item span {
+				padding: 0px 5px 0px 5px;
+				position: absolute;
+				right: 10px;
+				top: 5px;
+				width: 51px;
+				height: 17px;
+				font-size: 12px;
+				font-family: 蘋方-簡;
+				font-weight: normal;
+				line-height: 17px;
+				color: #FFFFFF;
+				opacity: 1;
+				background-image: url(/website/images/tuijian.png);
+			}
+			
+			.pay-list .pay-item input {
+				position: absolute;
+				right: 10px;
+				top: 40px;
+				width: 46px;
+				height: 22px;
+			}
+			
+			.submit-btn {
+				text-align: center;
+				position: fixed;
+				height: 100px;
+				bottom: 0px;
+				right: 0px;
+				left: 0px;
+			}
+			
+			.submit-btn .pay {
+				cursor: pointer;
+				font-size: 18px;
+				color: #FFFFFF;
+				border-radius: 40px;
+				margin: 22px 12px 10px 12px;
+				padding: 15px 10px 15px 10px;
+				background-image: linear-gradient(to right, #31C1AC , #5E93FB);
+			}
+			
+			.submit-btn .loginStatus {
+				font-size: 10px;
+				color: #FFFFFF;
+				text-decoration: underline;
+			}
+			
+			.descContent {
+				padding: 10px;
+				position: absolute;
+				top: -80px;
+				left: 0px;
+				height: 46px;
+				font-size: 12px;
+				font-family: Source Han Sans CN;
+				font-weight: 1000;
+				line-height: 16px;
+				color: #CA983E;
+				opacity: 1;
+				background: #FBF0DC;
+			}
+			
+			.descContent::after {
+				content:'';
+				position:absolute;
+				border:10px solid transparent;
+				border-top-color:#FBF0DC;
+				position:absolute;
+				top:100%;
+				left:10px;
+			}
+			
+			.pay-margin-top {
+				
+				margin-top: 80px;
+				
+			}
+			
+			.topTitle {
+				position: absolute;
+				top: 113px;
+				right: 50px;
+				width: 180px;
+				height: 20px;
+				font-size: 20px;
+				font-family: Source Han Sans CN;
+				font-weight: 500;
+				line-height: 14px;
+				color: #FFFFFF;
+				opacity: 1;
+			}
+			
+			.pay-disable {
+			    pointer-events: none;
+			}
+			
+			
+			.layui-input-block {
+			    margin-left: 90px !important;
+			    min-height: 36px;
+			}
+			
+			.layui-form-label {
+			    position: relative;
+			    float: left;
+			    display: block;
+			    padding: 9px 15px;
+			    width: 54px !important;
+			    font-weight: 400;
+			    line-height: 20px;
+			    text-align: right;
+			}
+			
+			.layui-btn {
+			    background-color: #7f79ab !important;
+			    border-radius: 15px !important;
+			    padding: 0 70px !important;
+			}
+			
+		</style>
+	</head>
+	<body class="content">
+		<div class="back-top">
+			<img src="/website/images/backtop.png" style="max-height: 100%;max-width: 100%;" />
+			<span class="topTitle">黄金会员 尊享特权</span>
+		</div>
+		
+		<div class="pay-list">
+			<div class="pay-item" th:each="charge : ${ chargeList }" th:attr-type="${charge.chargeType}" th:attr-value="${charge.finalMoney}" th:attr-id="${charge.chargeId}">
+				<div class="payName" th:if="${ charge.chargeType eq '10' }">月卡</div>
+				<div class="payName" th:if="${ charge.chargeType eq '11' }">季卡</div>
+				<div class="payName" th:if="${ charge.chargeType eq '12' }">半年卡</div>
+				<div class="payName" th:if="${ charge.chargeType eq '13' }">年卡</div>
+				<div class="payName" th:if="${ charge.chargeType eq '14' }">永久</div>
+				<div class="price">￥[[ ${#numbers.formatDecimal(charge.finalMoney,1,0)}]]</div>
+				<div class="desc" th:if="${ charge.chargeType eq '14' }">33%的用户购买</div>
+				<div class="desc" th:if="${ charge.chargeType eq '13' }">40%的用户购买</div>
+				<span th:if="${ charge.chargeType eq '14' }">推荐购买</span>
+				<span th:if="${ charge.chargeType eq '13' }">最受欢迎</span>
+				<input type="radio" name="payValue"/>
+				<div class="payDesc" style="display:none" th:if="${ charge.chargeType eq '14' }">
+					<div class="descContent">
+						530元永久使用、无限流量不限速、送代理资格、包培训 可获得40%的高额返利，支付宝提现简单快捷。 详情咨询加微信 kuaijiasu4
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="pay-margin-top"></div>
+		<div class="submit-btn">
+			<div class="loginStatus" style="display: none">未登录,请点击登录</div>
+			<div class="pay">立即支付</div>
+		</div>
+		
+		<div id="loginContent" style = "display: none;padding:10px;text-align: left">
+			<form class="layui-form">
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">账号</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="userPhone" id="userPhone"  placeholder="请输入手机号" autocomplete="off" class="layui-input">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">密码</label>
+				    <div class="layui-input-block"> 
+				      <input type="password" name="password" id="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn" id="loginBtn">登录</button>
+				    </div>
+				  </div>
+			</form>
+		 </div>
+		
+	</body>
+	<link href="//unpkg.com/layui@2.7.4/dist/css/layui.css" rel="stylesheet">
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.3.0/layer.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script th:inline="javascript">
+		// 取资费类型
+        const chargeList = [[${chargeList}]];
+        
+        var reToken = [[${reToken}]];
+        
+        
+	</script>
+	<script>
+	
+	 	//$.cookie('token', token);
+    	var token = $.cookie('token')
+	
+		if (!token) {
+			$(".loginStatus").show();
+		}else{
+			$(".loginStatus").hide();
+		}
+	
+		var oriUrl = window.location.host;
+		
+		//var loginApi = "https://" + oriUrl + "/auth_api"
+		//var payApi = "https://" + oriUrl + "/mem_api"
+		
+		var loginApi = "http://" + oriUrl + ""
+		var payApi = "http://" + oriUrl + ""
+	
+		var order = {};
+	
+		bindEvent();
+		initSettings();
+		
+		function initSettings() {
+			var payFirst = $(".pay-list").children(":first")
+			selectPayItem(payFirst);
+		}
+	
+		function bindEvent() {
+			//立即支付事件
+			$(".submit-btn").click(function() {
+				submitOrder();
+			})
+			
+			//选择套餐事件
+			$(".pay-item").click(function(){
+				
+				selectPayItem($(this))
+			})
+			
+			$(".loginStatus").click(function(){
+				
+				var index = layer.open({
+					  type: 1,
+					  title:"用户登录",
+					  content: $("#loginContent")
+					});
+					layer.full(index);
+				  
+				  return false;
+				
+			})
+			
+			$("#loginBtn").click(function(){
+				
+				var userPhone =$("#userPhone").val();
+				var pwd = $("#password").val();
+				if (!userPhone || !pwd) {
+					layer.msg('请输入必填字段');
+					return false;
+				}
+				
+				var user = {
+					userPhone:userPhone,
+					grantType: 'password',
+					password:pwd
+				}
+				
+				$.ajax({
+		             type : "POST",
+		             url : loginApi + "/auth/token",
+		             beforeSend: function(request) {
+		             },
+		             contentType: "application/json; charset=utf-8",
+		             dataType : "json",
+		             data : JSON.stringify(user),
+		             success : function(res) {
+		            	 if (res.code == '000000') {
+		            		 layer.closeAll();
+		            		 var accessToken = res.data.accessToken;
+		            		 token = accessToken;
+		            		 $.cookie('token', token);
+		            		 window.location.reload();
+		            		 return false;
+		            	 }
+		            	 
+		            	 if (res.code == "100999") {
+		            		 layer.msg('账号密码错误');
+		            		 return false;
+		                   } else if (res.code === "100998") {
+		                	 layer.msg('账号不存在');
+		                	 return false;
+		                   }
+		            		 
+		             },
+		             error : function() {
+		            	 layer.msg('网络异常');
+		             },
+		             complete : function() {
+		             }
+		         });
+				
+				return false;
+			})
+		}
+		
+		function selectPayItem(obj) {
+			let type = obj.attr("attr-type");
+			
+			if (type == "14") {
+				$(".payDesc").fadeIn("slow");
+			}else {
+				$(".payDesc").fadeOut("slow");
+			}
+			
+			obj.find("input[name='payValue']").prop("checked",true);
+			
+			obj.addClass("check").siblings().removeClass("check");
+			
+			order.chargeId = obj.attr("attr-id");
+			order.chargeType = type;
+		}
+	
+		//提交订单
+		function submitOrder() {
+			
+		  if (!token) {
+			  
+			  var index = layer.open({
+				  type: 1,
+				  title:"用户登录",
+				  content: $("#loginContent")
+				});
+				layer.full(index);
+			  
+			  return false;
+		  }
+
+          if (order.chargeId == null) {
+	         layer.msg('请选择支付套餐');
+			 return false
+		  }
+	       
+          order.payType="alipay";
+          order.reToken=reToken;
+	      $.ajax({
+             type : "POST",
+             url : payApi + "/order/charge",
+             beforeSend: function(request) {
+            	 $(".submit-btn").text("正在支付..")
+            	 $(".submit-btn").addClass("pay-disable");
+                 request.setRequestHeader("V-Auth", "bea_us " + token);
+             },
+             contentType: "application/json; charset=utf-8",
+             dataType : "json",
+             data : JSON.stringify(order),
+             success : function(msg) {
+            	 if (msg.code == '000000') {
+            		 
+                          // 跳转支付页面
+                          if (order.payType == "stripe") {
+                          	stripe.redirectToCheckout({ sessionId: msg.data.stripeSid})
+                          }else if (order.payType == "alipay") {
+                          	
+                        	window.location.href=msg.data.qrcode;
+                          	
+                          }
+                          
+					} else if (msg.code == '100991') {
+						layer.msg('用户未登录或已超时');
+						setTimeout(function(){
+							window.location.reload();
+						},2000)
+					} else if (msg.code == '100991') {
+						layer.msg('用户未登录或已超时');
+						setTimeout(function(){
+							window.location.reload();
+						},2000)
+					} else if (msg.code == 'R1002' || msg.code == 'R1004') {
+						layer.msg('页面操作已超时,稍后操作');
+						setTimeout(function(){
+							window.location.reload();
+						},1000)
+					} else {
+						layer.msg('服务器繁忙');
+						setTimeout(function(){
+							window.location.reload();
+						},1000)
+					}
+             },
+             error : function() {
+            	 layer.msg('网络异常');
+					setTimeout(function(){
+						window.location.reload();
+					},1000)
+             },
+             complete : function() {
+            	 $(".submit-btn").text("立即支付")
+            	 $(".submit-btn").removeClass("pay-disable");
+             }
+         });
+		}
+	
+	
+	</script>
+</html>

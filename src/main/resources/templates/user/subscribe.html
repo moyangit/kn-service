@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+
+    <!-- MZUI CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/zui/1.10.0/css/zui.min.css">
+    <link href="/user/css/mzui.min.css" rel="stylesheet">
+    <link href="/user/css/main.css?v=1" rel="stylesheet">
+    
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<!-- ZUI Javascript 依赖 jQuery -->
+	<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/lib/jquery/jquery.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/js/zui.min.js"></script>
+    <!-- 引入 MZUI 的 JS 文件 -->
+    <script src="/user/js/mzui.min.js"></script>
+    <script src="/user/js/comm.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    
+    <style>
+    body{
+    }
+    
+	.label-warning {
+	    background-color: #f1a325 !important;
+	}
+    
+    </style>
+  </head>
+  <body>
+	
+	<div class="heading">
+	  <nav class="nav">
+	    <a id="menuExampleBtn" class="btn btn-lg" data-name="menuExample" data-display="modal" data-remote="/page/menu.html" data-placement="left"><i class="icon-bars" style="color:#fcae32"></i></a>
+	  </nav>
+	  <div class="title"><strong>首页</strong></div>
+	  <nav class="nav">
+  	  </nav>
+	</div>
+	
+	<div class="content tsn-margin">
+	
+		<div class="panel ">
+		  <div class="panel-heading">
+		    公告
+		  </div>
+		  <div class="panel-body">
+		    欢迎使用快鸟加速器
+		  </div>
+		</div>
+		
+		<div class="cards">
+		  <div class="col-xs-6 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-padding-sm content-space-between">
+			    <div style="width: 60%"><i class="icon icon-user large" style="font-size: 200% !important;"></i></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span>会员类型</span>
+			    	<div>普通用户</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-6 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-padding-sm content-space-between">
+			    <div style="width: 60%"><i class="icon icon-time large" style="font-size: 200% !important;"></i></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span>剩余时间</span>
+			    	<div>23天</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-6 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-padding-sm content-space-between">
+			    <div style="width: 60%"><i class="icon icon-database large" style="font-size: 200% !important;"></i></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span>今日使用</span>
+			    	<div>2.5G</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-6 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-padding-sm content-space-between">
+			    <div style="width: 60%"><i class="icon icon-node large" style="font-size: 200% !important;"></i></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span>邀请人数</span>
+			    	<div>23个</div>
+		    	</div>
+		    </div>
+		  </div>
+		</div>
+		
+		<span class="label label-warning">客户端订阅</span>
+	
+		<div class="list-group tsn-margin-top">
+			  <a href="#" class="list-group-item flex">
+			    <h5 class="list-group-item-heading text-left" style="width:60%">通用订阅</h5>
+			    <span class="list-group-item-text text-muted text-right" style="width:40%"><span class="label label-Success label-outline">点击复制</span></span>
+			  </a>
+			  <a href="#" class="list-group-item flex">
+			    <h5 class="list-group-item-heading text-left" style="width:60%">小火箭订阅</h5>
+			    <span class="list-group-item-text text-muted text-right" style="width:40%"><span class="label label-Success label-outline">点击复制</span></span>
+			  </a>
+		</div>
+	</div>
+	
+  </body>
+  <script>
+	
+	</script>
+</html>

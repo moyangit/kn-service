@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.source.SourceInvitStatisHourMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.source.SourceInvitStatisHour" >
+    <id column="inviter_hour_id" property="inviterHourId" jdbcType="VARCHAR" />
+    <result column="day_time" property="dayTime" jdbcType="VARCHAR" />
+    <result column="hour_time" property="hourTime" jdbcType="VARCHAR" />
+    <result column="source_invit_id" property="sourceInvitId" jdbcType="VARCHAR" />
+    <result column="source_invit_code" property="sourceInvitCode" jdbcType="VARCHAR" />
+    <result column="source_name" property="sourceName" jdbcType="VARCHAR" />
+    <result column="source_path" property="sourcePath" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    inviter_hour_id, day_time, hour_time, source_invit_id, source_invit_code, source_name, 
+    source_path, num, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter_statis_hour
+    where inviter_hour_id = #{inviterHourId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectBySourceCodeAndDay" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter_statis_hour
+    where source_invit_code = #{sourceInvitCode,jdbcType=VARCHAR} and day_time like concat('%', #{YMDTime,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="selectBySourceCodeAndTime" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter_statis_hour
+    where source_invit_code = #{sourceInvitCode,jdbcType=VARCHAR} and day_time &gt;= #{startDayTime} and day_time &lt; #{endDayTime} order by day_time asc
+  </select>
+  
+  <select id="selectBySourcePathAndTime" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter_statis_hour
+    where source_path = #{sourcePath,jdbcType=VARCHAR} and day_time &gt;= #{startDayTime} and day_time &lt; #{endDayTime} order by day_time asc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from v_mem_source_inviter_statis_hour
+    where inviter_hour_id = #{inviterHourId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.source.SourceInvitStatisHour" >
+    insert into v_mem_source_inviter_statis_hour (inviter_hour_id, day_time, hour_time, 
+      source_invit_id, source_invit_code, source_name, 
+      source_path, create_time, update_time
+      )
+    values (#{inviterHourId,jdbcType=VARCHAR}, #{dayTime,jdbcType=VARCHAR}, #{hourTime,jdbcType=VARCHAR}, 
+      #{sourceInvitId,jdbcType=VARCHAR}, #{sourceInvitCode,jdbcType=VARCHAR}, #{sourceName,jdbcType=VARCHAR}, 
+      #{sourcePath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+    <insert id="insertByIgnore" parameterType="com.tsn.serv.mem.entity.source.SourceInvitStatisHour" >
+    insert into v_mem_source_inviter_statis_hour (inviter_hour_id, day_time, hour_time, 
+      source_invit_id, source_invit_code, source_name, 
+      source_path, num, create_time, update_time
+      )
+    values (UUID_SHORT(), #{dayTime,jdbcType=VARCHAR}, #{hourTime,jdbcType=VARCHAR}, 
+      #{sourceInvitId,jdbcType=VARCHAR}, #{sourceInvitCode,jdbcType=VARCHAR}, #{sourceName,jdbcType=VARCHAR}, 
+      #{sourcePath,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.source.SourceInvitStatisHour" >
+    insert into v_mem_source_inviter_statis_hour
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="inviterHourId != null" >
+        inviter_hour_id,
+      </if>
+      <if test="dayTime != null" >
+        day_time,
+      </if>
+      <if test="hourTime != null" >
+        hour_time,
+      </if>
+      <if test="sourceInvitId != null" >
+        source_invit_id,
+      </if>
+      <if test="sourceInvitCode != null" >
+        source_invit_code,
+      </if>
+      <if test="sourceName != null" >
+        source_name,
+      </if>
+      <if test="sourcePath != null" >
+        source_path,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="inviterHourId != null" >
+        #{inviterHourId,jdbcType=VARCHAR},
+      </if>
+      <if test="dayTime != null" >
+        #{dayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="hourTime != null" >
+        #{hourTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceInvitId != null" >
+        #{sourceInvitId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceInvitCode != null" >
+        #{sourceInvitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceName != null" >
+        #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcePath != null" >
+        #{sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+      	#{num,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.source.SourceInvitStatisHour" >
+    update v_mem_source_inviter_statis_hour
+    <set >
+      <if test="dayTime != null" >
+        day_time = #{dayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="hourTime != null" >
+        hour_time = #{hourTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceInvitId != null" >
+        source_invit_id = #{sourceInvitId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceInvitCode != null" >
+        source_invit_code = #{sourceInvitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceName != null" >
+        source_name = #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcePath != null" >
+        source_path = #{sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+      	num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where inviter_hour_id = #{inviterHourId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.source.SourceInvitStatisHour" >
+    update v_mem_source_inviter_statis_hour
+    set day_time = #{dayTime,jdbcType=VARCHAR},
+      hour_time = #{hourTime,jdbcType=VARCHAR},
+      source_invit_id = #{sourceInvitId,jdbcType=VARCHAR},
+      source_invit_code = #{sourceInvitCode,jdbcType=VARCHAR},
+      source_name = #{sourceName,jdbcType=VARCHAR},
+      source_path = #{sourcePath,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where inviter_hour_id = #{inviterHourId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getInviterChart" resultType="java.lang.String">
+/*
+  day_time as dayTime,hour_time as hourTime,
+*/
+    SELECT num as inviterNum FROM v_mem_source_inviter_statis_hour
+    WHERE 1 = 1
+    AND day_time like concat(#{monthDate, jdbcType=VARCHAR}, '%')
+    and source_path = #{source, jdbcType=VARCHAR}
+	order by day_time asc
+  </select>
+
+  <select id="getInviterChartTo" resultType="java.lang.String">
+    SELECT num as inviterNum FROM v_mem_source_inviter_statis_hour
+    WHERE 1 = 1
+    <if test="statDate != null">
+      AND day_time &gt;= #{statDate,jdbcType=VARCHAR}
+    </if>
+    <if test="endDate != null">
+      AND day_time &lt;= #{endDate,jdbcType=VARCHAR}
+    </if>
+    and source_path = #{source, jdbcType=VARCHAR}
+    order by day_time asc
+  </select>
+
+  <select id="getInviterByDayTime" resultType="java.util.Map">
+    select
+      day_time as dayTime,
+      hour_time as hourTime,
+      num as inviterNum
+    from v_mem_source_inviter_statis_hour
+    where source_path = #{source, jdbcType=VARCHAR} and day_time = #{dayTime,jdbcType=VARCHAR}
+  </select>
+</mapper>

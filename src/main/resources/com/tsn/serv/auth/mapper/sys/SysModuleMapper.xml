@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.auth.mapper.sys.SysModuleMapper">
+
+  <resultMap id="BaseResultMap" type="com.tsn.serv.auth.entity.sys.SysModule">
+    <id column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="super_id" jdbcType="INTEGER" property="superId" />
+    <result column="module_code" jdbcType="VARCHAR" property="moduleCode" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="click_href" jdbcType="VARCHAR" property="clickHref" />
+    <result column="is_menu" jdbcType="INTEGER" property="isMenu" />
+    <result column="is_used" jdbcType="INTEGER" property="isUsed" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+  module_id, super_id, module_code, module_name, click_href, is_menu, is_used, sort, update_time,
+  create_time
+</sql>
+
+
+  <delete id="delete" parameterType="java.lang.String">
+  delete from t_sys_module
+  where module_id = #{moduleId,jdbcType=INTEGER}
+</delete>
+
+
+  <insert id="insert" parameterType="com.tsn.serv.auth.entity.sys.SysModule">
+  insert into t_sys_module (module_id, super_id, module_code, module_name,
+    click_href, is_menu, is_used, 
+    sort, update_time, create_time
+    )
+  values (#{moduleId,jdbcType=INTEGER}, #{superId,jdbcType=INTEGER}, #{moduleCode,jdbcType=VARCHAR}, #{moduleName,jdbcType=VARCHAR},
+    #{clickHref,jdbcType=VARCHAR}, #{isMenu,jdbcType=INTEGER}, #{isUsed,jdbcType=INTEGER}, 
+    #{sort,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+    )
+</insert>
+
+
+  <insert id="insertDynamic" parameterType="com.tsn.serv.auth.entity.sys.SysModule">
+    insert into t_sys_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="superId != null">
+        super_id,
+      </if>
+      <if test="moduleCode != null">
+        module_code,
+      </if>
+      <if test="moduleName != null">
+        module_name,
+      </if>
+      <if test="clickHref != null">
+        click_href,
+      </if>
+      <if test="isMenu != null">
+        is_menu,
+      </if>
+      <if test="isUsed != null">
+        is_used,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="superId != null">
+        #{superId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleCode != null">
+        #{moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null">
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="clickHref != null">
+        #{clickHref,jdbcType=VARCHAR},
+      </if>
+      <if test="isMenu != null">
+        #{isMenu,jdbcType=INTEGER},
+      </if>
+      <if test="isUsed != null">
+        #{isUsed,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateDynamic" parameterType="com.tsn.serv.auth.entity.sys.SysModule">
+    update t_sys_module
+    <set>
+      <if test="superId != null">
+        super_id = #{superId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleCode != null">
+        module_code = #{moduleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null">
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="clickHref != null">
+        click_href = #{clickHref,jdbcType=VARCHAR},
+      </if>
+      <if test="isMenu != null">
+        is_menu = #{isMenu,jdbcType=INTEGER},
+      </if>
+      <if test="isUsed != null">
+        is_used = #{isUsed,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="update" parameterType="com.tsn.serv.auth.entity.sys.SysModule">
+  update t_sys_module
+  set  super_id = #{superId,jdbcType=INTEGER},
+    module_code = #{moduleCode,jdbcType=VARCHAR},
+    module_name = #{moduleName,jdbcType=VARCHAR},
+    click_href = #{clickHref,jdbcType=VARCHAR},
+    is_menu = #{isMenu,jdbcType=INTEGER},
+    is_used = #{isUsed,jdbcType=INTEGER},
+    sort = #{sort,jdbcType=INTEGER},
+    update_time = #{updateTime,jdbcType=TIMESTAMP},
+    create_time = #{createTime,jdbcType=TIMESTAMP}
+  where module_id = #{moduleId,jdbcType=INTEGER}
+</update>
+
+
+  <select id="selectByModuleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  t_sys_module
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </select>
+
+  <select id="sysSysModuleList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select * from t_sys_module
+  </select>
+
+  <delete id="deleteSysModuleById" parameterType="java.util.List">
+    DELETE FROM t_sys_module WHERE module_id IN
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=INTEGER}
+    </foreach>
+  </delete>
+
+  <!-- 一级菜单 -->
+  <select id="getOneModuleList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  t_sys_module
+    where
+    super_id is null or super_id = ''
+  </select>
+
+  <!-- 根据ID查询下级菜单 -->
+  <select id="getSubordinateModule" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from t_sys_module
+    where super_id is not null and super_id in
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+</mapper>

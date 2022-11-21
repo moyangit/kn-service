@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.mem.mapper.device.MemDeviceMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.device.MemDevice">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="mem_id" jdbcType="VARCHAR" property="memId" />
+        <result column="device_no" jdbcType="VARCHAR" property="deviceNo" />
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+        <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+        <result column="device_status" jdbcType="VARCHAR" property="deviceStatus" />
+        <result column="use_time" jdbcType="TIMESTAMP" property="useTime" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  id, mem_id, device_no, device_name, device_type, device_status, use_time
+</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+  delete from v_mem_device
+  where id = #{id,jdbcType=INTEGER}
+</delete>
+
+
+    <insert id="insert" parameterType="com.tsn.serv.mem.entity.device.MemDevice">
+  insert into v_mem_device (id, mem_id, device_no, 
+    device_name, device_type, device_status, 
+    use_time)
+  values (#{id,jdbcType=INTEGER}, #{memId,jdbcType=VARCHAR}, #{deviceNo,jdbcType=VARCHAR}, 
+    #{deviceName,jdbcType=VARCHAR}, #{deviceType,jdbcType=VARCHAR}, #{deviceStatus,jdbcType=VARCHAR}, 
+    #{useTime,jdbcType=TIMESTAMP})
+</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.tsn.serv.mem.entity.device.MemDevice">
+        insert into v_mem_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memId != null">
+                mem_id,
+            </if>
+            <if test="deviceNo != null">
+                device_no,
+            </if>
+            <if test="deviceName != null">
+                device_name,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+            <if test="deviceStatus != null">
+                device_status,
+            </if>
+            <if test="useTime != null">
+                use_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="memId != null">
+                #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null">
+                #{deviceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="useTime != null">
+                #{useTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.tsn.serv.mem.entity.device.MemDevice">
+        update v_mem_device
+        <set>
+            <if test="memId != null">
+                mem_id = #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                device_name = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                device_type = #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null">
+                device_status = #{deviceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="useTime != null">
+                use_time = #{useTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="update" parameterType="com.tsn.serv.mem.entity.device.MemDevice">
+  update v_mem_device
+  set mem_id = #{memId,jdbcType=VARCHAR},
+    device_no = #{deviceNo,jdbcType=VARCHAR},
+    device_name = #{deviceName,jdbcType=VARCHAR},
+    device_type = #{deviceType,jdbcType=VARCHAR},
+    device_status = #{deviceStatus,jdbcType=VARCHAR},
+    use_time = #{useTime,jdbcType=TIMESTAMP}
+  where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_mem_device
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="id != null" >
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="memId != null and memId != ''" >
+                and mem_id = #{memId,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceNo != null and deviceNo != ''" >
+                and device_no = #{deviceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceName != null and deviceName != ''" >
+                and device_name = #{deviceName,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceType != null and deviceType != ''" >
+                and device_type = #{deviceType,jdbcType=VARCHAR}
+            </if>
+            <if test="deviceStatus != null and deviceStatus != ''" >
+                and device_status = #{deviceStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="useTime != null" >
+                and use_time = #{useTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据memId获取当前在线的设备信息 -->
+    <select id="getOnLineDevice" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from v_mem_device
+        where mem_id = #{memId,jdbcType=VARCHAR}
+        and use_time &gt;=  DATE_SUB(NOW(), INTERVAL #{pollingTime,jdbcType=INTEGER} SECOND )
+    </select>
+
+    <select id="selectByMemIdAndDeviceNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from v_mem_device
+        where mem_id = #{memId,jdbcType=VARCHAR}
+        and device_no = #{deviceNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getDeviceNum" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+          count(*) as olineNum,
+          device_type as deviceType
+        from
+          v_mem_device
+        where 1 = 1
+        <if test="selectType == 0">
+            and mem_id like '1%'
+        </if>
+        <if test="selectType == 1">
+            and mem_id like '2%'
+        </if>
+        group by device_type
+    </select>
+
+    <select id="getAllUpDevice" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from v_mem_device
+        where use_time &gt;=  DATE_SUB(NOW(), INTERVAL 2 MINUTE)
+        <if test="selectType == 0">
+            and mem_id like '1%'
+        </if>
+        <if test="selectType == 1">
+            and mem_id like '2%'
+        </if>
+    </select>
+
+    <update id="updateByMemIdAndDeviceNo" parameterType="com.tsn.serv.mem.entity.device.MemDevice">
+        update v_mem_device
+        <set>
+            <if test="memId != null">
+                mem_id = #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceNo != null">
+                device_no = #{deviceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceName != null">
+                device_name = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                device_type = #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceStatus != null">
+                device_status = #{deviceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="useTime != null">
+                use_time = #{useTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where mem_id = #{memId,jdbcType=VARCHAR} and device_no = #{deviceNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="deviceList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+        select
+        a.id,
+        a.mem_id as memId,
+        a.device_no as deviceNo,
+        a.device_name as deviceName,
+        a.device_type as deviceType,
+        a.device_status as deviceStatus,
+        a.use_time as useTime,
+        b.mem_phone as memPhone
+        from  v_mem_device as a
+        left join v_mem_info as b on a.mem_id = b.mem_id
+        where 1 = 1
+        <if test="paramObj.selectData != null and paramObj.selectData != ''">
+            and (
+            b.mem_phone like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+            or
+            b.mem_nick_name like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+            )
+        </if>
+        <if test="paramObj.selectType == 1">
+            AND DATE_FORMAT(a.use_time,'%Y-%m-%d') = CURDATE()
+        </if>
+        <if test="paramObj.selectType == 2">
+            AND DATE_FORMAT(a.use_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 DAY) AND
+            DATE_FORMAT(a.use_time,'%Y-%m-%d') &lt;= CURDATE()
+        </if>
+        <if test="paramObj.selectType == 3">
+            AND DATE_FORMAT(a.use_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+            DATE_FORMAT(a.use_time,'%Y-%m-%d') &lt;= CURDATE()
+        </if>
+        <if test="paramObj.selectType == 4">
+            AND DATE_FORMAT(a.use_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND
+            DATE_FORMAT(a.use_time,'%Y-%m-%d') &lt;= CURDATE()
+        </if>
+        <if test="paramObj.selectType == 5">
+            AND DATE_FORMAT(a.use_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+            DATE_FORMAT(a.use_time,'%Y-%m-%d') &lt;= CURDATE()
+        </if>
+        <if test="paramObj.selectType == 0">
+
+        </if>
+    </select>
+</mapper>

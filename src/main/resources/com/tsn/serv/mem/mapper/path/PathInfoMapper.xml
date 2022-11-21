@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.path.PathInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.path.PathInfo" >
+    <id column="path_id" property="pathId" jdbcType="INTEGER" />
+    <result column="inbound_tag" property="inboundTag" jdbcType="VARCHAR" />
+    <result column="protocol" property="protocol" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="path_code" property="pathCode" jdbcType="VARCHAR" />
+    <result column="path_name" property="pathName" jdbcType="VARCHAR" />
+    <result column="network" property="network" jdbcType="VARCHAR" />
+    <result column="security" property="security" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="is_use" property="isUse" jdbcType="TINYINT" />
+    <result column="run_status" property="runStatus" jdbcType="VARCHAR" />
+    <result column="icon_url" property="iconUrl" jdbcType="VARCHAR" />
+    <result column="path_grade" property="pathGrade" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.tsn.serv.mem.entity.path.PathInfo" extends="BaseResultMap" >
+    <result column="server_arr" property="serverArr" jdbcType="LONGVARCHAR" />
+    <result column="node_arr" property="nodeArr" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    path_id, inbound_tag, protocol, path, network, security, create_user_id, is_use, path_code, path_name, run_status, icon_url, path_grade, weight
+  </sql>
+  <sql id="Blob_Column_List" >
+    server_arr
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_path
+    where path_id = #{pathId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getPathInfoAllUse" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_node_path
+    where is_use = 0 and path_grade = '0' order by sort desc
+  </select>
+  
+  <select id="getPathInfoAllUseByWeight" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_node_path
+    where is_use = 0 and path_grade = #{pathGrade,jdbcType=INTEGER} order by weight desc
+  </select>
+  
+  <select id="getPathInfoAllUseByGrade" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_node_path
+    where is_use = 0 and path_grade = #{pathGrade,jdbcType=INTEGER} order by sort desc
+  </select>
+
+  <select id="getPathInfoAllUseByCode" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_path
+    where is_use = 0 and path_code = #{pathCode,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getPathInfoAllUseByCodeV1" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_node_path
+    where is_use = 0 and path_code = #{pathCode,jdbcType=INTEGER} and path_grade = #{pathGrade,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from v_mem_node_path
+    where path_id = #{pathId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.path.PathInfo" >
+    insert into v_mem_node_path (path_id, inbound_tag, protocol,
+      path, network, security, 
+      create_user_id, is_use, server_arr, run_status, icon_url,
+      path_grade
+      )
+    values (#{pathId,jdbcType=INTEGER}, #{inbound_tag,jdbcType=VARCHAR}, #{protocol,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{network,jdbcType=VARCHAR}, #{security,jdbcType=VARCHAR}, 
+      #{createUserId,jdbcType=VARCHAR}, #{isUse,jdbcType=TINYINT}, #{serverArr,jdbcType=LONGVARCHAR}, #{runStatus,jdbcType=VARCHAR},#{iconUrl,jdbcType=VARCHAR},
+      #{pathGrade,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.path.PathInfo" >
+    insert into v_mem_node_path
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="path_id != null" >
+        path_id,
+      </if>
+      <if test="inbound_tag != null" >
+        inbound_tag,
+      </if>
+      <if test="protocol != null" >
+        protocol,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="network != null" >
+        network,
+      </if>
+      <if test="security != null" >
+        security,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="isUse != null" >
+        is_use,
+      </if>
+      <if test="serverArr != null" >
+        server_arr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="path_id != null" >
+        #{pathId,jdbcType=INTEGER},
+      </if>
+      <if test="inbound_tag != null" >
+        #{inbound_tag,jdbcType=VARCHAR},
+      </if>
+      <if test="protocol != null" >
+        #{protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null" >
+        #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="security != null" >
+        #{security,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        #{isUse,jdbcType=TINYINT},
+      </if>
+      <if test="serverArr != null" >
+        #{serverArr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.path.PathInfo" >
+    update v_mem_node_path
+    <set >
+      <if test="inbound_tag != null" >
+        inbound_tag = #{inbound_tag,jdbcType=VARCHAR},
+      </if>
+      <if test="protocol != null" >
+        protocol = #{protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null" >
+        network = #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="security != null" >
+        security = #{security,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        is_use = #{isUse,jdbcType=TINYINT},
+      </if>
+      <if test="serverArr != null" >
+        server_arr = #{serverArr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where path_id = #{pathId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tsn.serv.mem.entity.path.PathInfo" >
+    update v_mem_node_path
+    set inbound_tag = #{inbound_tag,jdbcType=VARCHAR},
+      protocol = #{protocol,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      network = #{network,jdbcType=VARCHAR},
+      security = #{security,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      is_use = #{isUse,jdbcType=TINYINT},
+      server_arr = #{serverArr,jdbcType=LONGVARCHAR}
+    where path_id = #{pathId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.path.PathInfo" >
+    update v_mem_node_path
+    set inbound_tag = #{inbound_tag,jdbcType=VARCHAR},
+      protocol = #{protocol,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      network = #{network,jdbcType=VARCHAR},
+      security = #{security,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=VARCHAR},
+      is_use = #{isUse,jdbcType=TINYINT},
+      run_status = #{runStatus,jdbcType=VARCHAR},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      path_grade = #{pathGrade,jdbcType=VARCHAR}
+    where path_id = #{pathId,jdbcType=INTEGER}
+  </update>
+</mapper>

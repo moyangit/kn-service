@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.mem.mapper.order.ChargeOrderMapper">
+  
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.order.ChargeOrder">
+    <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="trade_status" jdbcType="VARCHAR" property="tradeStatus" />
+    <result column="mem_id" jdbcType="VARCHAR" property="memId" />
+    <result column="mem_no" jdbcType="VARCHAR" property="memNo" />
+    <result column="mem_name" jdbcType="VARCHAR" property="memName" />
+    <result column="mem_real_name" jdbcType="VARCHAR" property="memRealName" />
+    <result column="mem_phone" jdbcType="VARCHAR" property="memPhone" />
+    <result column="mem_type" jdbcType="VARCHAR" property="memType" />
+    <result column="mem_before_suspen_date" jdbcType="VARCHAR" property="memBeforeSuspenDate" />
+    <result column="mem_reg_time" jdbcType="VARCHAR" property="memRegTime" />
+    <result column="charge_id" jdbcType="VARCHAR" property="chargeId" />
+    <result column="charge_type" jdbcType="VARCHAR" property="chargeType" />
+    <result column="charge_price" jdbcType="DECIMAL" property="chargePrice" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="cost_price" jdbcType="DECIMAL" property="costPrice" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="final_price" jdbcType="DECIMAL" property="finalPrice" />
+    
+    <result column="invit_user_id" jdbcType="VARCHAR" property="invitUserId" />
+    <result column="invit_user_type" jdbcType="VARCHAR" property="invitUserType" />
+    <result column="invit_user_name" jdbcType="VARCHAR" property="invitUserName" />
+    
+    <result column="rebate" jdbcType="INTEGER" property="rebate" />
+    <result column="rebate_user_id" jdbcType="VARCHAR" property="rebateUserId" />
+    <result column="rebate_user_type" jdbcType="VARCHAR" property="rebateUserType" />
+    <result column="rebate_status" jdbcType="VARCHAR" property="rebateStatus" />
+    <result column="rebate_user_account_no" jdbcType="VARCHAR" property="rebateUserAccountNo" />
+    <result column="rebate_user_phone" jdbcType="VARCHAR" property="rebateUserPhone" />
+    <result column="rebate_user_name" jdbcType="VARCHAR" property="rebateUserName" />
+    <result column="rebate_details" jdbcType="LONGVARCHAR" property="rebateDetails" />
+    <result column="rebate_lvl" jdbcType="VARCHAR" property="rebateLvl" />
+    <result column="rebate_user_account_no" jdbcType="VARCHAR" property="rebateUserAccountNo" />
+    <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="trade_pay_time" jdbcType="TIMESTAMP" property="tradePayTime" />
+    <result column="trade_refund_time" jdbcType="TIMESTAMP" property="tradeRefundTime" />
+    <result column="order_timeout" jdbcType="INTEGER" property="orderTimeout" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, order_no, pay_type, trade_no, trade_status, mem_id, mem_no, mem_name, mem_real_name, 
+    mem_phone, mem_type, mem_before_suspen_date, charge_id, charge_type, charge_price, subject, cost_price, discount, 
+    final_price, invit_user_id, invit_user_type, invit_user_name, rebate, rebate_user_id, rebate_user_type, rebate_user_phone, rebate_user_name, rebate_status, rebate_details, rebate_user_account_no, rebate_lvl, 
+    order_status, create_time, update_time, trade_pay_time, trade_refund_time, order_timeout
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="queryMyOrderByPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where mem_id = #{paramObj.memId,jdbcType=VARCHAR} and order_status = "1" order by create_time desc
+  </select>
+  
+  <select id="queryUnRelateAndSuccessOrderByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where rebate_user_id = #{rebateUserId,jdbcType=VARCHAR} and rebate_status = '0' and order_status = '1'
+  </select>
+  
+  <select id="queryOrderByOrderNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from v_mem_order_charge
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.order.ChargeOrder">
+    insert into v_mem_order_charge (order_id, order_no, pay_type, 
+      trade_no, trade_status, mem_id, mem_no,
+      mem_name, mem_real_name, mem_phone, mem_email, 
+      mem_type, mem_before_suspen_date, charge_id, charge_type, 
+      charge_price, subject, cost_price, 
+      discount, final_price, invit_user_id, invit_user_type, invit_user_name, rebate, rebate_user_id, rebate_user_type, rebate_user_phone, rebate_user_name, rebate_status, rebate_user_account_no, rebate_lvl, rebate_details, order_status, 
+      create_time, update_time, trade_pay_time, 
+      trade_refund_time, order_timeout)
+    values (uuid_short(), #{orderNo,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, 
+      #{tradeNo,jdbcType=VARCHAR}, #{tradeStatus,jdbcType=VARCHAR}, #{memId,jdbcType=VARCHAR}, #{memNo,jdbcType=INTEGER}, 
+      #{memName,jdbcType=VARCHAR}, #{memRealName,jdbcType=VARCHAR}, #{memPhone,jdbcType=VARCHAR}, #{memEmail,jdbcType=VARCHAR}, 
+      #{memType,jdbcType=VARCHAR}, #{memBeforeSuspenDate,jdbcType=VARCHAR}, #{chargeId,jdbcType=VARCHAR}, #{chargeType,jdbcType=VARCHAR}, 
+      #{chargePrice,jdbcType=DECIMAL}, #{subject,jdbcType=VARCHAR}, #{costPrice,jdbcType=DECIMAL}, 
+      #{discount,jdbcType=INTEGER}, #{finalPrice,jdbcType=DECIMAL},#{invitUserId,jdbcType=VARCHAR},#{invitUserType,jdbcType=VARCHAR},#{invitUserName,jdbcType=VARCHAR}, #{rebate,jdbcType=INTEGER},#{rebateUserId,jdbcType=VARCHAR},
+      #{rebateUserType,jdbcType=VARCHAR},#{rebateUserPhone,jdbcType=VARCHAR},#{rebateUserName,jdbcType=VARCHAR},
+      #{rebateStatus,jdbcType=VARCHAR},#{rebateUserAccountNo,jdbcType=VARCHAR},
+      #{rebateLvl,jdbcType=INTEGER}, #{rebateDetails,jdbcType=LONGVARCHAR},#{orderStatus,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{tradePayTime,jdbcType=TIMESTAMP}, 
+      #{tradeRefundTime,jdbcType=TIMESTAMP}, #{orderTimeout,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.order.ChargeOrder">
+    update v_mem_order_charge
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeStatus != null">
+        trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null">
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null">
+        mem_name = #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="memRealName != null">
+        mem_real_name = #{memRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null">
+        mem_phone = #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null">
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeId != null">
+        charge_id = #{chargeId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null">
+        charge_type = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargePrice != null">
+        charge_price = #{chargePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+        cost_price = #{costPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="finalPrice != null">
+        final_price = #{finalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateLvl != null">
+        rebate_lvl = #{rebateLvl,jdbcType=INTEGER},
+      </if>
+      <if test="rebateDetails != null">
+        rebate_details = #{rebateDetails,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradePayTime != null">
+        trade_pay_time = #{tradePayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeRefundTime != null">
+        trade_refund_time = #{tradeRefundTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.order.ChargeOrder">
+    update v_mem_order_charge
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
+      trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      mem_id = #{memId,jdbcType=VARCHAR},
+      mem_name = #{memName,jdbcType=VARCHAR},
+      mem_real_name = #{memRealName,jdbcType=VARCHAR},
+      mem_phone = #{memPhone,jdbcType=VARCHAR},
+      mem_type = #{memType,jdbcType=VARCHAR},
+      charge_id = #{chargeId,jdbcType=VARCHAR},
+      charge_type = #{chargeType,jdbcType=VARCHAR},
+      charge_price = #{chargePrice,jdbcType=DECIMAL},
+      subject = #{subject,jdbcType=VARCHAR},
+      cost_price = #{costPrice,jdbcType=DECIMAL},
+      discount = #{discount,jdbcType=INTEGER},
+      final_price = #{finalPrice,jdbcType=DECIMAL},
+      rebate = #{rebate,jdbcType=INTEGER},rebate_user_id = #{rebateUserId,jdbcType=VARCHAR},rebate_user_type = #{rebateUserType,jdbcType=VARCHAR},rebate_status = #{rebateStatus,jdbcType=VARCHAR},rebate_user_account_no = #{rebateUserAccountNo,jdbcType=VARCHAR}
+      rebate_lvl = #{rebateLvl,jdbcType=INTEGER},
+      rebate_details = #{rebateDetails,jdbcType=LONGVARCHAR},
+      order_status = #{orderStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      trade_pay_time = #{tradePayTime,jdbcType=TIMESTAMP},
+      trade_refund_time = #{tradeRefundTime,jdbcType=TIMESTAMP}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateOrderMemRebateStatusByOrderNo" parameterType="com.tsn.serv.mem.entity.order.ChargeOrder">
+    update v_mem_order_charge
+    set rebate_status = #{rebateStatus,jdbcType=VARCHAR},
+      rebate_details = #{rebateDetails,jdbcType=LONGVARCHAR},
+      update_time = now() 
+    where order_no = #{orderNo,jdbcType=VARCHAR} and order_status = '1'
+  </update>
+  
+  <update id="updateOrderByOrderNoSuccess" parameterType="com.tsn.serv.mem.entity.order.ChargeOrder">
+    update v_mem_order_charge
+    set trade_no = #{tradeNo,jdbcType=VARCHAR},
+      trade_status = #{tradeStatus,jdbcType=LONGVARCHAR},
+      order_status = '1',
+      update_time = now()
+    where order_no = #{orderNo,jdbcType=VARCHAR} and order_status = '0'
+  </update>
+  
+    <update id="updateChargeOrderForClose" parameterType="com.tsn.serv.mem.entity.order.ChargeOrder">
+    update v_mem_order_charge
+    set trade_no = #{tradeNo,jdbcType=VARCHAR},
+      trade_status = #{tradeStatus,jdbcType=LONGVARCHAR},
+      order_status = '9',
+      update_time = now()
+    where order_no = #{orderNo,jdbcType=VARCHAR} and order_status = '0'
+  </update>
+
+  <select id="queryChargeOrderListPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where 
+      1=1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="paramObj.chargeType != null and paramObj.chargeType != ''">
+      and charge_type = #{paramObj.chargeType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.orderStatus != null and paramObj.orderStatus != ''">
+      and order_status = #{paramObj.orderStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      and mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.rebateType == 0 and paramObj.rebateType != ''">
+      and rebate_user_id is not null
+    </if>
+    <if test="paramObj.rebateType == 1 and paramObj.rebateType != ''">
+      and rebate_user_id is null
+    </if>
+    <if test="paramObj.statDate != null and paramObj.statDate != ''">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="paramObj.endDate != null and paramObj.endDate != ''">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+    </if>
+    order by create_time desc
+  </select>
+  
+  
+  <select id="queryChargeOrderAndMemListPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      a.order_id, a.order_no, a.pay_type, a.trade_no, a.trade_status, a.mem_id, a.mem_name, a.mem_real_name, 
+    a.mem_phone, a.mem_type, a.mem_before_suspen_date, a.charge_id, a.charge_type, a.charge_price, a.subject, a.cost_price, a.discount, 
+    a.final_price, a.invit_user_id, a.invit_user_type, a.invit_user_name, a.rebate, a.rebate_user_id, a.rebate_user_type, a.rebate_user_phone, a.rebate_user_name, a.rebate_status, a.rebate_details, a.rebate_user_account_no, a.rebate_lvl, 
+    a.order_status, a.create_time, a.update_time, a.trade_pay_time, a.trade_refund_time, a.order_timeout,
+      b.reg_date as mem_reg_time
+    from v_mem_order_charge a left join v_mem_info b on a.mem_id = b.mem_id
+    where 
+      1=1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and a.mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="paramObj.chargeType != null and paramObj.chargeType != ''">
+      and a.charge_type = #{paramObj.chargeType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.orderStatus != null and paramObj.orderStatus != ''">
+      and a.order_status = #{paramObj.orderStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      and a.mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.rebateType == 0 and paramObj.rebateType != ''">
+      and a.rebate_user_id is not null
+    </if>
+    <if test="paramObj.rebateType == 1 and paramObj.rebateType != ''">
+      and a.rebate_user_id is null
+    </if>
+    <if test="paramObj.statDate != null and paramObj.statDate != ''">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="paramObj.endDate != null and paramObj.endDate != ''">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+    </if>
+    order by create_time desc
+  </select>
+  
+  <select id="getStatisDataTodayBefore" resultType="java.util.Map">
+    SELECT * FROM (
+        SELECT
+            IFNULL(SUM(final_price),0) AS totalMoney, sum(case when charge_type='10' then final_price end) as monthTotalMoney, sum(case when charge_type='11' then final_price end) as quartTotalMoney, sum(case when charge_type='12' then final_price end) as halfYearTotalMoney, sum(case when charge_type='13' then final_price end) as yearTotalMoney, sum(case when charge_type='14' then final_price end) as foreverTotalMoney
+        FROM
+            v_mem_order_charge
+        WHERE
+        	1=1 
+        	<if test="todayTime != null and todayTime != ''">
+	      		and create_time &lt; concat(#{todayTime,jdbcType=VARCHAR},' 00:00:00')
+	    	</if>
+        	
+           and order_status = '1'
+    ) AS a
+  </select>
+  
+  <select id="getStatisDataToday" resultType="java.util.Map">
+    SELECT * FROM (
+       SELECT
+           IFNULL(SUM(final_price),0) AS totalMoney, sum(case when charge_type='10' then final_price end) as monthTotalMoney, sum(case when charge_type='11' then final_price end) as quartTotalMoney, sum(case when charge_type='12' then final_price end) as halfYearTotalMoney, sum(case when charge_type='13' then final_price end) as yearTotalMoney, sum(case when charge_type='14' then final_price end) as foreverTotalMoney
+       FROM
+           v_mem_order_charge
+       WHERE
+       	1=1 
+       	<if test="todayTime != null and todayTime != ''">
+      		and create_time like concat(#{todayTime,jdbcType=VARCHAR},'%')
+    	</if>
+       	
+          and order_status = '1'
+    ) AS a
+  </select>
+  
+  <select id="getOrderStatisNumDataTodayBefore" resultType="java.util.Map">
+    SELECT * FROM (
+        SELECT
+            count(*) AS totalOrderNum, sum(case when order_status='1' then 1 end) as sucsOrderNum
+        FROM
+            v_mem_order_charge
+        WHERE
+        	1=1 
+        	<if test="todayTime != null and todayTime != ''">
+	      		and create_time &lt; concat(#{todayTime,jdbcType=VARCHAR},' 00:00:00')
+	    	</if>
+    ) AS a
+  </select>
+  
+  <select id="getOrderStatisNumDataToday" resultType="java.util.Map">
+    SELECT * FROM (
+       SELECT
+           count(*) AS totalOrderNum, sum(case when order_status='1' then 1 end) as sucsOrderNum
+       FROM
+           v_mem_order_charge
+       WHERE
+       	1=1 and create_time like concat(#{todayTime,jdbcType=VARCHAR},'%')
+    ) AS a
+  </select>
+  
+
+  <select id="getChartData" resultType="java.util.Map">
+    SELECT * FROM (
+        SELECT
+            IFNULL(SUM(final_price),0) AS sumMoney
+        FROM
+            v_mem_order_charge
+        WHERE
+            order_status = '1'
+    ) AS a,
+    (
+        SELECT
+            IFNULL(SUM(final_price),0) AS todayMoney
+        FROM
+            v_mem_order_charge
+        WHERE
+            order_status = '1'
+        AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    ) AS b,
+    (
+        SELECT
+            COUNT(*) AS sumPeople
+        FROM
+            v_mem_info
+        WHERE
+            status = '0'
+    ) AS c,
+    (
+        SELECT
+            COUNT(*) AS todayPeople
+        FROM
+            v_mem_info
+        WHERE
+            status = '0'
+        AND
+            DATE_FORMAT(reg_date,'%Y-%m-%d') = CURDATE()
+    ) AS d
+  </select>
+
+  <select id="getChargeData" parameterType="com.tsn.serv.mem.entity.reqData.HomePageDto" resultType="java.util.Map">
+    SELECT
+        IFNULL(SUM(final_price),0) AS value,
+        '普通' AS name
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6"></if>
+
+    UNION ALL
+
+    SELECT
+        IFNULL(SUM(final_price),0)AS value,
+        '代理' AS name
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT proxy_phone FROM v_mem_proxy_Info
+        )
+        AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6"></if>
+  </select>
+
+  <select id="getCustomerData" resultType="java.util.Map">
+    SELECT
+    COUNT(*) AS value,
+    '注册用户' AS name
+    FROM
+      v_mem_info
+    WHERE status = '0'
+  </select>
+
+  <select id="getInvitationData" parameterType="com.tsn.serv.mem.entity.reqData.HomePageDto" resultType="java.util.Map">
+    SELECT
+    COUNT(*) AS value,
+    '自行注册' AS name
+    FROM
+    v_mem_info
+    WHERE
+    inviter_user_id = '' or inviter_user_id is null
+
+    UNION ALL
+
+    SELECT
+    COUNT(*) AS value,
+    '好友邀请' AS name
+    FROM
+    v_mem_info
+    WHERE inviter_user_id != ''
+    AND inviter_user_id is not null
+    AND inviter_user_type = 'mem'
+
+    UNION ALL
+
+    SELECT
+    COUNT(*) AS value,
+    '渠道邀请' AS name
+    FROM
+    v_mem_info
+    WHERE inviter_user_id != ''
+    AND inviter_user_id is not null
+    AND inviter_user_type = 'source'
+  </select>
+
+  <select id="getIineChartData" resultType="java.util.Map">
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        DATE_SUB(CURDATE(), INTERVAL 6 DAY) AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+    ) AS b
+
+    UNION ALL
+
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 5 DAY)
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 5 DAY)
+    ) AS b
+
+    UNION ALL
+
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        DATE_SUB(CURDATE(), INTERVAL 4 DAY) AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 4 DAY)
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 4 DAY)
+    ) AS b
+
+    UNION ALL
+
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        DATE_SUB(CURDATE(), INTERVAL 3 DAY) AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 3 DAY)
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 3 DAY)
+    ) AS b
+
+    UNION ALL
+
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 2 DAY)
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 2 DAY)
+    ) AS b
+
+    UNION ALL
+
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+    ) AS b
+
+    UNION ALL
+
+    SELECT
+        a.generalMember,
+        b.actingMember,
+        CURDATE() AS dateDay
+    FROM
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS generalMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '0'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    ) AS a,
+    (
+        SELECT
+        IFNULL(SUM(final_price),0) AS actingMember
+        FROM v_mem_order_charge
+        WHERE
+        mem_phone IN (
+        SELECT mem_phone FROM v_mem_info
+        WHERE mem_type = '02'
+        AND is_proxy = '1'
+        AND STATUS = '0'
+        )
+        AND order_status = '1'
+        AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    ) AS b
+  </select>
+
+  <select id="getChargeOrderByCron" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where order_status = '0' and create_time &gt; DATE_SUB(NOW(), INTERVAL 10 MINUTE)
+  </select>
+
+  <select id="getChargeOrder" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where
+      mem_id = #{paramObj.memId,jdbcType=VARCHAR}
+    <if test="paramObj.searchData != null and paramObj.searchData != ''">
+      and (
+      mem_phone like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+      or
+      mem_name like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="paramObj.selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="paramObj.selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 0">
+
+    </if>
+  </select>
+  
+  <select id="getChargeOrderByProxy" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where rebate_user_id = #{paramObj.memId,jdbcType=VARCHAR} and pay_type = 'agent_ba'
+    <if test="paramObj.searchData != null and paramObj.searchData != ''">
+      and mem_phone like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="paramObj.selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="paramObj.selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 0">
+
+    </if>
+  </select>
+
+  <select id="todayChargeOrderList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where
+    1=1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and (
+        mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+      or
+        order_no like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+        )
+    </if>
+    <if test="paramObj.chargeType != null and paramObj.chargeType != ''">
+      and charge_type = #{paramObj.chargeType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      and mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.rebateType == 0 and paramObj.rebateType != ''">
+      and rebate_user_id is not null
+    </if>
+    <if test="paramObj.rebateType == 1 and paramObj.rebateType != ''">
+      and rebate_user_id is null
+    </if>
+    <if test="paramObj.statDate != null and paramObj.statDate != ''">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(#{paramObj.statDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+    </if>
+    and order_status = '1'
+    order by create_time desc
+  </select>
+
+  <select id="getCardList" parameterType="java.util.Map" resultType="java.util.Map">
+  select a.hour, IFNULL(b.final_price,0) as finalPrice from (
+  SELECT 0 hour UNION ALL SELECT 1 hour UNION ALL SELECT 2 hour UNION ALL SELECT 3 hour UNION ALL SELECT 4 hour UNION ALL
+      SELECT 5 hour UNION ALL SELECT 6 hour UNION ALL SELECT 7 hour UNION ALL SELECT 8 hour UNION ALL SELECT 9 hour UNION ALL
+      SELECT 10 hour UNION ALL SELECT 11 hour UNION ALL SELECT 12 hour UNION ALL SELECT 13 hour UNION ALL SELECT 14 hour UNION ALL SELECT 15 hour UNION ALL
+      SELECT 16 hour UNION ALL SELECT 17 hour UNION ALL SELECT 18 hour UNION ALL SELECT 19 hour UNION ALL SELECT 20 hour UNION ALL SELECT 21 hour UNION ALL
+      SELECT 22 hour UNION ALL SELECT 23 hour
+  ) as a
+  left join (
+      SELECT hour(create_time) hour, SUM(final_price) final_price FROM v_mem_order_charge
+      WHERE
+          charge_type = #{chargeType,jdbcType=VARCHAR}
+    <choose>
+      <when test="selectDate != null and selectDate != ''">
+        AND to_days(create_time) = to_days(DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d'))
+      </when>
+      <otherwise>
+        AND to_days(create_time) = to_days(CURDATE())
+      </otherwise>
+    </choose>
+      and order_status = '1'
+      GROUP BY date_format(create_time, '%Y-%m-%d %H'), hour
+  ) as b on a.hour = b.hour ORDER BY a.hour
+  </select>
+
+  <select id="getLineChartData" parameterType="java.lang.String" resultType="java.util.Map">
+      SELECT
+      IFNULL(sum(b.final_price),0) as generalMember,
+      concat(a.number,'号') as day
+      FROM
+      (
+      select @d:=@d+1 number,
+      DATE_SUB(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'),INTERVAL DAYOFMONTH(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'))-@d DAY) time
+      from
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) a,
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) b,
+      (select 1 UNION ALL select 2) c,
+      (select @d:=0) d
+      where @d &lt; day(LAST_DAY(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d')))
+      ) a
+      LEFT JOIN (
+
+      SELECT
+      create_time,
+      final_price
+      FROM v_mem_order_charge
+      WHERE
+      mem_phone IN (
+      SELECT mem_phone FROM v_mem_info
+      WHERE mem_type = '02'
+      AND is_proxy = '0'
+      AND status = '0'
+      )
+      AND order_status = '1'
+
+      ) as b ON DATE_FORMAT(b.create_time,'%Y-%m-%d') = a.time
+      GROUP BY a.number
+      ORDER BY a.number ASC
+  </select>
+
+  <select id="getLineChartDataTo" parameterType="java.lang.String" resultType="java.util.Map">
+    SELECT
+      IFNULL(sum(c.final_price),0) as actingMember,
+      concat(a.number,'号') as day
+      FROM
+      (
+      select @d:=@d+1 number,
+      DATE_SUB(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'),INTERVAL DAYOFMONTH(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'))-@d DAY) time
+      from
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) a,
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) b,
+      (select 1 UNION ALL select 2) c,
+      (select @d:=0) d
+      where @d &lt; day(LAST_DAY(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d')))
+      ) a
+      LEFT JOIN (
+
+      SELECT
+      create_time,
+      final_price
+      FROM v_mem_order_charge
+      WHERE
+      mem_phone IN (
+      SELECT mem_phone FROM v_mem_info
+      WHERE mem_type = '02'
+      AND is_proxy = '1'
+      AND status = '0'
+      )
+      AND order_status = '1'
+
+      ) as c ON DATE_FORMAT(c.create_time,'%Y-%m-%d') = a.time
+      GROUP BY a.number
+      ORDER BY a.number ASC
+  </select>
+
+  <select id="getChargeOrderByPage" resultMap="BaseResultMap" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_order_charge
+    where 1=1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and mem_phone = #{paramObj.memPhone, jdbcType=VARCHAR}
+    </if>
+    order by create_time desc
+  </select>
+
+  <select id="getChargeLineChart" parameterType="java.lang.String" resultType="java.lang.String">
+      select IFNULL(b.final_price,0) as finalPrice from (
+        SELECT 1 mon UNION ALL SELECT 2 mon UNION ALL SELECT 3 mon UNION ALL SELECT 4 mon UNION ALL
+        SELECT 5 mon UNION ALL SELECT 6 mon UNION ALL SELECT 7 mon UNION ALL SELECT 8 mon UNION ALL
+        SELECT 9 mon UNION ALL SELECT 10 mon UNION ALL SELECT 11 mon UNION ALL SELECT 12 mon
+      ) as a
+      left join (
+          SELECT month(create_time) mon, SUM(final_price) final_price FROM v_mem_order_charge
+          WHERE
+                DATE_FORMAT(create_time,'%Y') = DATE_FORMAT(#{yearDate,jdbcType=VARCHAR},'%Y')
+          and order_status = '1'
+          GROUP BY mon
+      ) as b on a.mon = b.mon
+  </select>
+
+    <select id="queryMyOrderByMemId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from v_mem_order_charge
+        where mem_id = #{memId,jdbcType=VARCHAR} and order_status = "1"
+        order by create_time desc limit 1
+    </select>
+    
+      <select id="getOrderRechargePeopleGroupByDay" parameterType="java.lang.String" resultType="java.util.Map">
+  
+  	select * from (SELECT
+		c.`day` as day,
+		SUM( c.final_price ) totalMoney,
+		sum(case when c.userType = 'new' then c.final_price else 0 end) `newMoney`,
+		sum(case when c.userType = 'old' then c.final_price else 0 end) `oldMoney`,
+		sum(case when c.userType = 'new' then 1 else 0 end) `newCount`,
+		sum(case when c.userType = 'old' then 1 else 0 end) `oldCount`
+	FROM
+		(
+		SELECT
+			a.final_price,
+			date_format( a.create_time, '%Y-%m-%d' ) DAY,
+			a.mem_id,
+		IF
+			( date_format( b.reg_date, '%Y-%m-%d' ) = date_format( a.create_time, '%Y-%m-%d' ), 'new', 'old' ) AS userType 
+		FROM
+			( SELECT final_price, create_time, mem_id FROM v_mem_order_charge WHERE create_time LIKE concat(#{monthDate,jdbcType=VARCHAR},'%') AND order_status = '1' ) a
+			LEFT JOIN v_mem_info b ON a.mem_id = b.mem_id 
+		) c 
+	GROUP BY
+		c.`day` ) d order by d.`day`
+  
+  </select>
+  
+<select id="selectChargeMoneyGroupbyTypeTime" parameterType="java.lang.String" resultType="java.util.Map">
+		select 
+date_format( c.create_time, '%Y-%m-%d' ) day,
+
+sum(case when c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then 1 else 0 end) 'newchannelcount',
+
+sum(case when c.charge_type = '10' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then 1 else 0 end) 'newchannelmonthcount',
+sum(case when c.charge_type = '11' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then 1 else 0 end) 'newchannelquartercount',
+sum(case when c.charge_type = '12' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then 1 else 0 end) 'newchannelhalfYearcount',
+sum(case when c.charge_type = '13' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then 1 else 0 end) 'newchannelyearcount',
+sum(case when c.charge_type = '14' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then 1 else 0 end) 'newchannelforevercount',
+
+sum(case when c.charge_type = '10' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then c.final_price else 0 end) 'newchannelmonth',
+sum(case when c.charge_type = '11' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then c.final_price else 0 end) 'newchannelquarter',
+sum(case when c.charge_type = '12' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then c.final_price else 0 end) 'newchannelhalfYear',
+sum(case when c.charge_type = '13' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then c.final_price else 0 end) 'newchannelyear',
+sum(case when c.charge_type = '14' and c.type = 'new' and c.channel_code != '' and c.channel_code is not null and c.channel_code != 'null' then c.final_price else 0 end) 'newchannelforever',
+
+sum(case when c.type = 'new' then 1 else 0 end) 'newcount',
+
+sum(case when c.charge_type = '10' and c.type = 'new' then 1 else 0 end) 'newmonthcount',
+sum(case when c.charge_type = '11' and c.type = 'new' then 1 else 0 end) 'newquartercount',
+sum(case when c.charge_type = '12' and c.type = 'new' then 1 else 0 end) 'newhalfYearcount',
+sum(case when c.charge_type = '13' and c.type = 'new' then 1 else 0 end) 'newyearcount',
+sum(case when c.charge_type = '14' and c.type = 'new' then 1 else 0 end) 'newforevercount',
+
+sum(case when c.charge_type = '10' and c.type = 'new' then c.final_price else 0 end) 'newmonth',
+sum(case when c.charge_type = '11' and c.type = 'new' then c.final_price else 0 end) 'newquarter',
+sum(case when c.charge_type = '12' and c.type = 'new' then c.final_price else 0 end) 'newhalfYear',
+sum(case when c.charge_type = '13' and c.type = 'new' then c.final_price else 0 end) 'newyear',
+sum(case when c.charge_type = '14' and c.type = 'new' then c.final_price else 0 end) 'newforever',
+
+sum(case when c.type = 'old' then 1 else 0 end) 'oldcount',
+
+sum(case when c.charge_type = '10' and c.type = 'old' then 1 else 0 end) 'oldmonthcount',
+sum(case when c.charge_type = '11' and c.type = 'old' then 1 else 0 end) 'oldquartercount',
+sum(case when c.charge_type = '12' and c.type = 'old' then 1 else 0 end) 'oldhalfYearcount',
+sum(case when c.charge_type = '13' and c.type = 'old' then 1 else 0 end) 'oldyearcount',
+sum(case when c.charge_type = '14' and c.type = 'old' then 1 else 0 end) 'oldforevercount',
+
+sum(case when c.charge_type = '10' and c.type = 'old' then c.final_price else 0 end) 'oldmonth',
+sum(case when c.charge_type = '11' and c.type = 'old' then c.final_price else 0 end) 'oldquarter',
+sum(case when c.charge_type = '12' and c.type = 'old' then c.final_price else 0 end) 'oldhalfYear',
+sum(case when c.charge_type = '13' and c.type = 'old' then c.final_price else 0 end) 'oldyear',
+sum(case when c.charge_type = '14' and c.type = 'old' then c.final_price else 0 end) 'oldforever',
+
+sum(case when c.charge_type = '10' then 1 else 0 end) 'monthcount',
+sum(case when c.charge_type = '11' then 1 else 0 end) 'quartercount',
+sum(case when c.charge_type = '12' then 1 else 0 end) 'halfYearcount',
+sum(case when c.charge_type = '13' then 1 else 0 end) 'yearcount',
+sum(case when c.charge_type = '14' then 1 else 0 end) 'forevercount',
+
+sum(case when c.charge_type = '10' then c.final_price else 0 end) 'month',
+sum(case when c.charge_type = '11' then c.final_price else 0 end) 'quarter',
+sum(case when c.charge_type = '12' then c.final_price else 0 end) 'halfYear',
+sum(case when c.charge_type = '13' then c.final_price else 0 end) 'year',
+sum(case when c.charge_type = '14' then c.final_price else 0 end) 'forever',
+
+sum(c.final_price) 'total',
+count(c.final_price) 'totalcount'
+from (SELECT a.final_price, a.create_time, a.charge_type, b.mem_type, b.inviter_user_id, b.reg_date, IF(date_format(a.create_time, '%Y-%m-%d' ) = date_format( b.reg_date, '%Y-%m-%d' ), 'new','old') as type, b.channel_code FROM v_mem_order_charge a left JOIN v_mem_info b on a.mem_id = b.mem_id WHERE a.create_time like concat(#{monthDate,jdbcType=VARCHAR},'%') AND a.order_status = '1') c GROUP BY date_format(c.create_time, '%Y-%m-%d' )
+  </select>
+  
+  
+  <select id="selectChargeMemTypeMoneyGroupbyTypeTime" parameterType="java.lang.String" resultType="java.util.Map">
+  
+  
+  		select 
+date_format( c.create_time, '%Y-%m-%d' ) day,
+
+sum(case when c.mem_type = '00' then c.final_price else 0 end) 'guestTotal',
+sum(case when c.mem_type = '00' then 1 else 0 end) 'guestTotalCount',
+
+sum(case when c.mem_type = '01' then c.final_price else 0 end) 'tryTotal',
+sum(case when c.mem_type = '01' then 1 else 0 end) 'tryTotalCount',
+
+sum(case when c.mem_type = '02' then c.final_price else 0 end) 'memTotal',
+sum(case when c.mem_type = '02' then 1 else 0 end) 'memTotalCount',
+
+sum(c.final_price) 'total',
+count(c.final_price) 'totalcount'
+from (SELECT a.final_price, a.create_time, a.charge_type, a.mem_type, b.inviter_user_id, b.reg_date FROM v_mem_order_charge a left JOIN v_mem_info b on a.mem_id = b.mem_id WHERE a.create_time like concat(#{monthDate,jdbcType=VARCHAR},'%') AND a.order_status = '1') c GROUP BY date_format(c.create_time, '%Y-%m-%d' )
+  
+  
+  
+  
+  
+  
+  
+  </select>
+  
+  
+    <select id="updateOrderGuest2Mem" resultType="java.lang.Integer">
+    
+    update v_mem_order_charge v set v.mem_id = #{memId, jdbcType=VARCHAR}, v.mem_phone = #{memPhone, jdbcType=VARCHAR}, v.mem_name = #{memName, jdbcType=VARCHAR}, v.mem_type = #{memType, jdbcType=VARCHAR} where v.mem_id = #{guestMemId, jdbcType=VARCHAR}
+    
+  </select>
+  
+</mapper>

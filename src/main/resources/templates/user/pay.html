@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- 支付 -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+<!-- MZUI CSS 文件 -->
+<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/zui/1.10.0/css/zui.min.css">
+<link href="/user/css/mzui.min.css" rel="stylesheet">
+<link href="/user/css/main.css?v=1" rel="stylesheet">
+
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<!-- ZUI Javascript 依赖 jQuery -->
+<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/lib/jquery/jquery.js"></script>
+   <!-- 引入 MZUI 的 JS 文件 -->
+<script src="/user/js/mzui.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/js/zui.min.js"></script>
+<script src="/user/js/comm.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+<style>
+
+body {
+	background: linear-gradient(135deg, #0e0e0e 0%,#1b181b 100%);
+}
+
+.contentHeader {
+	text-align: center;
+	margin: 0px auto;
+}
+
+.contentHeader {
+	height: 473px;
+}
+
+.headerTitleImg {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.header_desc {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #FFFFFFFF;
+	font: 20px;
+}
+
+.headerTitle {
+	padding: 0 60px 0 60px;
+}
+
+.headerTitleContent {
+	margin: 21px 0 21px 0;
+}
+
+.headerTitleContent p {
+	color: #FFFFFFFF;
+	font-size: 12px !important;
+}
+
+/* .headerTitleContent * {
+				boxContent-sizing: border-boxContent;
+			} */
+.headerTitleContent .boxContent {
+	float: left;
+	width: 50%;
+	padding-bottom: 17px;
+}
+
+.headerTitleContent .boxContent .boxContentContent {
+	padding: 10px;
+	margin: 0 auto;
+	width: 75%;
+	height: 77px;
+	background: RGBA(56, 55, 79, 1);
+	border-radius: 15px;
+}
+
+.clearfix::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.taocanTitle {
+	font-size: 20px;
+	font-family: Source Han Sans CN;
+	font-weight: 400;
+	line-height: 14px;
+	color: #e2d7d7;
+	opacity: 1;
+}
+
+.line {
+	height: 0px;
+    border: 1px solid #2b2b2a;
+    opacity: 0.5;
+}
+
+.contentTitleContent .boxContent {
+	float: left;
+	width: 50%;
+	padding-bottom: 17px;
+	position: relative;
+}
+
+.contentTitleContent .boxContent .tcContent {
+	padding: 10px 10px 0px 10px;
+	margin: 0 auto;
+	width: 75%;
+	height: 90px;
+	background-color: #1a1a18;
+    border: 1px solid #1a1a18;
+	opacity: 1;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.contentTitleContent .boxContent .tcContent:hover {
+	border-color: #d2b6b6;
+}
+
+.contentTitleContent .boxContent .tcContentBorder {
+	border-color: #d2b6b6;
+}
+
+.tcTitle {
+	font-size: 16px;
+	font-family: 蘋方-簡;
+	font-weight: normal;
+	line-height: 22px;
+	color: #f5ebeb;
+	opacity: 1;
+}
+
+.tcSourcePrice {
+	font-size: 10px;
+	margin-top: 5px;
+	font-family: 蘋方-簡;
+	font-weight: normal;
+	line-height: 14px;
+	color: #999999;
+	opacity: 1;
+	text-decoration: line-through;
+}
+
+.tcFinalPrice {
+	color: #F29808FF;
+	margin-top: 5px;
+	font-size: 25px;
+}
+
+.tcDesc {
+	color:#909093;
+}
+
+.tcMonth {
+	margin-top: 15px;
+	height: 14px;
+	font-size: 10px;
+	font-weight: normal;
+	color: #CA983E;
+	opacity: 1;
+	line-height: 12px;
+}
+
+.monthBack {
+	width: 60%;
+	background: #FBF0DC;
+	opacity: 1;
+	border-radius: 8px;
+	margin: 0px 30% 0px 20%;
+}
+
+.payButton {
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px 90px 35px 90px;
+    width: 300px;
+    height: 24px;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #000000;
+    opacity: 1;
+    background-image: linear-gradient(to right, #F5D794FF, #F0B42AFF);
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.tcTag {
+	width: 37px;
+    height: 18px;
+    font-size: 10px;
+    color: #FFFFFF;
+    opacity: 1;
+    position: absolute;
+    top: -6%;
+    right: 12%;
+    background: red;
+    border-radius: 5px;
+}
+
+.disable {
+    pointer-events: none;
+}
+
+    @media screen and (min-width:600px) {
+           .contentBody{
+           		width:500px;
+           		margin:0 auto;
+		    }
+       }
+       
+       
+      .tsn-margin-zd {
+      padding: 3px 18px 3px 21px;
+      
+      } 
+       
+</style>
+</head>
+<body>
+
+	<div class="heading">
+	  <nav class="nav">
+	    <a id="menuExampleBtn" class="btn btn-lg" data-name="menuExample" data-display="modal" data-remote="/page/menu.html" data-placement="left"><i class="icon-bars" style="color:#fcae32"></i></a>
+	  </nav>
+	  <div class="title" style="color:white;"><strong>会员充值</strong></div>
+	  <nav class="nav">
+  	  </nav>
+	</div>
+	
+
+	<div class="content tsn-margin">
+	
+	
+		<div class="cards">
+		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+			    <div style="width: 60%"><div class="avatar red circle">月</div></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span class="tcFinalPrice">¥25</span>
+			    	<span class="tcSourcePrice">8折</span>
+			    	<div class="tcDesc">月卡30天</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+			    <div style="width: 60%"><div class="avatar yellow circle">季</div></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span class="tcFinalPrice">¥70</span>
+			    	<span class="tcSourcePrice">8折</span>
+			    	<div class="tcDesc">季卡90天</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+			    <div style="width: 60%"><div class="avatar blue circle">半</div></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span class="tcFinalPrice">¥135</span>
+			    	<span class="tcSourcePrice">8折</span>
+			    	<div class="tcDesc">半年卡</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+			    <div style="width: 60%"><div class="avatar green circle">年</div></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span class="tcFinalPrice">¥256</span>
+			    	<span class="tcSourcePrice">8折</span>
+			    	<div class="tcDesc">年卡</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+			    <div style="width: 60%"><div class="avatar red circle">永</div></div>
+		    	<div style="width: 50%" class="text-center">
+			    	<span class="tcFinalPrice">¥520</span>
+			    	<span class="tcSourcePrice">8折</span>
+			    	<div class="tcDesc">永久</div>
+		    	</div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="payButton" id="startPay">
+				<span>立即支付</span>
+			</div>
+
+	</div>
+
+<!-- 	<script th:inline="javascript">
+			const payApi = [[${payApi}]];
+			// 取资费类型
+	        const chargeList = [[${chargeList}]];
+	        const memId = [[${mId}]];
+	        
+	        const pk = [[${pk}]]
+	        var token = [[${token}]];
+	        
+	        var reToken = [[${reToken}]];
+	        
+	        $.cookie('token', token);
+	        $.cookie('payApi', payApi);
+		</script> -->
+
+
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		           
+		           $(function() {
+		        	   
+		   			
+		   	        let charge = [];
+		   	        
+		   	        var stripe = {};
+		   	        
+		   	        event();
+		   	        
+		   	        function event() {
+		   	        	
+		   	        	$(".contentTitleContent .boxContent").click(function() {
+		   	        		$(this).find(".tcContent").addClass("tcContentBorder");
+		   	        		$(this).siblings().find(".tcContent").removeClass("tcContentBorder");
+		   	        		
+		   	        		var chargeType = $(this).find(".tcContent").attr("data-type");
+		   	        			
+		           			for(var i in chargeList) {
+		       	                if (chargeType == chargeList[i].chargeType) {
+		       	                    charge = chargeList[i];
+		       	                    charge.memId = memId
+		       	                }
+		       	            }
+		   	        	})
+		   	        	
+		   	        	
+		   	        	$("#startPay").click(function() {
+		   	        		chargeOrder();
+		   	        	})
+		   	        }
+		   	
+		   	        // 选择资费类型
+		   	        //TODO 这里加个高亮效果
+		   	        function checkChargeType(chargeType) {
+		   	            for(var i in chargeList) {
+		   	                if (chargeType == chargeList[i].chargeType) {
+		   	                    charge = chargeList[i];
+		   	                    charge.memId = memId
+		   	                }
+		   	            }
+		   	        }
+		   	        
+		   	     function isPhone() {
+		             var sUserAgent = navigator.userAgent.toLowerCase();
+		             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+		             var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+		             var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+		             var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+		             var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+		             var bIsAndroid = sUserAgent.match(/android/i) == "android";
+		             var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+		             var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+		             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+		                 return true;
+		             } else {
+		            	 return false;
+		             }
+		         }
+		   	
+		   	        // 生成支付订单，获取sessionId
+		   	        function chargeOrder() {
+		   	            if (charge.length == 0) {
+		   	            	layer.msg('请选择支付套餐');
+		   					return false
+		   				}
+		   	         
+		   	         charge.payType="alipay";
+            		 charge.reToken=reToken;
+		   	         $.ajax({
+		                 type : "POST",
+		                 url : payApi + "/order/charge",
+		                 beforeSend: function(request) {
+		                	 $("#startPay").text("正在支付..")
+		                	 $("#startPay").addClass("disable");
+		                	 disabled="disabled"
+		                     request.setRequestHeader("V-Auth", token);
+		                 },
+		                 contentType: "application/json; charset=utf-8",
+		                 dataType : "json",
+		                 data : JSON.stringify(charge),
+		                 success : function(msg) {
+		                	 if (msg.code == '000000') {
+		                		 
+		                		 	window.location.href=msg.data.qrcode;
+		                		 
+	   	                            // 跳转支付页面
+	   	                            /* if (charge.payType == "stripe") {
+	   	                            	stripe.redirectToCheckout({ sessionId: msg.data.stripeSid})
+	   	                            }else if (charge.payType == "alipay") {
+	   	                            	
+	   	                            	window.location.href=msg.data.qrcode;
+	   	                            	
+	   	                            	if (isPhone()) {
+	   	                            		window.location.href=msg.data.qrcode;
+	   	                            	}else {
+	   	                            		var orderNo = msg.data.orderNo;
+	   	                            		var index = layer.open({
+	   	                            		  type: 2,
+	   	                            		  area: ['320px', '195px'],
+	   	                            		  content: "/view/xm/alipay.html?qrcode="+msg.data.qrcode + "&orderNo=" + orderNo,
+		   	                            		cancel: function(index, layero){ 
+		   	                            		    layer.close(index)
+		   	                            		    window.location.reload();
+		   	                            		  return false; 
+		   	                            		} 
+	   	                            		});
+	   	                            		layer.full(index);
+	   	                            		
+	   	                            	}
+	   	                            	
+	   	                            } */
+	   	                            
+	   							} else if (msg.code == '100991') {
+	   								layer.msg('用户未登录或已超时');
+	   								setTimeout(function(){
+	   									window.location.reload();
+	   								},2000)
+	   							} else if (msg.code == '100991') {
+	   								layer.msg('用户未登录或已超时');
+	   								setTimeout(function(){
+	   									window.location.reload();
+	   								},2000)
+	   							} else if (msg.code == 'R1002' || msg.code == 'R1004') {
+	   								layer.msg('页面操作已超时,稍后操作');
+	   								setTimeout(function(){
+	   									window.location.reload();
+	   								},1000)
+	   							} else {
+	   								layer.msg('服务器繁忙');
+	   								setTimeout(function(){
+	   									window.location.reload();
+	   								},1000)
+	   							}
+		                 },
+		                 complete : function() {
+		                	 $("#startPay").text("立即支付")
+		                	 $("#startPay").removeClass("disable");
+		                 }
+		             });
+		   	             
+		   			}
+		        	   
+		           })
+	
+		/*]]>*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,1723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.mem.MemInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.mem.MemInfo" >
+    <id column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="mem_no" property="memNo" jdbcType="INTEGER" />
+    <result column="charge_id" property="chargeId" jdbcType="VARCHAR" />
+    <result column="inviter_user_id" property="inviterUserId" jdbcType="VARCHAR" />
+    <result column="inviter_user_type" property="inviterUserType" jdbcType="VARCHAR" />
+    <result column="inviter_code" property="inviterCode" jdbcType="VARCHAR" />
+    <result column="inviter_time" property="inviterTime" jdbcType="TIMESTAMP" />
+    <result column="mem_name" property="memName" jdbcType="VARCHAR" />
+    <result column="mem_card" property="memCard" jdbcType="VARCHAR" />
+    <result column="mem_pwd" property="memPwd" jdbcType="VARCHAR" />
+    <result column="mem_nick_name" property="memNickName" jdbcType="VARCHAR" />
+    <result column="mem_sex" property="memSex" jdbcType="VARCHAR" />
+    <result column="mem_really_name" property="memReallyName" jdbcType="VARCHAR" />
+    <result column="mem_phone" property="memPhone" jdbcType="VARCHAR" />
+    <result column="mem_email" property="memEmail" jdbcType="VARCHAR" />
+    <result column="mem_avatar" property="memAvatar" jdbcType="VARCHAR" />
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="mem_cash_detail" property="memCashDetail" jdbcType="VARCHAR" />
+    <result column="is_proxy" property="isProxy" jdbcType="VARCHAR" />
+    <result column="is_pay" property="isPay" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="first_recharge_date" property="firstRechargeDate" jdbcType="TIMESTAMP" />
+    <result column="last_recharge_date" property="lastRechargeDate" jdbcType="TIMESTAMP" />
+    <result column="suspen_date" property="suspenDate" jdbcType="TIMESTAMP" />
+    <result column="use_total_traffic" property="useTotalTraffic" jdbcType="VARCHAR" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="guest_reg_date" property="guestRegDate" jdbcType="TIMESTAMP" />
+    <result column="reg_date" property="regDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="terminal_type" property="terminalType" jdbcType="VARCHAR" />
+    <result column="last_cashout_date" property="lastCashoutDate" jdbcType="TIMESTAMP" />
+    <result column="device_num" property="deviceNum" jdbcType="VARCHAR" />
+    <result column="change_suspen_date" property="changeSuspenDate" jdbcType="TIMESTAMP" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    mem_id, mem_no, charge_id, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_card, mem_nick_name, mem_sex,
+    mem_really_name, mem_phone, mem_email, mem_avatar, mem_type, mem_cash_detail, status, first_recharge_date, last_recharge_date,
+    suspen_date, use_total_traffic, last_login_time, guest_reg_date, reg_date, is_proxy, is_pay, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_info
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_nick_name, mem_pwd, mem_sex, mem_phone, mem_email, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
+    suspen_date, last_login_time, reg_date, is_proxy, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+    from v_mem_info
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectMemByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_nick_name, mem_pwd, mem_sex, mem_phone, mem_email, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
+    suspen_date, last_login_time, reg_date, is_proxy, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+    from v_mem_info
+    where mem_phone = #{memPhone,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectMemByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_email, mem_nick_name, mem_pwd, mem_sex, mem_phone, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
+    suspen_date, last_login_time, reg_date, is_proxy, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+    from v_mem_info
+    where mem_email = #{memEmail,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectMemByInviCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_nick_name, mem_sex, mem_phone, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
+    suspen_date, last_login_time, reg_date, is_proxy, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+    from v_mem_info
+    where inviter_code = #{inviterCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectParentByMemId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_nick_name, mem_sex, mem_phone, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
+    suspen_date, last_login_time, reg_date, is_proxy, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+    from v_mem_info
+    where mem_id = (select inviter_user_id from v_mem_info m where m.mem_id = #{memId,jdbcType=VARCHAR})
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_info
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+    insert into v_mem_info (mem_id, mem_no, charge_id, inviter_user_id, inviter_user_type, inviter_code, inviter_time,
+      mem_name, mem_card, mem_pwd,
+      mem_nick_name, mem_sex, mem_really_name,
+      mem_phone, mem_email, mem_avatar, mem_type, mem_cash_detail, is_proxy,
+      status, first_recharge_date, last_recharge_date,
+      suspen_date, use_total_traffic, last_login_time, guest_reg_date,
+      reg_date, remarks, terminal_type, last_cashout_date, device_num,
+      change_suspen_date, channel_code)
+    values (#{memId,jdbcType=VARCHAR}, #{memNo,jdbcType=VARCHAR}, #{chargeId,jdbcType=VARCHAR}, #{inviterUserId,jdbcType=VARCHAR}, #{inviterUserType,jdbcType=VARCHAR}, #{inviterCode,jdbcType=VARCHAR}, #{inviterTime,jdbcType=TIMESTAMP},
+      #{memName,jdbcType=VARCHAR}, #{memCard,jdbcType=VARCHAR}, #{memPwd,jdbcType=VARCHAR},
+      #{memNickName,jdbcType=VARCHAR}, #{memSex,jdbcType=VARCHAR}, #{memReallyName,jdbcType=VARCHAR},
+      #{memPhone,jdbcType=VARCHAR}, #{memEmail,jdbcType=VARCHAR}, #{memAvatar,jdbcType=VARCHAR}, #{memType,jdbcType=VARCHAR}, #{memCashDetail,jdbcType=VARCHAR}, #{isProxy,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{firstRechargeDate,jdbcType=TIMESTAMP}, #{lastRechargeDate,jdbcType=TIMESTAMP},
+      #{suspenDate,jdbcType=TIMESTAMP}, #{useTotalTraffic,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{guestRegDate,jdbcType=TIMESTAMP},
+      #{regDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{terminalType,jdbcType=VARCHAR}, #{lastCashoutDate,jdbcType=TIMESTAMP}, #{deviceNum,jdbcType=VARCHAR},
+      #{changeSuspenDate,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+    insert into v_mem_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="chargeId != null" >
+        charge_id,
+      </if>
+      <if test="inviterUserId != null" >
+        inviter_user_id,
+      </if>
+      <if test="inviterTime != null" >
+        inviter_time,
+      </if>
+      <if test="memName != null" >
+        mem_name,
+      </if>
+      <if test="memCard != null" >
+        mem_card,
+      </if>
+      <if test="memPwd != null" >
+        mem_pwd,
+      </if>
+      <if test="memNickName != null" >
+        mem_nick_name,
+      </if>
+      <if test="memSex != null" >
+        mem_sex,
+      </if>
+      <if test="memReallyName != null" >
+        mem_really_name,
+      </if>
+      <if test="memPhone != null" >
+        mem_phone,
+      </if>
+      <if test="memAvatar != null" >
+        mem_avatar,
+      </if>
+      <if test="memType != null" >
+        mem_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="firstRechargeDate != null" >
+        first_recharge_date,
+      </if>
+      <if test="lastRechargeDate != null" >
+        last_recharge_date,
+      </if>
+      <if test="suspenDate != null" >
+        suspen_date,
+      </if>
+      <if test="useTotalTraffic != null" >
+        use_total_traffic,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="guestRegDate != null" >
+        guest_reg_date,
+      </if>
+      <if test="regDate != null" >
+        reg_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="terminalType != null" >
+        terminal_type,
+      </if>
+      <if test="lastCashoutDate != null" >
+        last_cashout_date,
+      </if>
+      <if test="deviceNum != null" >
+        device_num,
+      </if>
+      <if test="changeSuspenDate != null" >
+        change_suspen_date
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeId != null" >
+        #{chargeId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterUserId != null" >
+        #{inviterUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterTime != null" >
+        #{inviterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memName != null" >
+        #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="memCard != null" >
+        #{memCard,jdbcType=VARCHAR},
+      </if>
+      <if test="memPwd != null" >
+        #{memPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="memNickName != null" >
+        #{memNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="memSex != null" >
+        #{memSex,jdbcType=VARCHAR},
+      </if>
+      <if test="memReallyName != null" >
+        #{memReallyName,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null" >
+        #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memAvatar != null" >
+        #{memAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstRechargeDate != null" >
+        #{firstRechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastRechargeDate != null" >
+        #{lastRechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspenDate != null" >
+        #{suspenDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTotalTraffic != null" >
+        #{useTotalTraffic,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="guestRegDate != null" >
+        #{guestRegDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDate != null" >
+        #{regDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalType != null" >
+        #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCashoutDate != null" >
+        #{lastCashoutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceNum != null" >
+        #{deviceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="changeSuspenDate != null" >
+        #{changeSuspenDate,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+    update v_mem_info
+    <set >
+      <if test="chargeId != null" >
+        charge_id = #{chargeId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterUserId != null" >
+        inviter_user_id = #{inviterUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterTime != null" >
+        inviter_time = #{inviterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inviterUserType != null" >
+        inviter_user_type = #{inviterUserType,jdbcType=VARCHAR},
+      </if>
+      <if test="memName != null" >
+        mem_name = #{memName,jdbcType=VARCHAR},
+      </if>
+      <if test="memCard != null" >
+        mem_card = #{memCard,jdbcType=VARCHAR},
+      </if>
+      <if test="memPwd != null" >
+        mem_pwd = #{memPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="memNickName != null" >
+        mem_nick_name = #{memNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="memSex != null" >
+        mem_sex = #{memSex,jdbcType=VARCHAR},
+      </if>
+      <if test="memReallyName != null" >
+        mem_really_name = #{memReallyName,jdbcType=VARCHAR},
+      </if>
+      <if test="memPhone != null" >
+        mem_phone = #{memPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memAvatar != null" >
+        mem_avatar = #{memAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="memCashDetail != null" >
+        mem_cash_detail = #{memCashDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="isProxy != null" >
+        is_proxy = #{isProxy,jdbcType=VARCHAR},
+      </if>
+      <if test="isPay != null" >
+        is_pay = #{isPay,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstRechargeDate != null" >
+        first_recharge_date = #{firstRechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastRechargeDate != null" >
+        last_recharge_date = #{lastRechargeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="suspenDate != null" >
+        suspen_date = #{suspenDate,jdbcType=VARCHAR},
+      </if>
+      <if test="useTotalTraffic != null" >
+        use_total_traffic = #{useTotalTraffic,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="guestRegDate != null" >
+        guest_reg_date = #{guestRegDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regDate != null" >
+        reg_date = #{regDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalType != null" >
+        terminal_type = #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCashoutDate != null" >
+        last_cashout_date = #{lastCashoutDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceNum != null" >
+        device_num = #{deviceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="changeSuspenDate != null" >
+        change_suspen_date = #{changeSuspenDate,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+    update v_mem_info
+    set charge_id = #{chargeId,jdbcType=VARCHAR},
+      inviter_user_id = #{inviterUserId,jdbcType=VARCHAR},
+      inviter_time = #{inviterTime,jdbcType=TIMESTAMP},
+      inviter_user_type = #{inviterUserType,jdbcType=VARCHAR},
+      mem_name = #{memName,jdbcType=VARCHAR},
+      mem_card = #{memCard,jdbcType=VARCHAR},
+      mem_pwd = #{memPwd,jdbcType=VARCHAR},
+      mem_nick_name = #{memNickName,jdbcType=VARCHAR},
+      mem_sex = #{memSex,jdbcType=VARCHAR},
+      mem_really_name = #{memReallyName,jdbcType=VARCHAR},
+      mem_phone = #{memPhone,jdbcType=VARCHAR},
+      mem_avatar = #{memAvatar,jdbcType=VARCHAR},
+      mem_type = #{memType,jdbcType=VARCHAR},
+      mem_cash_detail = #{memCashDetail,jdbcType=VARCHAR},
+      is_proxy = #{isProxy,jdbcType=VARCHAR},
+      is_pay = #{isPay,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      first_recharge_date = #{firstRechargeDate,jdbcType=TIMESTAMP},
+      last_recharge_date = #{lastRechargeDate,jdbcType=TIMESTAMP},
+      suspen_date = #{suspenDate,jdbcType=TIMESTAMP},
+      use_total_traffic = #{useTotalTraffic,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      guest_reg_date = #{guestRegDate,jdbcType=TIMESTAMP},
+      reg_date = #{regDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      terminal_type = #{terminalType,jdbcType=VARCHAR},
+      last_cashout_date = #{lastCashoutDate,jdbcType=TIMESTAMP},
+      device_num = #{deviceNum,jdbcType=VARCHAR},
+      change_suspen_date = #{changeSuspenDate,jdbcType=TIMESTAMP}
+    where mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateMemByPhone" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+     update v_mem_info set mem_pwd = #{memPwd,jdbcType=VARCHAR} where mem_phone = #{memPhone,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getChartData" parameterType="com.tsn.serv.mem.entity.reqData.UserDataStatisDto" resultType="java.util.Map">
+    SELECT * FROM (
+    SELECT
+    IFNULL(SUM(final_price),0) AS generalMember
+    FROM v_mem_order_charge
+    WHERE
+    mem_phone IN (
+    SELECT mem_phone FROM v_mem_info
+    WHERE mem_type = '02'
+    AND is_proxy = '0'
+    AND status = '0'
+    )
+    AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    ) as a,
+    (
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS actingMember
+    FROM v_mem_order_charge
+    WHERE
+    mem_phone IN (
+    SELECT proxy_phone FROM v_mem_proxy_Info
+    )
+    AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    ) as b,
+    (
+
+    SELECT IFNULL(SUM(a.change_money),0) AS withdrawalAmount
+    FROM v_mem_account_record AS a
+    LEFT JOIN v_mem_order_cashout AS b ON a.order_no = b.order_no
+    WHERE
+    a.record_type = '50'
+    AND
+    a.record_status = '1'
+    AND
+    b.order_status = '2'
+    <if test="statDate != null">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+      DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    ) as c,
+    (
+
+    SELECT COUNT(*) AS withdrawalNum FROM (
+    SELECT DISTINCT a.mem_phone
+    FROM v_mem_account_record AS a
+    LEFT JOIN v_mem_order_cashout AS b ON a.order_no = b.order_no
+    WHERE
+    a.record_type = '50'
+    AND
+    a.record_status = '1'
+    AND
+    b.order_status = '2'
+
+    <if test="statDate != null">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+    ) a
+
+    ) as d,
+    (
+
+    SELECT IFNULL(SUM(change_money),0) AS rebateAmount
+    FROM v_mem_account_record
+    WHERE
+    record_type = '40'
+    AND
+    record_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    ) as e,
+    (
+
+    SELECT COUNT(*) AS rebateNum FROM (
+    SELECT DISTINCT mem_phone
+    FROM v_mem_account_record
+    WHERE
+    record_type = '40'
+    AND
+    record_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+    ) a
+    ) as f
+  </select>
+
+  <select id="getChargeData" parameterType="com.tsn.serv.mem.entity.reqData.UserDataStatisDto" resultType="java.util.Map">
+    SELECT
+    IFNULL(SUM(final_price),0) AS moneySum,
+    '月卡' AS name,
+    COUNT(*) AS value
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '10' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS moneySum,
+    '季卡' AS name,
+    COUNT(*) AS value
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '11' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS moneySum,
+    '半年卡' AS name,
+    COUNT(*) AS value
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '12' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS moneySum,
+    '年卡' AS name,
+    COUNT(*) AS value
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '13' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS moneySum,
+    '永久' AS name,
+    COUNT(*) AS value
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '14' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+  </select>
+
+  <select id="getInvitationData" parameterType="com.tsn.serv.mem.entity.reqData.UserDataStatisDto" resultType="java.util.Map">
+    SELECT
+    IFNULL(SUM(final_price),0) AS value,
+    '月卡' AS name
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '10' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS value,
+    '季卡' AS name
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '11' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS value,
+    '半年卡' AS name
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '12' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS value,
+    '年卡' AS name
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '13' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+
+    UNION ALL
+
+    SELECT
+    IFNULL(SUM(final_price),0) AS value,
+    '永久' AS name
+    FROM
+    v_mem_order_charge
+    WHERE
+    charge_type = '14' AND order_status = '1'
+    <if test="statDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="selectType == 1">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="selectType == 2">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 3">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 4">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 5">
+      AND DATE_FORMAT(create_time,'%Y-%m-%d') &gt;=  DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="selectType == 6">
+
+    </if>
+  </select>
+  
+
+  <select id="getUserDataList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    SELECT
+      a.mem_id AS memId,
+      a.inviter_time AS inviterTime,
+      a.inviter_user_type AS inviterUserType,
+      a.mem_phone AS memPhone,
+      a.mem_nick_name AS memNickName,
+      a.mem_sex AS memSex,
+      a.mem_type AS memType,
+      a.is_proxy AS isProxy,
+      /*a.use_total_traffic AS useTotalTraffic,*/
+      a.last_recharge_date AS lastRechargeDate,
+      a.reg_date AS regDate,
+      b.mem_phone AS inviterPhone,
+      a.suspen_date AS suspenDate,
+      a.last_cashout_date AS lastCashoutDate,
+      a.status,
+      a.device_num AS deviceNum,
+      c.total_use_up_flow + c.total_use_down_flow AS useTotalTraffic,
+      c.cy_use_total_flow AS cyUseTotalFlow,
+      c.is_limit AS isLimit,
+      c.host_flow AS hostFlow,
+      c.update_time AS flowUpdateTime,
+      c.first_limit_hap_time AS firstLimitHapTime,
+      d.credits_val AS creditsVal
+    FROM
+      v_mem_info AS a
+    LEFT JOIN v_mem_info AS b ON a.inviter_user_id = b.mem_id
+    LEFT JOIN v_mem_flow_limit AS c ON a.mem_id = c.mem_id
+    LEFT JOIN v_mem_credits AS d ON a.mem_id = d.mem_id
+    WHERE
+      1 = 1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      AND a.mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      AND a.mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.isProxy != null and paramObj.isProxy != ''">
+      AND a.is_proxy = #{paramObj.isProxy,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.isOverdue != '' and paramObj.isOverdue == 0">
+      AND a.suspen_date &lt; NOW()
+    </if>
+    <if test="paramObj.isOverdue != '' and paramObj.isOverdue == 1">
+      AND a.suspen_date &gt; NOW()
+    </if>
+    <if test="paramObj.statDate != null and paramObj.statDate != ''">
+      AND DATE_FORMAT(a.reg_date,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="paramObj.endDate != null and paramObj.endDate != ''">
+      AND DATE_FORMAT(a.reg_date,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+    </if>
+    order by a.reg_date desc
+  </select>
+  
+  <select id="getUserList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    SELECT
+      a.mem_id AS memId,
+      a.inviter_time AS inviterTime,
+      a.inviter_user_type AS inviterUserType,
+      a.mem_phone AS memPhone,
+      a.mem_nick_name AS memNickName,
+      a.mem_sex AS memSex,
+      a.mem_type AS memType,
+      a.is_proxy AS isProxy,
+      /*a.use_total_traffic AS useTotalTraffic,*/
+      a.last_recharge_date AS lastRechargeDate,
+      a.reg_date AS regDate,
+      b.mem_phone AS inviterPhone,
+      a.suspen_date AS suspenDate,
+      a.last_cashout_date AS lastCashoutDate,
+      a.status,
+      a.device_num AS deviceNum,
+      c.total_use_up_flow + c.total_use_down_flow AS useTotalTraffic,
+      c.cy_use_total_flow AS cyUseTotalFlow,
+      c.is_limit AS isLimit,
+      c.host_flow AS hostFlow,
+      c.update_time AS flowUpdateTime,
+      c.first_limit_hap_time AS firstLimitHapTime,
+      d.credits_val AS creditsVal,
+      e.cip as areaIp,
+      e.cid as areaCode,
+      e.cname as areaName
+    FROM
+      v_mem_info AS a
+    LEFT JOIN v_mem_info AS b ON a.inviter_user_id = b.mem_id
+    LEFT JOIN v_mem_flow_limit AS c ON a.mem_id = c.mem_id
+    LEFT JOIN v_mem_credits AS d ON a.mem_id = d.mem_id
+    LEFT JOIN v_mem_source AS e ON a.mem_id = e.id
+    WHERE
+      1 = 1
+     <if test="paramObj.time != null and paramObj.time != ''">
+      AND a.reg_date &gt;= concat(#{paramObj.time,jdbcType=VARCHAR},' 00:00:00') and a.reg_date &lt;= concat(#{paramObj.time,jdbcType=VARCHAR},' 23:59:59')
+    </if>
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      AND (a.mem_phone like concat(#{paramObj.memPhone,jdbcType=VARCHAR},'%') or a.inviter_code = #{paramObj.memPhone,jdbcType=VARCHAR})
+    </if>
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      AND a.mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.isProxy != null and paramObj.isProxy != ''">
+      AND a.is_proxy = #{paramObj.isProxy,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.column != null and paramObj.column != ''">
+      order by a.${paramObj.column} ${paramObj.sort}
+    </if>
+    <if test="paramObj.column == null or paramObj.column == ''">
+      order by a.reg_date desc
+    </if>
+    
+  </select>
+
+<!-- 一级代理 -->
+  <select id="getOneProxyMemList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    select
+        a.mem_id AS memId,
+        a.mem_phone AS memPhone,
+        a.mem_nick_name AS memNickName,
+        a.mem_sex AS memSex,
+        a.mem_type AS memType,
+        a.is_proxy AS isProxy,
+        a.last_recharge_date AS lastRechargeDate,
+        a.suspen_date AS suspenDate,
+        a.status,
+        b.account_money AS accountMoney
+    from v_mem_info as a
+    left join v_mem_account as b on a.mem_id = b.mem_id
+    where a.mem_type = '02' and a.is_proxy = '1'
+    <choose>
+      <when test="paramObj.memPhone != null and paramObj.memPhone != ''">
+        and a.mem_phone = #{paramObj.memPhone,jdbcType=VARCHAR}
+      </when>
+      <otherwise>
+        and (a.inviter_user_id is null or a.inviter_user_id = '')
+      </otherwise>
+    </choose>
+  </select>
+
+  <!-- 二级代理 -->
+  <select id="getTwoProxyMemList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    select
+      a.mem_id AS memId,
+      a.mem_phone AS memPhone,
+      a.mem_nick_name AS memNickName,
+      a.mem_sex AS memSex,
+      a.mem_type AS memType,
+      a.is_proxy AS isProxy,
+      a.last_recharge_date AS lastRechargeDate,
+      a.suspen_date AS suspenDate,
+      a.status,
+      b.account_money AS accountMoney
+    from v_mem_info as a
+    left join v_mem_account as b on a.mem_id = b.mem_id
+    where
+      a.mem_type = '02'
+    and
+      a.is_proxy = '1'
+    and
+    (a.inviter_user_id is not null or a.inviter_user_id != '')
+    and
+      a.inviter_user_id in
+    <foreach item="item" collection="paramObj.list.split(',')" separator="," open="(" close=")" index="">
+      ${item}
+    </foreach>
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and (
+      a.mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+      or
+      a.mem_nick_name like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+      )
+    </if>
+  </select>
+
+  <!-- 根据ID查询下级代理 -->
+  <select id="getSubordinateProxy" parameterType="java.util.List" resultType="java.util.Map">
+    select
+    a.mem_id AS memId,
+    a.mem_phone AS memPhone,
+    a.mem_nick_name AS memNickName,
+    a.mem_sex AS memSex,
+    a.mem_type AS memType,
+    a.is_proxy AS isProxy,
+    a.last_recharge_date AS lastRechargeDate,
+    a.suspen_date AS suspenDate,
+    a.status,
+    b.account_money AS accountMoney
+    from v_mem_info as a
+    left join v_mem_account as b on a.mem_id = b.mem_id
+    where
+      a.mem_type = '02'
+    and
+      a.is_proxy = '1'
+    and
+      a.inviter_user_id is not null
+    and
+      a.inviter_user_id in
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+  <!-- 根据ID查询下级代理会员 -->
+  <select id="getSubordinateMember" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from v_mem_info
+    where inviter_user_id is not null and inviter_user_id in
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=VARCHAR}
+    </foreach>
+  </select>
+  
+      <!-- 根据邀请码和小时时间段查询下级代理 -->
+  <select id="getUserListByInvitCodeAndHour" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_info
+    where inviter_user_id = #{inviterUserId} and reg_date like concat(#{YMDHTime}, "%")
+  </select>
+
+  <select id="selectSumMoneyByMemId" parameterType="java.lang.String" resultType="java.lang.String">
+    select sum(change_money) as sumMoney from v_mem_account_record where mem_id = #{memId,jdbcType=VARCHAR} and record_type = '40'
+  </select>
+
+  <select id="queryProxyByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select * from v_mem_info where mem_type = '02' and is_proxy = '1' and mem_phone = #{memPhone,jdbcType=VARCHAR}
+</select>
+
+  <select id="getInvitationRecord" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from v_mem_info
+    where
+      inviter_user_id = #{paramObj.memId,jdbcType=VARCHAR}
+    <if test="paramObj.searchData != null and paramObj.searchData != ''">
+    and (
+      mem_phone like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+      or
+      mem_nick_name like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+    )
+    </if>
+    <if test="paramObj.selectType == 1">
+      AND DATE_FORMAT(reg_date,'%Y-%m-%d') = CURDATE()
+    </if>
+    <if test="paramObj.selectType == 2">
+      AND DATE_FORMAT(reg_date,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND
+      DATE_FORMAT(reg_date,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 3">
+      AND DATE_FORMAT(reg_date,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND
+      DATE_FORMAT(reg_date,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 4">
+      AND DATE_FORMAT(reg_date,'%Y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND
+      DATE_FORMAT(reg_date,'%Y-%m-%d') &lt;= CURDATE()
+    </if>
+    <if test="paramObj.selectType == 0">
+
+    </if>
+  </select>
+  
+  <select id="getInvitationUserCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from v_mem_info where inviter_user_id = #{memId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getInvitationMemCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from v_mem_info where inviter_user_id = #{memId,jdbcType=VARCHAR} and is_pay = '1'
+  </select>
+
+  <select id="getMemBinding" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    SELECT
+      mem_id,
+      mem_phone,
+      mem_nick_name
+    FROM v_mem_info
+    WHERE mem_phone = #{paramObj.searchData,jdbcType=VARCHAR}
+    AND reg_date &gt;= DATE_SUB(NOW(), INTERVAL 1 DAY)
+    AND (inviter_user_id is null or inviter_user_id = '')
+    AND mem_type = '01'
+  </select>
+
+  <select id="todayMemInfoList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    SELECT
+    a.mem_id AS memId,
+    a.inviter_time AS inviterTime,
+    a.mem_phone AS memPhone,
+    a.mem_nick_name AS memNickName,
+    a.mem_sex AS memSex,
+    a.mem_type AS memType,
+    a.is_proxy AS isProxy,
+    /*a.use_total_traffic AS useTotalTraffic,*/
+    a.last_recharge_date AS lastRechargeDate,
+    a.reg_date AS regDate,
+    b.mem_phone AS inviterPhone,
+    a.suspen_date AS suspenDate,
+    a.status
+    FROM
+    v_mem_info AS a
+    LEFT JOIN v_mem_info AS b ON a.inviter_user_id = b.mem_id
+    where 1=1
+      <if test="paramObj.searchData != null and paramObj.searchData != ''">
+          and (
+          a.mem_phone like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+          or
+          a.mem_nick_name like concat('%',#{paramObj.searchData,jdbcType=VARCHAR},'%')
+          )
+      </if>
+      <if test="paramObj.searchType == 0">
+
+      </if>
+      <if test="paramObj.searchType == 1">
+        and (a.inviter_user_id is null or a.inviter_user_id = '')
+      </if>
+      <if test="paramObj.searchType == 2">
+        and (a.inviter_user_id is not null or a.inviter_user_id != '')
+      </if>
+      <if test="paramObj.searchDate != null and paramObj.searchDate != ''">
+          AND DATE_FORMAT(a.reg_date,'%Y-%m-%d') = DATE_FORMAT(#{paramObj.searchDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+      </if>
+  </select>
+
+  <select id="getTodayAddMem" parameterType="java.lang.String" resultType="java.util.Map">
+    select * from
+    (
+      select count(*) as zjzcNum from v_mem_info
+      where (inviter_user_id is null or inviter_user_id = '')
+      AND DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+    ) as a
+    ,
+    (
+      select count(*) as byqNum from v_mem_info
+      where (inviter_user_id is not null or inviter_user_id != '')
+      AND DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+    ) as b
+  </select>
+
+  <select id="getTodayAddChargeMem" parameterType="java.lang.String" resultType="java.util.Map">
+    select * from
+    (
+      select count(*) as zjzcNum
+      from (
+        select * from v_mem_info
+        where (inviter_user_id is null or inviter_user_id = '')
+        AND DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+      ) as a
+      join (select mem_id from v_mem_order_charge group by mem_id) as b on a.mem_id = b.mem_id
+    ) as a
+    ,
+    (
+      select count(*) as byqNum
+      from (
+        select * from v_mem_info
+        where (inviter_user_id is not null or inviter_user_id != '')
+        AND DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+      ) as a
+      join (select mem_id from v_mem_order_charge group by mem_id) as b on a.mem_id = b.mem_id
+    ) as b
+  </select>
+
+  <select id="getTodayAddCharge" parameterType="java.lang.String" resultType="java.util.Map">
+    select * from
+    (
+      select IFNULL(SUM(b.final_price),0) zjzcSum
+      from (
+        select * from v_mem_info
+        where (inviter_user_id is null or inviter_user_id = '')
+        AND DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+      ) as a
+      join v_mem_order_charge as b on a.mem_id = b.mem_id
+    ) as a
+    ,
+    (
+      select IFNULL(SUM(b.final_price),0) byqSum
+      from (
+        select * from v_mem_info
+        where (inviter_user_id is not null or inviter_user_id != '')
+        AND DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(#{selectDate,jdbcType=TIMESTAMP},'%Y-%m-%d')
+      ) as a
+      join v_mem_order_charge as b on a.mem_id = b.mem_id
+    ) as b
+  </select>
+
+  <select id="getMemLineChart" parameterType="java.lang.String" resultType="java.util.Map">
+    SELECT
+      IFNULL(b.count,0)	as zxzcNum,
+      concat(a.number,'号') as day
+    FROM
+    (
+      select @d:=@d+1 number,
+      DATE_SUB(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'),INTERVAL DAYOFMONTH(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'))-@d DAY) time
+      from
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) a,
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) b,
+      (select 1 UNION ALL select 2) c,
+      (select @d:=0) d
+      where @d &lt; day(LAST_DAY(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d')))
+    ) a
+    LEFT JOIN (
+      select count(*) as count, DATE_FORMAT(reg_date,'%Y-%m-%d') as date from v_mem_info
+      where (inviter_user_id is null or inviter_user_id = '')
+      group by date
+    ) as b ON DATE_FORMAT(b.date,'%Y-%m-%d') = a.time
+    ORDER BY a.number ASC
+  </select>
+
+  <select id="getMemLineChartTo" parameterType="java.lang.String" resultType="java.util.Map">
+    SELECT
+      IFNULL(b.count,0)	as byqNum,
+      concat(a.number,'号') as day
+    FROM
+    (
+      select @d:=@d+1 number,
+      DATE_SUB(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'),INTERVAL DAYOFMONTH(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'))-@d DAY) time
+      from
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) a,
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) b,
+      (select 1 UNION ALL select 2) c,
+      (select @d:=0) d
+      where @d &lt; day(LAST_DAY(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d')))
+    ) a
+    LEFT JOIN (
+      select count(*) as count, DATE_FORMAT(reg_date,'%Y-%m-%d') as date from v_mem_info
+      where (inviter_user_id is not null or inviter_user_id != '')
+      group by date
+    ) as b ON DATE_FORMAT(b.date,'%Y-%m-%d') = a.time
+    ORDER BY a.number ASC
+  </select>
+
+  <select id="getMemBarChart" parameterType="java.lang.String" resultType="java.lang.String">
+      select IFNULL(b.memSum,0) as memSum from (
+        SELECT 1 mon UNION ALL SELECT 2 mon UNION ALL SELECT 3 mon UNION ALL SELECT 4 mon UNION ALL
+        SELECT 5 mon UNION ALL SELECT 6 mon UNION ALL SELECT 7 mon UNION ALL SELECT 8 mon UNION ALL
+        SELECT 9 mon UNION ALL SELECT 10 mon UNION ALL SELECT 11 mon UNION ALL SELECT 12 mon
+      ) as a
+      left join (
+          SELECT month(reg_date) mon, count(*) as memSum FROM v_mem_info
+          WHERE
+               DATE_FORMAT(reg_date,'%Y') = DATE_FORMAT(#{yearDate,jdbcType=VARCHAR},'%Y') and (mem_type = '01' or mem_type = '02')
+          GROUP BY mon
+      ) as b on a.mon = b.mon
+  </select>
+
+  <select id="getMemExpire" resultType="java.util.Map">
+    select
+      count(*) as value,
+      '试用过期' as name
+    from v_mem_info
+    where suspen_date &lt; NOW() and mem_type = '01'
+
+    union all
+
+    select
+      count(*) as value,
+      '充值过期' as name
+    from v_mem_info
+    where suspen_date &lt; NOW() and mem_type = '02'
+  </select>
+  
+  <update id="updateSuspenDate" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+     UPDATE v_mem_info SET suspen_date = DATE_ADD(suspen_date, interval #{duration,jdbcType=INTEGER} hour) WHERE mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateSuspenDateMinute" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+     UPDATE v_mem_info SET suspen_date = DATE_ADD(suspen_date, interval #{duration,jdbcType=INTEGER} MINUTE) WHERE mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateBeInvitedByMemId" parameterType="com.tsn.serv.mem.entity.mem.MemInfo" >
+     UPDATE v_mem_info 
+     	SET suspen_date = DATE_ADD(suspen_date, interval #{duration,jdbcType=INTEGER} hour),
+	        inviter_user_id = #{inviterUserId,jdbcType=VARCHAR},
+	        inviter_time = #{inviterTime,jdbcType=TIMESTAMP},
+	        inviter_user_type = #{inviterUserType,jdbcType=VARCHAR}
+     WHERE mem_id = #{memId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="recentUseMem" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+      a1.mem_id,
+      a1.mem_phone,
+      a1.mem_nick_name,
+      a1.mem_type,
+      a1.last_recharge_date,
+      a1.suspen_date,
+      a1.reg_date,
+      a1.status,
+      a1.last_login_time
+    from (
+      select distinct
+        b.mem_id
+      from
+        v_mem_flow_day b
+      where 1 = 1
+        <if test="paramObj.selectType == 1">
+          AND DATE_FORMAT(b.day,'%Y%m%d') = DATE_FORMAT(CURDATE(),'%Y%m%d')
+        </if>
+        <if test="paramObj.selectType == 2">
+          AND DATE_FORMAT(b.day,'%Y%m%d') &gt;= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 3 DAY),'%Y%m%d') AND
+          DATE_FORMAT(b.day,'%Y%m%d') &lt;= DATE_FORMAT(CURDATE(),'%Y%m%d')
+        </if>
+        <if test="paramObj.selectType == 3">
+          AND DATE_FORMAT(b.day,'%Y%m%d') &gt;= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 DAY),'%Y%m%d') AND
+          DATE_FORMAT(b.day,'%Y%m%d') &lt;= DATE_FORMAT(CURDATE(),'%Y%m%d')
+        </if>
+        <if test="paramObj.selectType == 4">
+          AND DATE_FORMAT(b.day,'%Y%m%d') &gt;= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 14 DAY),'%Y%m%d') AND
+          DATE_FORMAT(b.day,'%Y%m%d') &lt;= DATE_FORMAT(CURDATE(),'%Y%m%d')
+        </if>
+        <if test="paramObj.selectType == 5">
+          AND DATE_FORMAT(b.day,'%Y%m%d') &gt;= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 30 DAY),'%Y%m%d') AND
+          DATE_FORMAT(b.day,'%Y%m%d') &lt;= DATE_FORMAT(CURDATE(),'%Y%m%d')
+        </if>
+        <if test="paramObj.selectType == 0">
+
+        </if>
+    ) b1
+    inner join v_mem_info a1 on b1.mem_id = a1.mem_id
+    where 1 = 1
+      <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+        and (
+        a1.mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+        or
+        a1.mem_nick_name like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+        )
+      </if>
+    <if test="paramObj.memType != null and paramObj.memType != ''">
+      and a1.mem_type = #{paramObj.memType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.isOverdue != '' and paramObj.isOverdue == 0">
+      AND a1.suspen_date &lt; NOW()
+    </if>
+    <if test="paramObj.isOverdue != '' and paramObj.isOverdue == 1">
+      AND a1.suspen_date &gt; NOW()
+    </if>
+    order by a1.reg_date desc
+  </select>
+  
+  <select id="getUserStatisDataTodayBefore" resultType="java.util.Map">
+  	SELECT
+    COUNT(case when mem_type='01' or mem_type='02' then 1 end) AS regUserCount, count(case when mem_type='01' then 1 end) as tryUserCount, count(case when mem_type='02' then 1 end) as recUserCount, count(case when inviter_user_type='mem' then 1 end) as inviUserCount, count(case when inviter_user_type='source' or channel_code is not null then 1 end) as channelUserCount, count(case when mem_type='01' and suspen_date &lt; CURRENT_TIMESTAMP then 1 end) as tryExpireUserCount, count(case when mem_type='02' and suspen_date &lt; CURRENT_TIMESTAMP then 1 end) as recExpireUserCount
+    FROM
+      v_mem_info
+    WHERE 1=1 
+    <if test="todayTime != null and todayTime != ''">
+    	and reg_date &lt; concat(#{todayTime,jdbcType=VARCHAR},' 00:00:00')
+  	</if>
+  </select>
+  
+  <select id="getUserStatisDataToday" resultType="java.util.Map">
+  	SELECT
+    COUNT(case when mem_type='01' or mem_type='02' then 1 end) AS regUserCount, count(case when mem_type='01' then 1 end) as tryUserCount, count(case when mem_type='02' then 1 end) as recUserCount, count(case when inviter_user_type='mem' then 1 end) as inviUserCount, count(case when inviter_user_type='source' or channel_code is not null then 1 end) as channelUserCount, count(case when mem_type='01' and suspen_date &lt; CURRENT_TIMESTAMP then 1 end) as tryExpireUserCount, count(case when mem_type='02' and suspen_date &lt; CURRENT_TIMESTAMP then 1 end) as recExpireUserCount
+    FROM
+      v_mem_info
+    WHERE 1=1 
+    <if test="todayTime != null and todayTime != ''">
+    	and reg_date like concat(#{todayTime,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+  
+    <select id="getUserRegStatisGroupByDay" resultType="java.util.Map" parameterType="java.lang.String">
+  	  SELECT
+		date_format(b.reg_date, '%Y-%m-%d' ) day,
+		sum(case when b.mem_type = '01' or b.mem_type = '02' then 1 else 0 end) 'total',
+		sum(case when b.mem_type = '00' then 1 else 0 end) 'zxguestCount',
+		sum(case when b.inviter_user_id is null and ( b.mem_type = '01' || b.mem_type = '02' ) then 1 else 0 end) 'zxzcCount',
+		sum(case when b.inviter_user_id is not null and ( b.mem_type = '01' || b.mem_type = '02' ) then 1 else 0 end) 'byqCount'
+	FROM
+		( SELECT a.mem_id, a.reg_date, a.mem_type, a.inviter_user_id FROM v_mem_info a WHERE a.reg_date LIKE concat(#{monthDate,jdbcType=VARCHAR},'%')) b
+	GROUP BY
+	date_format(b.reg_date,'%Y-%m-%d')
+  </select>
+  
+  <select id="queryProxyAllPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    SELECT
+	d.mem_id as memId,
+	CASE WHEN d.mem_phone is null THEN d.inviter_code ELSE d.mem_phone END as memName,
+	d.mem_phone as memPhone,
+	d.mem_type as memType,
+	d.reg_date as regDate,
+	d.suspen_date as suspenDate,
+	d.last_recharge_date as lastRechargeDate,
+	d.proxy_create_time as proxyCreateTime,
+	d.account_money as accountMoney,
+	count( e.mem_id ) AS invitTotalNum,
+	sum( CASE WHEN e.is_pay = 1 THEN 1 ELSE 0 END ) AS invitRechargeNum 
+FROM
+	(
+	SELECT
+		b.mem_id,
+		b.mem_phone,
+		b.inviter_code,
+		b.mem_type,
+		b.reg_date,
+		b.suspen_date,
+		b.last_recharge_date,
+		a.create_time AS proxy_create_time,
+		c.account_money 
+	FROM
+		v_mem_proxy_Info a
+		LEFT JOIN v_mem_info b ON a.proxy_id = b.mem_id
+		LEFT JOIN v_mem_account c ON a.proxy_id = c.mem_id 
+	WHERE 1=1 
+	<if test="paramObj.proxyTime != null and paramObj.proxyTime != ''">
+      AND a.create_time &gt;= concat(#{paramObj.proxyTime,jdbcType=VARCHAR},' 00:00:00') and a.create_time &lt;= concat(#{paramObj.proxyTime,jdbcType=VARCHAR},' 23:59:59')
+    </if>
+    <if test="paramObj.memName != null and paramObj.memName != ''">
+      AND (b.mem_phone = #{paramObj.memName,jdbcType=VARCHAR} or b.inviter_code = #{paramObj.memName,jdbcType=VARCHAR})
+    </if>
+    
+	) d
+	LEFT JOIN v_mem_info e ON d.mem_id = e.inviter_user_id 
+GROUP BY
+	d.mem_id,
+	d.mem_phone,
+	d.inviter_code,
+	d.mem_type,
+	d.reg_date,
+	d.suspen_date,
+	d.last_recharge_date,
+	d.proxy_create_time,
+	d.account_money
+  </select>
+  
+  <select id="queryMemInvitAndProxyListByIds" resultType="java.util.Map">
+  
+  SELECT
+	b.mem_id AS memId,
+	CASE WHEN b.mem_phone is null THEN b.inviter_code ELSE b.mem_phone END as memName,
+	b.mem_type AS memType,
+	b.reg_date AS regDate,
+	b.suspen_date AS suspenDate,
+	b.last_recharge_date AS lastRechargeDate,
+	e.create_time AS proxyCreateTime,
+	c.account_money AS accountMoney,
+	count( d.mem_id ) AS invitTotalNum,
+	sum( CASE WHEN d.is_pay = 1 THEN 1 ELSE 0 END ) AS invitRechargeNum,
+	sum( CASE WHEN DATE_FORMAT(d.inviter_time,'%Y-%m-%d') = #{currTime,jdbcType=VARCHAR} THEN 1 ELSE 0 END ) AS currInvitNum 
+FROM
+	(
+	SELECT
+		a.mem_id,
+		a.mem_phone,
+		a.inviter_code,
+		a.mem_type,
+		a.reg_date,
+		a.suspen_date,
+		a.last_recharge_date,
+		a.is_pay,
+		a.inviter_time
+	FROM
+		v_mem_info a 
+	WHERE
+		a.mem_id IN 
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+        	#{id}
+    	</foreach>
+	) b
+	LEFT JOIN v_mem_proxy_Info e ON e.proxy_id = b.mem_id
+	LEFT JOIN v_mem_account c ON b.mem_id = c.mem_id
+	LEFT JOIN v_mem_info d ON b.mem_id = d.inviter_user_id 
+GROUP BY
+	b.mem_id,
+	b.mem_phone,
+	b.inviter_code,
+	b.mem_type,
+	b.reg_date,
+	b.suspen_date,
+	b.last_recharge_date,
+	e.create_time,
+	c.account_money
+  
+  </select>
+  
+  
+  
+  <select id="queryMemInvitAndProxyListByTime" resultType="java.util.Map">
+  
+  SELECT
+	b.mem_id AS memId,
+	CASE WHEN b.mem_phone is null THEN b.inviter_code ELSE b.mem_phone END as memName,
+	b.mem_type AS memType,
+	b.reg_date AS regDate,
+	b.suspen_date AS suspenDate,
+	b.last_recharge_date AS lastRechargeDate,
+	e.create_time AS proxyCreateTime,
+	c.account_money AS accountMoney,
+	count( d.mem_id ) AS invitTotalNum,
+	sum( CASE WHEN d.is_pay = 1 THEN 1 ELSE 0 END ) AS invitRechargeNum,
+	sum( CASE WHEN DATE_FORMAT(d.inviter_time,'%Y-%m-%d') &gt;= #{invitStartTime,jdbcType=VARCHAR} and DATE_FORMAT(d.inviter_time,'%Y-%m-%d') &lt;= #{invitEndTime,jdbcType=VARCHAR} THEN 1 ELSE 0 END ) AS currInvitNum 
+FROM
+	(
+		SELECT
+		  DISTINCT
+			a.mem_id,
+			a.mem_phone,
+			a.inviter_code,
+			a.mem_type,
+			a.reg_date,
+			a.suspen_date,
+			a.last_recharge_date,
+			a.is_pay,
+			a.inviter_time
+		FROM
+			v_mem_info a1 LEFT JOIN v_mem_info a on a1.inviter_user_id = a.mem_id
+		WHERE
+		a1.inviter_time &gt;= concat(#{invitStartTime,jdbcType=VARCHAR},' 00:00:00') and a1.inviter_time &lt;= concat(#{invitEndTime,jdbcType=VARCHAR},' 23:59:59')
+		<if test="memPhone != null and memPhone != ''">
+	      AND (a.mem_phone = #{memPhone,jdbcType=VARCHAR} or a.inviter_code = #{memPhone,jdbcType=VARCHAR})
+	    </if>
+	    <if test="memType != null and memType != ''">
+	      AND a.mem_type = #{memType,jdbcType=VARCHAR}
+	    </if>
+	    <if test="isProxy != null and isProxy != ''">
+	      AND a.is_proxy = #{isProxy,jdbcType=VARCHAR}
+	    </if>
+	) b
+	LEFT JOIN v_mem_proxy_Info e ON e.proxy_id = b.mem_id
+	LEFT JOIN v_mem_account c ON b.mem_id = c.mem_id
+	LEFT JOIN v_mem_info d ON b.mem_id = d.inviter_user_id 
+GROUP BY
+	b.mem_id,
+	b.mem_phone,
+	b.inviter_code,
+	b.mem_type,
+	b.reg_date,
+	b.suspen_date,
+	b.last_recharge_date,
+	e.create_time,
+	c.account_money
+	
+	HAVING count( d.mem_id ) > 0
+  
+  </select>
+</mapper>

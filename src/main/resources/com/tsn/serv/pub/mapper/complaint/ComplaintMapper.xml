@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.pub.mapper.complaint.ComplaintMapper">
+
+    <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.complaint.Complaint">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="mem_id" jdbcType="VARCHAR" property="memId" />
+        <result column="mem_phone" jdbcType="VARCHAR" property="memPhone" />
+        <result column="mem_name" jdbcType="VARCHAR" property="memName" />
+        <result column="comp_customer" jdbcType="VARCHAR" property="compCustomer" />
+        <result column="comp_type_id" jdbcType="INTEGER" property="compTypeId" />
+        <result column="comp_remarks" jdbcType="VARCHAR" property="compRemarks" />
+        <result column="comp_rate" jdbcType="VARCHAR" property="compRate" />
+        <result column="comp_pic" jdbcType="VARCHAR" property="compPic" />
+        <result column="comp_status" jdbcType="VARCHAR" property="compStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+  id, mem_id, mem_phone, mem_name, comp_customer, comp_type_id, comp_remarks, comp_rate, comp_status,
+  comp_pic, create_time, update_time
+</sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+  delete from v_service_complaint
+  where id = #{id,jdbcType=INTEGER}
+</delete>
+
+    <insert id="insert" parameterType="com.tsn.serv.pub.entity.complaint.Complaint">
+  insert into v_service_complaint (id, mem_id, mem_phone,
+    mem_name, comp_customer, comp_type_id,
+    comp_remarks, comp_rate, comp_status, comp_pic,
+    create_time, update_time)
+  values (#{id,jdbcType=INTEGER}, #{memId,jdbcType=VARCHAR}, #{memPhone,jdbcType=VARCHAR},
+    #{memName,jdbcType=VARCHAR}, #{compCustomer,jdbcType=VARCHAR}, #{compTypeId,jdbcType=INTEGER},
+    #{compRemarks,jdbcType=VARCHAR}, #{compRate,jdbcType=VARCHAR}, #{compStatus,jdbcType=VARCHAR},#{compPic,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+</insert>
+
+
+    <insert id="insertDynamic" parameterType="com.tsn.serv.pub.entity.complaint.Complaint">
+        insert into v_service_complaint
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memId != null">
+                mem_id,
+            </if>
+            <if test="memPhone != null">
+                mem_phone,
+            </if>
+            <if test="memName != null">
+                mem_name,
+            </if>
+            <if test="compCustomer != null">
+                comp_customer,
+            </if>
+            <if test="compTypeId != null">
+                comp_type_id,
+            </if>
+            <if test="compRemarks != null">
+                comp_remarks,
+            </if>
+            <if test="compRate != null">
+                comp_rate,
+            </if>
+            <if test="compStatus != null">
+                comp_status,
+            </if>
+            <if test="compPic != null">
+                comp_pic,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="memId != null">
+                #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="memPhone != null">
+                #{memPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="memName != null">
+                #{memName,jdbcType=VARCHAR},
+            </if>
+            <if test="compCustomer != null">
+                #{compCustomer,jdbcType=VARCHAR},
+            </if>
+            <if test="compTypeId != null">
+                #{compTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="compRemarks != null">
+                #{compRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="compRate != null">
+                #{compRate,jdbcType=VARCHAR},
+            </if>
+            <if test="compStatus != null">
+                #{compStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="compPic != null">
+                #{compPic,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateDynamic" parameterType="com.tsn.serv.pub.entity.complaint.Complaint">
+        update v_service_complaint
+        <set>
+            <if test="memId != null">
+                mem_id = #{memId,jdbcType=VARCHAR},
+            </if>
+            <if test="memPhone != null">
+                mem_phone = #{memPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="memName != null">
+                mem_name = #{memName,jdbcType=VARCHAR},
+            </if>
+            <if test="compCustomer != null">
+                comp_customer = #{compCustomer,jdbcType=VARCHAR},
+            </if>
+            <if test="compTypeId != null">
+                comp_type_id = #{compTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="compRemarks != null">
+                comp_remarks = #{compRemarks,jdbcType=VARCHAR},
+            </if>
+            <if test="compRate != null">
+                comp_rate = #{compRate,jdbcType=VARCHAR},
+            </if>
+            <if test="compStatus != null">
+                comp_status = #{compStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="compPic != null">
+                comp_pic = #{compPic,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="update" parameterType="com.tsn.serv.pub.entity.complaint.Complaint">
+  update v_service_complaint
+  set mem_id = #{memId,jdbcType=VARCHAR},
+    mem_phone = #{memPhone,jdbcType=VARCHAR},
+    mem_name = #{memName,jdbcType=VARCHAR},
+    comp_customer = #{compCustomer,jdbcType=VARCHAR},
+    comp_type_id = #{compTypeId,jdbcType=INTEGER},
+    comp_remarks = #{compRemarks,jdbcType=VARCHAR},
+    comp_rate = #{compRate,jdbcType=VARCHAR},
+    comp_status = #{compStatus,jdbcType=VARCHAR},
+    comp_pic = #{compPic,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+  where id = #{id,jdbcType=INTEGER}
+</update>
+
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from  v_service_complaint
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <sql id="findPageWithWhere">
+        <where> 1=1
+            <if test="id != null" >
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="memId != null and memId != ''" >
+                and mem_id = #{memId,jdbcType=VARCHAR}
+            </if>
+            <if test="memPhone != null and memPhone != ''" >
+                and mem_phone = #{memPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="memName != null and memName != ''" >
+                and mem_name = #{memName,jdbcType=VARCHAR}
+            </if>
+            <if test="compCustomer != null and compCustomer != ''" >
+                and comp_customer = #{compCustomer,jdbcType=VARCHAR}
+            </if>
+            <if test="compTypeId != null" >
+                and comp_type_id = #{compTypeId,jdbcType=INTEGER}
+            </if>
+            <if test="compRemarks != null and compRemarks != ''" >
+                and comp_remarks = #{compRemarks,jdbcType=VARCHAR}
+            </if>
+            <if test="compRate != null and compRate != ''" >
+                and comp_rate = #{compRate,jdbcType=VARCHAR}
+            </if>
+            <if test="compStatus != null and compStatus != ''" >
+                and comp_status = #{compStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="compPic != null and compPic != ''" >
+                and comp_pic = #{compPic,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null" >
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getComplaintPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+        select
+            a.id,
+            a.mem_id as memId,
+            a.mem_phone as memPhone,
+            a.mem_name as memName,
+            a.comp_customer as compCustomer,
+            a.comp_type_id as compTypeId,
+            a.comp_remarks as compRemarks,
+            a.comp_rate as compRate,
+            a.comp_status as compStatus,
+            a.create_time as createTime,
+            a.update_time as updateTime,
+            b.complaint_type_name as complaintTypeName
+        from  v_service_complaint as a
+        left join v_service_complaint_type as b on a.comp_type_id = b.complaint_type_id
+        where 1 = 1
+        <if test="paramObj.selectData != null and paramObj.selectData != ''">
+            and a.mem_phone like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="paramObj.compStatus != null and paramObj.compStatus != ''">
+            and a.comp_status = #{paramObj.compStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="paramObj.statDate != null and paramObj.statDate != ''">
+            AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="paramObj.endDate != null and paramObj.endDate != ''">
+            AND DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+        </if>
+        order by a.create_time desc
+    </select>
+</mapper>

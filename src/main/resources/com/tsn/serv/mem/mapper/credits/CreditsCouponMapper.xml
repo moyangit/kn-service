@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.credits.CreditsCouponMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.credits.CreditsCoupon" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="coupon_name" property="couponName" jdbcType="VARCHAR" />
+    <result column="coupon_type" property="couponType" jdbcType="VARCHAR" />
+    <result column="coupon_duration" property="couponDuration" jdbcType="INTEGER" />
+    <result column="coupon_credits" property="couponCredits" jdbcType="INTEGER" />
+    <result column="coupon_num" property="couponNum" jdbcType="INTEGER" />
+    <result column="icon_url" property="iconUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, coupon_name, coupon_type, coupon_duration, coupon_credits, coupon_num, icon_url, 
+    status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_coupon
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCreditsCouponListByEntity" parameterType="com.tsn.serv.mem.entity.credits.CreditsCoupon" resultMap="BaseResultMap">
+	  select
+	    <include refid="Base_Column_List" />
+	  from
+	    v_mem_credits_coupon
+	  <where>
+  		  <if test="couponName != null" >
+	        and coupon_name = #{couponName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="couponType != null" >
+	        and coupon_type = #{couponType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="couponDuration != null" >
+	        and coupon_duration = #{couponDuration,jdbcType=INTEGER}
+	      </if>
+	      <if test="couponCredits != null" >
+	        and coupon_credits = #{couponCredits,jdbcType=INTEGER}
+	      </if>
+	      <if test="couponNum != null" >
+	        and coupon_num = #{couponNum,jdbcType=INTEGER}
+	      </if>
+	      <if test="iconUrl != null" >
+	        and icon_url = #{iconUrl,jdbcType=VARCHAR}
+	      </if>
+	      <if test="status != null" >
+	        and status = #{status,jdbcType=VARCHAR}
+	      </if>
+	      <if test="createTime != null" >
+	        and create_time = #{createTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="updateTime != null" >
+	        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+	      </if>
+	  </where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_credits_coupon
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.credits.CreditsCoupon" >
+    insert into v_mem_credits_coupon (id, coupon_name, coupon_type, 
+      coupon_duration, coupon_credits, coupon_num, 
+      icon_url, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{couponName,jdbcType=VARCHAR}, #{couponType,jdbcType=VARCHAR}, 
+      #{couponDuration,jdbcType=INTEGER}, #{couponCredits,jdbcType=INTEGER}, #{couponNum,jdbcType=INTEGER}, 
+      #{iconUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsCoupon" >
+    insert into v_mem_credits_coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="couponName != null" >
+        coupon_name,
+      </if>
+      <if test="couponType != null" >
+        coupon_type,
+      </if>
+      <if test="couponDuration != null" >
+        coupon_duration,
+      </if>
+      <if test="couponCredits != null" >
+        coupon_credits,
+      </if>
+      <if test="couponNum != null" >
+        coupon_num,
+      </if>
+      <if test="iconUrl != null" >
+        icon_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="couponName != null" >
+        #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponType != null" >
+        #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="couponDuration != null" >
+        #{couponDuration,jdbcType=INTEGER},
+      </if>
+      <if test="couponCredits != null" >
+        #{couponCredits,jdbcType=INTEGER},
+      </if>
+      <if test="couponNum != null" >
+        #{couponNum,jdbcType=INTEGER},
+      </if>
+      <if test="iconUrl != null" >
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsCoupon" >
+    update v_mem_credits_coupon
+    <set >
+      <if test="couponName != null" >
+        coupon_name = #{couponName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponType != null" >
+        coupon_type = #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="couponDuration != null" >
+        coupon_duration = #{couponDuration,jdbcType=INTEGER},
+      </if>
+      <if test="couponCredits != null" >
+        coupon_credits = #{couponCredits,jdbcType=INTEGER},
+      </if>
+      <if test="couponNum != null" >
+        coupon_num = #{couponNum,jdbcType=INTEGER},
+      </if>
+      <if test="iconUrl != null" >
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.credits.CreditsCoupon" >
+    update v_mem_credits_coupon
+    set coupon_name = #{couponName,jdbcType=VARCHAR},
+      coupon_type = #{couponType,jdbcType=VARCHAR},
+      coupon_duration = #{couponDuration,jdbcType=INTEGER},
+      coupon_credits = #{couponCredits,jdbcType=INTEGER},
+      coupon_num = #{couponNum,jdbcType=INTEGER},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getCreditsCouponListByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select
+    <include refid="Base_Column_List" />
+  from
+    v_mem_credits_coupon
+  where
+    status = '0'
+  and
+    coupon_type = #{couponType,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <update id="updateByCouponType" parameterType="com.tsn.serv.mem.entity.credits.CreditsCoupon" >
+    update v_mem_credits_coupon
+    set 
+      coupon_num = coupon_num + 1
+    where coupon_type = #{couponType,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.auth.mapper.sys.SysUserMapper" >
+
+  <resultMap id="BaseResultMap" type="com.tsn.serv.auth.entity.sys.SysUser" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <!--
+    (#{roles,jdbcType=OTHER,typeHandler=com.tsn.serv.auth.entity.handler.MySqlJsonHandler})
+    <result column="roles" property="roles" typeHandler="com.tsn.serv.auth.entity.handler.MySqlJsonHandler"/>
+    -->
+    <result column="roles" property="roles" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    user_id, user_code, real_name, username, password, sex, age, phone, roles, status, create_date, create_by, update_date, update_by, remark
+  </sql>
+
+  <insert id="insert" parameterType="com.tsn.serv.auth.entity.sys.SysUser" >
+    insert into t_sys_user (
+        user_id, user_code, real_name, username, password, sex, age, phone, roles, status, create_date, create_by, update_date, update_by, remark
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
+      #{age,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+      #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.auth.entity.sys.SysUser">
+    update t_sys_user
+    <set >
+      <if test="userCode != null" >
+        user_code = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null and password != ''">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="roles != null" >
+        roles = #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <where>
+        user_id = #{userId,jdbcType=INTEGER}
+    </where>
+  </update>
+
+  <delete id="deleteSysUserById" parameterType="java.util.List">
+    DELETE FROM t_sys_user WHERE user_id IN
+    <foreach item="item" collection="list" separator="," open="(" close=")" index="">
+      #{item, jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+
+  <select id="sysUserList" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    SELECT
+    a.user_id AS userId,
+    a.user_code AS userCode,
+    a.real_name AS realName,
+    a.username AS username,
+    a.password AS password,
+    a.sex AS sex,
+    a.age AS age,
+    a.phone AS phone,
+    a.roles AS roles,
+    a.status AS status,
+    a.create_date AS createDate,
+    a.create_by AS createBy,
+    a.update_date AS updateDate,
+    a.update_by AS updateBy,
+    a.remark AS remark
+    FROM t_sys_user AS a
+    WHERE 1 = 1
+    <if test="paramObj.selectData != null and paramObj.selectData != ''">
+      AND (
+      a.real_name LIKE CONCAT('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      OR
+      a.username LIKE CONCAT('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="paramObj.statDate != null and paramObj.statDate != ''">
+      AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &gt;= #{paramObj.statDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="paramObj.endDate != null and paramObj.endDate != ''">
+      AND DATE_FORMAT(a.create_date,'%Y-%m-%d') &lt;= #{paramObj.endDate,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectSysUserByUserName" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_sys_user
+    WHERE username = #{username,jdbcType=VARCHAR} and status = '0'
+  </select>
+
+</mapper>

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.credits.CreditsTaskOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="task_type" property="taskType" jdbcType="VARCHAR" />
+    <result column="task_status" property="taskStatus" jdbcType="TINYINT" />
+    <result column="value_type" property="valueType" jdbcType="TINYINT" />
+    <result column="task_value" property="taskValue" jdbcType="INTEGER" />
+    <result column="task_start_time" property="taskStartTime" jdbcType="TIMESTAMP" />
+    <result column="task_end_time" property="taskEndTime" jdbcType="TIMESTAMP" />
+    <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+    
+    <result column="mem_type" property="memType" jdbcType="VARCHAR" />
+    <result column="device_type" property="deviceType" jdbcType="VARCHAR" />
+    <result column="suspen_date" property="suspenDate" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="device_no" property="deviceNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mem_id, order_no, task_type, task_status, value_type, task_value, task_start_time, 
+    task_end_time,file_url,mem_type,device_type,suspen_date,create_time,update_time,device_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCreditsTaskOrderByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task_order
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectTodayTaskOrder" resultMap="BaseResultMap" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task_order
+    where mem_id = #{memId,jdbcType=VARCHAR}
+     and task_type = #{taskType,jdbcType=VARCHAR}
+     <if test="startTime != null and startTime != ''" >
+         and task_start_time like CONCAT(#{startTime,jdbcType=VARCHAR},"%")
+     </if>
+     <if test="taskStatus != null and taskStatus != ''" >
+        and task_status = #{taskStatus,jdbcType=TINYINT}
+     </if>
+  </select>
+  
+  <select id="selectByEntity" resultMap="BaseResultMap" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_task_order
+    where 
+		  <if test="memId != null and memId != ''" >
+	        and mem_id = #{memId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="orderNo != null and orderNo != ''" >
+	        and order_no = #{orderNo,jdbcType=VARCHAR}
+	      </if>
+	      <if test="taskType != null and taskType != ''" >
+	        and task_type = #{taskType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="taskStatus != null and taskStatus != ''" >
+	        and task_status = #{taskStatus,jdbcType=TINYINT}
+	      </if>
+	      <if test="valueType != null and valueType != ''" >
+	        and value_type = #{valueType,jdbcType=TINYINT}
+	      </if>
+	      <if test="taskValue != null and taskValue != ''" >
+	        and task_value = #{taskValue,jdbcType=INTEGER}
+	      </if>
+	      <if test="taskStartTime != null" >
+	        and task_start_time = #{taskStartTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="taskEndTime != null" >
+	        and task_end_time = #{taskEndTime,jdbcType=TIMESTAMP}
+	      </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_credits_task_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    insert into v_mem_credits_task_order (id, mem_id, order_no, 
+      task_type, task_status, value_type, 
+      task_value, task_start_time, task_end_time,file_url,mem_type,device_type,suspen_date,create_time,update_time,device_no
+      )
+    values (UUID_SHORT(), #{memId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{taskType,jdbcType=VARCHAR}, #{taskStatus,jdbcType=TINYINT}, #{valueType,jdbcType=TINYINT}, 
+      #{taskValue,jdbcType=INTEGER}, #{taskStartTime,jdbcType=TIMESTAMP}, #{taskEndTime,jdbcType=TIMESTAMP}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{memType,jdbcType=VARCHAR}, #{deviceType,jdbcType=VARCHAR}, #{suspenDate,jdbcType=TIMESTAMP}, NOW(), 
+      #{updateTime,jdbcType=TIMESTAMP},#{deviceNo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    insert into v_mem_credits_task_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="taskType != null" >
+        task_type,
+      </if>
+      <if test="taskStatus != null" >
+        task_status,
+      </if>
+      <if test="valueType != null" >
+        value_type,
+      </if>
+      <if test="taskValue != null" >
+        task_value,
+      </if>
+      <if test="taskStartTime != null" >
+        task_start_time,
+      </if>
+      <if test="taskEndTime != null" >
+        task_end_time,
+      </if>
+      <if test="fileUrl != null" >
+        file_url,
+      </if>
+      <if test="memType != null" >
+        mem_type,
+      </if>
+      <if test="deviceType != null" >
+        device_type,
+      </if>
+      <if test="suspenDate != null" >
+        suspen_date,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="deviceNo != null" >
+        device_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null" >
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null" >
+        #{taskStatus,jdbcType=TINYINT},
+      </if>
+      <if test="valueType != null" >
+        #{valueType,jdbcType=TINYINT},
+      </if>
+      <if test="taskValue != null" >
+        #{taskValue,jdbcType=INTEGER},
+      </if>
+      <if test="taskStartTime != null" >
+        #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null" >
+        #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileUrl != null" >
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="suspenDate != null" >
+        #{suspenDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+       #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceNo != null" >
+        #{deviceNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    update v_mem_credits_task_order
+    <set >
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null" >
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null" >
+        task_status = #{taskStatus,jdbcType=TINYINT},
+      </if>
+      <if test="valueType != null" >
+        value_type = #{valueType,jdbcType=TINYINT},
+      </if>
+      <if test="taskValue != null" >
+        task_value = #{taskValue,jdbcType=INTEGER},
+      </if>
+      <if test="taskStartTime != null" >
+        task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEndTime != null" >
+        task_end_time = #{taskEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileUrl != null" >
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="memType != null" >
+        mem_type = #{memType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null" >
+        device_type = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="suspenDate != null" >
+        suspen_date = #{suspenDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceNo != null" >
+        device_no = #{deviceNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    update v_mem_credits_task_order
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      task_type = #{taskType,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=TINYINT},
+      value_type = #{valueType,jdbcType=TINYINT},
+      task_value = #{taskValue,jdbcType=INTEGER},
+      task_start_time = #{taskStartTime,jdbcType=TIMESTAMP},
+      task_end_time = #{taskEndTime,jdbcType=TIMESTAMP},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      mem_type = #{memType,jdbcType=VARCHAR},
+      device_type = #{deviceType,jdbcType=VARCHAR},
+      suspen_date = #{suspenDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      device_no = #{deviceNo,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateTaskOrderStatusById" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    update v_mem_credits_task_order
+    set
+      task_status = #{taskStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateTaskOrderStatusByIdAndStatus" parameterType="com.tsn.serv.mem.entity.credits.CreditsTaskOrder" >
+    update v_mem_credits_task_order
+    set
+      task_status = #{taskStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR} and task_status = 0
+  </update>
+  
+  <select id="createTaskOrderTable" >
+    CREATE TABLE v_mem_credits_task_order_${timeSuffix}  (
+	  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+	  `mem_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '会员ID',
+	  `order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务订单号',
+	  `task_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务类型\r\nsign：签到\r\nad：广告\r\nconserve：保存网址\r\nfill：填写\r\nshare：分享到朋友圈\r\nfq：填写问卷\r\ninvite：邀请好友\r\ngoogle：谷歌商店评价',
+	  `task_status` tinyint(4) NULL DEFAULT NULL COMMENT '0.进行中 1.完成 2.未完成(驳回)',
+	  `value_type` tinyint(4) NOT NULL COMMENT '1.积分\r\n0.时长（天数）',
+	  `task_value` int(11) NULL DEFAULT NULL COMMENT '任务获得的积分或者免费试用天数',
+	  `file_url` json NULL COMMENT '文件路径',
+	  `task_start_time` datetime NULL DEFAULT NULL COMMENT '任务领取时间',
+	  `task_end_time` datetime NULL DEFAULT NULL COMMENT '任务截止时间',
+	  `mem_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '00游客,01普通用户,02充值用户',
+	  `device_type` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备类型：10 安卓， 11 ios，12 pc， 13 mac',
+	  `suspen_date` datetime NULL DEFAULT NULL COMMENT '过期时间',
+	  `create_time` datetime NULL DEFAULT NULL,
+	  `update_time` datetime NULL DEFAULT NULL,
+	  `device_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '设备号',
+	  PRIMARY KEY (`id`) USING BTREE,
+	  INDEX `index_1`(`mem_id`, `task_type`, `task_status`) USING BTREE,
+	  INDEX `index_2`(`order_no`) USING BTREE
+	) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+  </select>
+
+  <select id="selectTaskOrderByPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultType="java.util.Map">
+    select
+      a.id,
+      a.mem_id as memId,
+      a.order_no as orderNo,
+      a.task_type as taskType,
+      a.task_status as taskStatus,
+      a.value_type as valueType,
+      a.task_value as taskValue,
+      a.task_start_time as taskStartTime,
+      a.task_end_time as taskEndTime,
+      a.file_url as fileUrl,
+      a.device_no as deviceNo,
+      a.device_type as deviceType,
+      b.mem_phone as memPhone
+    from 
+    
+    <if test="paramObj.currMonthTime == paramObj.monthTime" >
+    	v_mem_credits_task_order as a
+    </if>
+    <if test="paramObj.currMonthTime != paramObj.monthTime" >
+    	v_mem_credits_task_order_${paramObj.monthTime} as a
+    </if>
+    
+    left join v_mem_info as b on a.mem_id = b.mem_id
+    where 1 = 1
+    <if test="paramObj.orderNo != null and paramObj.orderNo != ''" >
+      and (
+          a.order_no like concat('%',#{paramObj.orderNo,jdbcType=VARCHAR},'%')
+          or
+          b.mem_phone like concat('%',#{paramObj.orderNo,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="paramObj.taskType != null and paramObj.taskType != ''" >
+      and a.task_type = #{paramObj.taskType,jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.taskStatus != null and paramObj.taskStatus != '' and paramObj.taskStatus == 0" >
+      and a.task_status = '0'
+      and a.task_type != 'app_share'
+      and a.task_type != 'google_evaluate'
+    </if>
+    <if test="paramObj.taskStatus != null and paramObj.taskStatus != '' and paramObj.taskStatus == 1" >
+      and a.task_status = #{paramObj.taskStatus,jdbcType=TINYINT}
+    </if>
+    <if test="paramObj.taskStatus != null and paramObj.taskStatus != '' and paramObj.taskStatus == 2" >
+      and a.task_status = #{paramObj.taskStatus,jdbcType=TINYINT}
+    </if>
+    <if test="paramObj.taskStatus != null and paramObj.taskStatus != '' and paramObj.taskStatus == 3" >
+      and (a.task_type = 'app_share' or a.task_type = 'google_evaluate')
+      and a.task_status = '0'
+    </if>
+    <if test="paramObj.valueType != null and paramObj.valueType != ''" >
+      and a.value_type = #{paramObj.valueType,jdbcType=TINYINT}
+    </if>
+    <!-- >if test="paramObj.taskStartTime != null and paramObj.taskStartTime != ''">
+      and DATE_FORMAT(a.task_start_time,'%Y-%m-%d') = #{paramObj.taskStartTime,jdbcType=TIMESTAMP}
+    </if-->
+    order by a.id desc
+  </select>
+  
+  <select id="selectTaskOrderByPageNoTotal" resultType="java.util.Map">
+    select
+      a.id,
+      a.mem_id as memId,
+      a.order_no as orderNo,
+      a.task_type as taskType,
+      a.task_status as taskStatus,
+      a.value_type as valueType,
+      a.task_value as taskValue,
+      a.task_start_time as taskStartTime,
+      a.task_end_time as taskEndTime,
+      a.file_url as fileUrl,
+      a.device_no as deviceNo,
+      a.device_type as deviceType,
+      b.mem_phone as memPhone
+    from 
+    
+    <if test="currMonthTime == monthTime" >
+    	v_mem_credits_task_order as a
+    </if>
+    <if test="currMonthTime != monthTime" >
+    	v_mem_credits_task_order_${monthTime} as a
+    </if>
+    
+    left join v_mem_info as b on a.mem_id = b.mem_id
+    where 1 = 1
+    <if test="orderNo != null and orderNo != ''" >
+      and (
+          a.order_no like concat('%',#{orderNo,jdbcType=VARCHAR},'%')
+          or
+          b.mem_phone like concat('%',#{orderNo,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="taskType != null and taskType != ''" >
+      and a.task_type = #{taskType,jdbcType=VARCHAR}
+    </if>
+    <if test="taskStatus != null and taskStatus != '' and taskStatus == 0" >
+      and a.task_status = '0'
+      and a.task_type != 'app_share'
+      and a.task_type != 'google_evaluate'
+    </if>
+    <if test="taskStatus != null and taskStatus != '' and taskStatus == 1" >
+      and a.task_status = #{taskStatus,jdbcType=TINYINT}
+    </if>
+    <if test="taskStatus != null and taskStatus != '' and taskStatus == 2" >
+      and a.task_status = #{taskStatus,jdbcType=TINYINT}
+    </if>
+    <if test="taskStatus != null and taskStatus != '' and taskStatus == 3" >
+      and (a.task_type = 'app_share' or a.task_type = 'google_evaluate')
+      and a.task_status = '0'
+    </if>
+    <if test="valueType != null and valueType != ''" >
+      and a.value_type = #{valueType,jdbcType=TINYINT}
+    </if>
+    order by a.id desc LIMIT #{offSet},#{limit}
+  </select>
+</mapper>

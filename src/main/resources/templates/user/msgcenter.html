@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta charset="utf-8">
+<title></title>
+   <!-- MZUI CSS 文件 -->
+   <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/zui/1.10.0/css/zui.min.css">
+   <link href="/user/css/mzui.min.css" rel="stylesheet">
+   <link href="/user/css/main.css" rel="stylesheet">
+   
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<!-- ZUI Javascript 依赖 jQuery -->
+<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/lib/jquery/jquery.js"></script>
+<!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/js/zui.min.js"></script>
+ <!-- 引入 MZUI 的 JS 文件 -->
+   <script src="/user/js/mzui.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<style>
+
+body {
+	background: #212120;
+}
+
+.items-hover .item:hover {
+    background-color: #080808;
+}
+
+.items .item {
+    border-bottom: 1px solid #504907;
+    padding: 9px;
+}
+
+.unread {
+	color: #e6c12c;
+}
+
+h3 {
+	color: #e2e1df
+}
+
+
+.pager>li>a, .pager>li>span {
+    background-color: #504b4b;
+    border: 1px solid #2a2929;
+}
+
+.pager>li.disabled>a, .pager>li.disabled>a:focus, .pager>li.disabled>a:hover, .pager>li.disabled>span, .pager>li.disabled>span:focus, .pager>li.disabled>span:hover {
+    color: #ffc107;
+    background-color: #504b4b;
+    border: 1px solid #2a2929;
+}
+
+.empty {
+	padding: 30px
+}
+
+.cus-list {
+	color: #9e9e9e;
+
+}
+</style>
+
+
+
+</head>
+<body>
+	<div class="heading">
+	  <nav class="nav">
+	    <a id="menuExampleBtn" class="btn btn-lg" data-name="menuExample" data-display="modal" data-remote="/page/menu.html" data-placement="left"><i class="icon-bars" style="color:#fcae32"></i></a>
+	  </nav>
+	  <div class="title" style="color: white;"><strong>消息中心</strong></div>
+	  <nav class="nav">
+  	  </nav>
+	</div>
+
+	<div class="list cus-list">
+		  <div class="items items-hover" id="itemsContent" style="font-size: 12px;">
+		    
+		  </div>
+		  <footer>
+		    <ul id="myPager" class="pager" data-ride="pager" data-elements="prev_icon,nav,next_icon"></ul>
+		  </footer>
+	</div>
+	
+</body>
+
+<script th:inline="javascript">
+	// 取资费类型
+    const shareUrl = "";
+    
+</script>
+
+<script>
+
+$(function() {
+	
+	//h5复制文本到剪切板
+	function copyContentH5(content) {
+	    var copyDom = document.createElement('div');
+	    copyDom.innerText=content;
+	    copyDom.style.position='absolute';
+	    copyDom.style.top='0px';
+	    copyDom.style.right='-9999px';
+	    document.body.appendChild(copyDom);
+	    //创建选中范围
+	    var range = document.createRange();
+	    range.selectNode(copyDom);
+	    //移除剪切板中内容
+	    window.getSelection().removeAllRanges();
+	    //添加新的内容到剪切板
+	    window.getSelection().addRange(range);
+	    //复制
+	    var successful = document.execCommand('copy');
+	    copyDom.parentNode.removeChild(copyDom);
+	    try{
+	        if (successful) {
+	        	new $.zui.Messager('复制成功', {
+	            }).show();
+	        }
+	    } catch(err){
+	    }
+	}
+	
+	$(".invitCode").click(function(){
+		copyContentH5($(this).text())
+	})
+	
+	$(".copyLink").click(function(){
+		copyContentH5($(".shareUrl").text());
+	})
+	
+	$('#qrcode').qrcode({
+			render: "canvas", // 设置渲染方式(有两种方式 table和canvas，默认是canvas）
+			width: 200, // 宽度
+			height: 200, // 高度
+			background: "#FFFFFF", // 背景颜色
+			foreground: "#000000", // 前景颜色
+			correctLevel: 0, // 纠错等级 
+			text: shareUrl,
+		});
+	
+	$("#invitList").click(function(){
+		document.location.href="/page/invitfriendlist.html"
+	})
+	
+	function timeStamp2String(time){
+	    var datetime = new Date();
+	    datetime.setTime(time);
+	    var year = datetime.getFullYear();
+	    var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+	    var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+	    var hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
+	    var minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+	    var second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+	    return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+	}
+	
+	function initSysMsg(obj) {
+		$.ajax({
+            type : "get",
+            url : "/msg/sys/list/" + obj.page + "/" + obj.rows,
+            data:obj.params,
+            dataType : "json",
+            success : function(res) {
+           	 if (res.code == '000000') {
+           		 $("#itemsContent").empty();
+           		 var msgList = res.data.data;
+           		 
+           		 if (msgList.length <= 0) {
+           			$("#itemsContent").append("<div class='empty'>暂无消息</div>")
+					
+           			// 设置当前页码为 4，并同时设置记录总数为 100， 每页记录数目为 30
+					myPager.set({
+					    page: page.page,
+					    recTotal:  Number(res.data.totalRecord),
+					    recPerPage: page.rows
+					});
+
+           			 return false;
+           		 }
+           		 
+           		 for (var index in msgList) {
+           			var msgTypeName = "";
+      				 if (msgList[index].msgType === "sys") {
+      					msgTypeName = "系统消息"
+      				 }else if (msgList[index].msgType === "user") {
+      					msgTypeName = "用户消息"
+      				 }
+           			 //未读
+           			 if (msgList[index].status == "0") {
+           				 
+           				$("#itemsContent").append('<div class="item unread" id="' + msgList[index].id + '">' +
+           				      '<div class="item-heading">' +
+        		        '<div class="pull-right label label-success">未读</div>' +
+        		        '<h4>'+msgTypeName+'</h4>' +
+        		      '</div>' +
+        		      '<div class="item-content">' +
+        		        '<div class="text">'+msgList[index].msgTitle+'</div>' +
+        		      '</div>' +
+        		      '<div class="item-footer">' +
+        		        '发布时间：<span>'+timeStamp2String(msgList[index].createTime)+'</span>' +
+        		      '</div>' +
+        		    '</div>');
+           			 }else  if (msgList[index].status == "1") {
+               				 
+               				 
+               				 
+               				$("#itemsContent").append('<div class="item">' +
+               				      '<div class="item-heading">' +
+            		        '<h4>'+msgTypeName+'</h4>' +
+            		      '</div>' +
+            		      '<div class="item-content">' +
+            		        '<div class="text">'+msgList[index].msgTitle+'</div>' +
+            		      '</div>' +
+            		      '<div class="item-footer">' +
+            		        '发布时间：<span>'+timeStamp2String(msgList[index].createTime)+'</span>' +
+            		      '</div>' +
+            		    '</div>');
+               			 }
+           			 
+           			 
+           		 }
+           		 
+           		myPager.set({
+				    page: page.page,
+				    recTotal:  Number(res.data.totalRecord),
+				    recPerPage: page.rows
+				});
+           		 
+           	 }
+            },
+            complete : function() {
+            }
+        });
+		
+	}
+	
+	$("#itemsContent").on( "click", '.unread', function( e ) {
+		
+		var id =$(this).attr("id");
+		$.ajax({
+            type : "get",
+            url : "/msg/" + id,
+            dataType : "json",
+            success : function(res) {
+           	 if (res.code == '000000') {
+           		initSysMsg(page);
+           	 }
+            },
+            complete : function() {
+            }
+        });
+		
+	} ); 
+	
+	$('#myPager').on('onPageChange', function(e, state, oldState) {
+	    if (state.page !== oldState.page) {
+	    	page.page=state.page;
+        	initSysMsg(page);
+	    }
+	});
+	
+	// 获取分页器实例对象
+	var myPager = $('#myPager').data('zui.pager');
+	var page = {
+			page:1,
+			rows:5,
+			params:{
+				
+			}
+		}
+	initSysMsg(page);
+})
+
+</script>
+</html>

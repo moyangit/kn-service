@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.node.NodePathAutoGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.node.NodePathAutoGroup" >
+    <id column="auto_group_id" property="autoGroupId" jdbcType="VARCHAR" />
+    <result column="path_grade" property="pathGrade" jdbcType="VARCHAR" />
+    <result column="auto_group_name" property="autoGroupName" jdbcType="VARCHAR" />
+    <result column="auto_group_weight" property="autoGroupWeight" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    auto_group_id, path_grade, auto_group_name, auto_group_weight, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_node_path_auto_group
+    where auto_group_id = #{autoGroupId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectNodeUserPathGroupList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_node_path_auto_group
+    where status = 0
+  </select>
+
+  <select id="selectAllByType" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_node_path_auto_group
+    where status = 0 and path_grade = #{pathGrade,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_node_path_auto_group
+    where auto_group_id = #{autoGroupId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.node.NodePathAutoGroup" >
+    insert into v_mem_node_path_auto_group (auto_group_id, path_grade, auto_group_name, auto_group_weight, 
+      status, create_time, update_time
+      )
+    values (#{autoGroupId,jdbcType=VARCHAR}, #{pathGrade,jdbcType=VARCHAR}, #{autoGroupName,jdbcType=VARCHAR}, #{autoGroupWeight,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.node.NodePathAutoGroup" >
+    insert into v_mem_node_path_auto_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="autoGroupId != null" >
+        auto_group_id,
+      </if>
+      <if test="autoGroupName != null" >
+        auto_group_name,
+      </if>
+      <if test="autoGroupWeight != null" >
+        auto_group_weight,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="autoGroupId != null" >
+        #{autoGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoGroupName != null" >
+        #{autoGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="autoGroupWeight != null" >
+        #{autoGroupWeight,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.node.NodePathAutoGroup" >
+    update v_mem_node_path_auto_group
+    <set >
+      <if test="autoGroupName != null" >
+        auto_group_name = #{autoGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="autoGroupWeight != null" >
+        auto_group_weight = #{autoGroupWeight,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where auto_group_id = #{autoGroupId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.node.NodePathAutoGroup" >
+    update v_mem_node_path_auto_group
+    set auto_group_name = #{autoGroupName,jdbcType=VARCHAR},
+      path_grade = #{pathGrade,jdbcType=VARCHAR}, 
+      auto_group_weight = #{autoGroupWeight,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where auto_group_id = #{autoGroupId,jdbcType=VARCHAR}
+  </update>
+</mapper>

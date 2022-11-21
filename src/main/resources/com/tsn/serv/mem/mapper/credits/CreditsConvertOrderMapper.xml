@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.credits.CreditsConvertOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.credits.CreditsConvertOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="convert_duration" property="convertDuration" jdbcType="INTEGER" />
+    <result column="convert_type" property="convertType" jdbcType="VARCHAR" />
+    <result column="convert_time" property="convertTime" jdbcType="TIMESTAMP" />
+    <result column="convert_status" property="convertStatus" jdbcType="TINYINT" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mem_id, order_no, convert_duration, convert_type, convert_time, convert_status, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_credits_convert_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_credits_convert_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.credits.CreditsConvertOrder" >
+    insert into v_mem_credits_convert_order (id, mem_id, order_no, 
+      convert_duration, convert_type, convert_time, 
+      convert_status, update_time)
+    values (UUID_SHORT(), #{memId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{convertDuration,jdbcType=INTEGER}, #{convertType,jdbcType=VARCHAR}, #{convertTime,jdbcType=TIMESTAMP}, 
+      #{convertStatus,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsConvertOrder" >
+    insert into v_mem_credits_convert_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="convertDuration != null" >
+        convert_duration,
+      </if>
+      <if test="convertType != null" >
+        convert_type,
+      </if>
+      <if test="convertTime != null" >
+        convert_time,
+      </if>
+      <if test="convertStatus != null" >
+        convert_status,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="convertDuration != null" >
+        #{convertDuration,jdbcType=INTEGER},
+      </if>
+      <if test="convertType != null" >
+        #{convertType,jdbcType=VARCHAR},
+      </if>
+      <if test="convertTime != null" >
+        #{convertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="convertStatus != null" >
+        #{convertStatus,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.credits.CreditsConvertOrder" >
+    update v_mem_credits_convert_order
+    <set >
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="convertDuration != null" >
+        convert_duration = #{convertDuration,jdbcType=INTEGER},
+      </if>
+      <if test="convertType != null" >
+        convert_type = #{convertType,jdbcType=VARCHAR},
+      </if>
+      <if test="convertTime != null" >
+        convert_time = #{convertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="convertStatus != null" >
+        convert_status = #{convertStatus,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.credits.CreditsConvertOrder" >
+    update v_mem_credits_convert_order
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      convert_duration = #{convertDuration,jdbcType=INTEGER},
+      convert_type = #{convertType,jdbcType=VARCHAR},
+      convert_time = #{convertTime,jdbcType=TIMESTAMP},
+      convert_status = #{convertStatus,jdbcType=TINYINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectCreditsConvertOrderByPage" resultType="java.util.Map" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select
+      a.id,
+      a.mem_id as memId,
+      a.order_no as orderNo,
+      a.convert_duration as convertDuration,
+      a.convert_type as convertType,
+      a.convert_time as convertTime,
+      a.convert_status as convertStatus,
+      a.update_time as updateTime,
+      b.mem_phone as memPhone
+    from v_mem_credits_convert_order as a
+    left join v_mem_info as b on a.mem_id = b.mem_id
+    <where>
+      <if test="paramObj.orderNo != null and paramObj.orderNo != ''" >
+        and (
+        a.order_no like concat('%',#{paramObj.orderNo,jdbcType=VARCHAR},'%')
+        or
+        b.mem_phone like concat('%',#{paramObj.orderNo,jdbcType=VARCHAR},'%')
+        )
+      </if>
+      <if test="paramObj.convertType != null and paramObj.convertType != ''" >
+        and a.convert_type = #{paramObj.convertType,jdbcType=VARCHAR}
+      </if>
+      <if test="paramObj.convertTime != null and paramObj.convertTime != ''">
+        and DATE_FORMAT(a.convert_time,'%Y-%m-%d') = DATE_FORMAT(#{paramObj.convertTime,jdbcType=VARCHAR},'%Y-%m-%d')
+      </if>
+      <if test="paramObj.convertStatus != null and paramObj.convertStatus != ''" >
+        and a.convert_status = #{paramObj.convertStatus,jdbcType=VARCHAR}
+      </if>
+    </where>
+    ORDER BY a.id desc
+  </select>
+</mapper>

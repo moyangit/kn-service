@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.flow.FlowDayMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.flow.FlowDay" >
+    <id column="seri_no" property="seriNo" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="day" property="day" jdbcType="VARCHAR" />
+    <result column="up_flow" property="upFlow" jdbcType="BIGINT" />
+    <result column="down_flow" property="downFlow" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.tsn.serv.mem.entity.flow.FlowDay" extends="BaseResultMap" >
+    <result column="host_flow" property="hostFlow" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    seri_no, mem_id, day, up_flow, down_flow, create_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    host_flow
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_flow_day
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_flow_day
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    insert into v_mem_flow_day (seri_no, mem_id, day, 
+      up_flow, down_flow, create_date, 
+      host_flow)
+    values (uuid_short(), #{memId,jdbcType=VARCHAR}, #{day,jdbcType=VARCHAR}, 
+      #{upFlow,jdbcType=BIGINT}, #{downFlow,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{hostFlow,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    insert into v_mem_flow_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="seri_no != null" >
+        seri_no,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="upFlow != null" >
+        up_flow,
+      </if>
+      <if test="downFlow != null" >
+        down_flow,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="hostFlow != null" >
+        host_flow,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="seri_no != null" >
+        #{seriNo,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=VARCHAR},
+      </if>
+      <if test="upFlow != null" >
+        #{upFlow,jdbcType=BIGINT},
+      </if>
+      <if test="downFlow != null" >
+        #{downFlow,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hostFlow != null" >
+        #{hostFlow,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    update v_mem_flow_day
+    <set >
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=VARCHAR},
+      </if>
+      <if test="upFlow != null" >
+        up_flow = #{upFlow,jdbcType=BIGINT},
+      </if>
+      <if test="downFlow != null" >
+        down_flow = #{downFlow,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hostFlow != null" >
+        host_flow = #{hostFlow,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    update v_mem_flow_day
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      day = #{day,jdbcType=VARCHAR},
+      up_flow = #{upFlow,jdbcType=BIGINT},
+      down_flow = #{downFlow,jdbcType=BIGINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      host_flow = #{hostFlow,jdbcType=LONGVARCHAR}
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    update v_mem_flow_day
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      day = #{day,jdbcType=VARCHAR},
+      up_flow = #{upFlow,jdbcType=BIGINT},
+      down_flow = #{downFlow,jdbcType=BIGINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where seri_no = #{seriNo,jdbcType=VARCHAR}
+  </update>
+<!--   <update id="updateFlowDay" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    UPDATE v_mem_flow_day 
+	SET host_flow =
+	CASE
+			WHEN REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" ) IS NULL THEN
+			JSON_ARRAY_APPEND(
+				host_flow,
+				'$',
+				JSON_OBJECT( "ip", #{host,jdbcType=VARCHAR}, "upFlow", #{upFlow,jdbcType=BIGINT}, "downFlow", #{downFlow,jdbcType=BIGINT} )) 
+			ELSE JSON_SET(
+				host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "upFlow" ),
+				json_extract(
+					host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "upFlow" )) + #{upFlow,jdbcType=BIGINT},
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "downFlow" ),
+				json_extract(
+					host_flow,
+				CONCAT( JSON_UNQUOTE( REPLACE ( JSON_SEARCH( host_flow, 'one', #{host,jdbcType=VARCHAR}, NULL, '$**.ip' ), ".ip", "" )), ".", "downFlow" )) + #{downFlow,jdbcType=BIGINT}
+			) 
+		END, up_flow = up_flow + #{upFlow,jdbcType=BIGINT}, down_flow = down_flow + #{downFlow,jdbcType=BIGINT}, update_date = #{updateDate,jdbcType=TIMESTAMP}
+	where mem_id = #{memId,jdbcType=VARCHAR} and day = #{day,jdbcType=VARCHAR}
+  </update> -->
+  
+    <update id="updateFlowDay" parameterType="com.tsn.serv.mem.entity.flow.FlowDay" >
+    UPDATE v_mem_flow_day 
+	SET up_flow = up_flow + #{upFlow,jdbcType=BIGINT}, down_flow = down_flow + #{downFlow,jdbcType=BIGINT}, update_date = #{updateDate,jdbcType=TIMESTAMP}
+	where mem_id = #{memId,jdbcType=VARCHAR} and day = #{day,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getMemFlowDay" resultMap="BaseResultMap" parameterType="com.tsn.common.utils.web.entity.page.Page" >
+    select
+      a.*
+    from v_mem_flow_day as a
+    left join v_mem_info as b on a.mem_id = b.mem_id
+    where 1=1
+    <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
+      and b.mem_phone = #{paramObj.memPhone, jdbcType=VARCHAR}
+    </if>
+    order by a.create_date desc
+  </select>
+
+  <select id="memFlowDay" resultType="java.util.Map" parameterType="java.util.Map">
+    SELECT
+      IFNULL(sum(b.up_flow),0) as upFlow,
+      IFNULL(sum(b.down_flow),0) as downFlow,
+      concat(a.number,'号') as day
+      FROM
+      (
+      select @d:=@d+1 number,
+      DATE_SUB(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'),INTERVAL DAYOFMONTH(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d'))-@d DAY) time
+      from
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) a,
+      (select 1 UNION ALL select 2 UNION ALL select 3 UNION ALL select 4) b,
+      (select 1 UNION ALL select 2) c,
+      (select @d:=0) d
+      where @d &lt; day(LAST_DAY(DATE_FORMAT(#{monthDate,jdbcType=VARCHAR},'%Y-%m-%d')))
+      ) a
+      LEFT JOIN (
+
+       select
+          up_flow,
+          down_flow,
+          create_date
+        from v_mem_flow_day
+        where mem_id = #{memId,jdbcType=VARCHAR}
+
+      ) as b ON DATE_FORMAT(b.create_date,'%Y-%m-%d') = a.time
+      GROUP BY a.number
+      ORDER BY a.number ASC
+  </select>
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.pub.mapper.customer.ServiceCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.pub.entity.customer.ServiceCustomer" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="cus_name" property="cusName" jdbcType="VARCHAR" />
+    <result column="cus_text" property="cusText" jdbcType="VARCHAR" />
+    <result column="cus_pic" property="cusPic" jdbcType="VARCHAR" />
+    <result column="cus_link" property="cusLink" jdbcType="VARCHAR" />
+    <result column="cus_type" property="cusType" jdbcType="VARCHAR" />
+    <result column="show_type" property="showType" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="TINYINT" />
+    <result column="weight" property="weight" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cus_name, cus_text, cus_pic, cus_link, cus_type, show_type, seq, weight, status, remark, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_service_customer
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_service_customer
+  </select>
+  
+  <select id="selectListByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_service_customer where cus_type = #{cusType,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectListActiveStatus" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_service_customer where status = 0 and cus_type = #{cusType,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from v_service_customer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.tsn.serv.pub.entity.customer.ServiceCustomer" >
+    insert into v_service_customer (id, cus_name, cus_text, 
+      cus_pic, cus_link, cus_type, 
+      show_type, seq, weight, status, remark,
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{cusName,jdbcType=VARCHAR}, #{cusText,jdbcType=VARCHAR}, 
+      #{cusPic,jdbcType=VARCHAR}, #{cusLink,jdbcType=VARCHAR}, #{cusType,jdbcType=VARCHAR}, 
+      #{showType,jdbcType=VARCHAR}, #{seq,jdbcType=TINYINT}, #{weight,jdbcType=TINYINT}, #{status,jdbcType=TINYINT},#{remark,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.pub.entity.customer.ServiceCustomer" >
+    insert into v_service_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cusName != null" >
+        cus_name,
+      </if>
+      <if test="cusText != null" >
+        cus_text,
+      </if>
+      <if test="cusPic != null" >
+        cus_pic,
+      </if>
+      <if test="cusLink != null" >
+        cus_link,
+      </if>
+      <if test="cusType != null" >
+        cus_type,
+      </if>
+      <if test="showType != null" >
+        show_type,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cusName != null" >
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusText != null" >
+        #{cusText,jdbcType=VARCHAR},
+      </if>
+      <if test="cusPic != null" >
+        #{cusPic,jdbcType=VARCHAR},
+      </if>
+      <if test="cusLink != null" >
+        #{cusLink,jdbcType=VARCHAR},
+      </if>
+      <if test="cusType != null" >
+        #{cusType,jdbcType=VARCHAR},
+      </if>
+      <if test="showType != null" >
+        #{showType,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=TINYINT},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.pub.entity.customer.ServiceCustomer" >
+    update v_service_customer
+    <set >
+      <if test="cusName != null" >
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusText != null" >
+        cus_text = #{cusText,jdbcType=VARCHAR},
+      </if>
+      <if test="cusPic != null" >
+        cus_pic = #{cusPic,jdbcType=VARCHAR},
+      </if>
+      <if test="cusLink != null" >
+        cus_link = #{cusLink,jdbcType=VARCHAR},
+      </if>
+      <if test="cusType != null" >
+        cus_type = #{cusType,jdbcType=VARCHAR},
+      </if>
+      <if test="showType != null" >
+        show_type = #{showType,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq,jdbcType=TINYINT},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.pub.entity.customer.ServiceCustomer" >
+    update v_service_customer
+    set cus_name = #{cusName,jdbcType=VARCHAR},
+      cus_text = #{cusText,jdbcType=VARCHAR},
+      cus_pic = #{cusPic,jdbcType=VARCHAR},
+      cus_link = #{cusLink,jdbcType=VARCHAR},
+      cus_type = #{cusType,jdbcType=VARCHAR},
+      show_type = #{showType,jdbcType=VARCHAR},
+      seq = #{seq,jdbcType=TINYINT},
+      weight = #{weight,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

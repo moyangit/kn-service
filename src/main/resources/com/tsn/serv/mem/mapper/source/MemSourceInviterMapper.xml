@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.source.MemSourceInviterMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.source.MemSourceInviter" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="source_name" property="sourceName" jdbcType="VARCHAR" />
+    <result column="source_path" property="sourcePath" jdbcType="VARCHAR" />
+    <result column="inviter_code" property="inviterCode" jdbcType="VARCHAR" />
+    <result column="reward_type" property="rewardType" jdbcType="VARCHAR" />
+    <result column="reward_val" property="rewardVal" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, source_name, source_path, inviter_code, reward_type, reward_val, num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from v_mem_source_inviter
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.source.MemSourceInviter" >
+    insert into v_mem_source_inviter (id, source_name, source_path, inviter_code,
+      reward_type, reward_val, num
+      )
+    values (#{id,jdbcType=INTEGER}, #{sourceName,jdbcType=VARCHAR}, #{sourcePath,jdbcType=VARCHAR}, #{inviterCode,jdbcType=VARCHAR},
+      #{rewardType,jdbcType=VARCHAR}, #{rewardVal,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.source.MemSourceInviter" >
+    insert into v_mem_source_inviter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sourceName != null" >
+        source_name,
+      </if>
+      <if test="sourcePath != null" >
+        source_path,
+      </if>
+      <if test="inviterCode != null" >
+        inviter_code,
+      </if>
+      <if test="rewardType != null" >
+        reward_type,
+      </if>
+      <if test="rewardVal != null" >
+        reward_val,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sourceName != null" >
+        #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcePath != null" >
+        #{sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterCode != null" >
+        #{inviterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardType != null" >
+        #{rewardType,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardVal != null" >
+        #{rewardVal,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.source.MemSourceInviter" >
+    update v_mem_source_inviter
+    <set >
+      <if test="sourceName != null" >
+        source_name = #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourcePath != null" >
+        source_path = #{sourcePath,jdbcType=VARCHAR},
+      </if>
+      <if test="inviterCode != null" >
+        inviter_code = #{inviterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardType != null" >
+        reward_type = #{rewardType,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardVal != null" >
+        reward_val = #{rewardVal,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.source.MemSourceInviter" >
+    update v_mem_source_inviter
+    set source_name = #{sourceName,jdbcType=VARCHAR},
+      source_path = #{sourcePath,jdbcType=VARCHAR},
+      inviter_code = #{inviterCode,jdbcType=VARCHAR},
+      reward_type = #{rewardType,jdbcType=VARCHAR},
+      reward_val = #{rewardVal,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByInviterCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter
+    where inviter_code = #{inviterCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getDetailsByPath" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter
+    where source_path = #{sourcePath,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getListByPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_mem_source_inviter
+    where 1 = 1
+    <if test="paramObj.selectData != null and paramObj.selectData != ''">
+      and (
+        source_name like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      or
+        source_path like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      or
+        inviter_code like concat('%',#{paramObj.selectData,jdbcType=VARCHAR},'%')
+      )
+    </if>
+  </select>
+</mapper>

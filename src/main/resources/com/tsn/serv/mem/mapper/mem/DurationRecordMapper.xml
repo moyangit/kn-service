@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsn.serv.mem.mapper.mem.DurationRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.tsn.serv.mem.entity.mem.DurationRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="mem_id" property="memId" jdbcType="VARCHAR" />
+    <result column="duration_sources" property="durationSources" jdbcType="VARCHAR" />
+    <result column="convert_duration" property="convertDuration" jdbcType="INTEGER" />
+    <result column="convert_value" property="convertValue" jdbcType="DECIMAL" />
+    <result column="convert_card_type" property="convertCardType" jdbcType="VARCHAR" />
+    <result column="convert_time" property="convertTime" jdbcType="TIMESTAMP" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mem_id, duration_sources, convert_duration, convert_value, convert_card_type, 
+    convert_time,order_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from v_mem_duration_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from v_mem_duration_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tsn.serv.mem.entity.mem.DurationRecord" >
+    insert into v_mem_duration_record (id, mem_id, duration_sources, 
+      convert_duration, convert_value, convert_card_type, 
+      convert_time,order_no)
+    values (UUID_SHORT(), #{memId,jdbcType=VARCHAR}, #{durationSources,jdbcType=VARCHAR}, 
+      #{convertDuration,jdbcType=INTEGER}, #{convertValue,jdbcType=DECIMAL}, #{convertCardType,jdbcType=VARCHAR}, 
+      now(),#{orderNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsn.serv.mem.entity.mem.DurationRecord" >
+    insert into v_mem_duration_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="durationSources != null" >
+        duration_sources,
+      </if>
+      <if test="convertDuration != null" >
+        convert_duration,
+      </if>
+      <if test="convertValue != null" >
+        convert_value,
+      </if>
+      <if test="convertCardType != null" >
+        convert_card_type,
+      </if>
+      <if test="convertTime != null" >
+        convert_time,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="memId != null" >
+        #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="durationSources != null" >
+        #{durationSources,jdbcType=VARCHAR},
+      </if>
+      <if test="convertDuration != null" >
+        #{convertDuration,jdbcType=INTEGER},
+      </if>
+      <if test="convertValue != null" >
+        #{convertValue,jdbcType=DECIMAL},
+      </if>
+      <if test="convertCardType != null" >
+        #{convertCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="convertTime != null" >
+        #{convertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsn.serv.mem.entity.mem.DurationRecord" >
+    update v_mem_duration_record
+    <set >
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=VARCHAR},
+      </if>
+      <if test="durationSources != null" >
+        duration_sources = #{durationSources,jdbcType=VARCHAR},
+      </if>
+      <if test="convertDuration != null" >
+        convert_duration = #{convertDuration,jdbcType=INTEGER},
+      </if>
+      <if test="convertValue != null" >
+        convert_value = #{convertValue,jdbcType=DECIMAL},
+      </if>
+      <if test="convertCardType != null" >
+        convert_card_type = #{convertCardType,jdbcType=VARCHAR},
+      </if>
+      <if test="convertTime != null" >
+        convert_time = #{convertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsn.serv.mem.entity.mem.DurationRecord" >
+    update v_mem_duration_record
+    set mem_id = #{memId,jdbcType=VARCHAR},
+      duration_sources = #{durationSources,jdbcType=VARCHAR},
+      convert_duration = #{convertDuration,jdbcType=INTEGER},
+      convert_value = #{convertValue,jdbcType=DECIMAL},
+      convert_card_type = #{convertCardType,jdbcType=VARCHAR},
+      convert_time = #{convertTime,jdbcType=TIMESTAMP},
+      order_no = #{orderNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

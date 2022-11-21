@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录</title>
+
+    <!-- MZUI CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/zui/1.10.0/css/zui.min.css">
+    <link href="/user/css/mzui.min.css" rel="stylesheet">
+    <link href="/user/css/main.css" rel="stylesheet">
+    <!-- 引入 MZUI 的 JS 文件 -->
+    <script src="/user/js/mzui.min.js"></script>
+    
+	    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<!-- ZUI Javascript 依赖 jQuery -->
+	<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/lib/jquery/jquery.js"></script>
+	<!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+	<script src="https://cdn.bootcdn.net/ajax/libs/zui/1.10.0/js/zui.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    
+    <style>
+    body{
+    	padding:40px;
+    	text-align: center;
+    	background: #2b2929;
+    }
+    
+    @media screen and (min-width:600px) {
+           body{
+           		width:500px;
+           		margin:0 auto;
+		    	padding:40px;
+		    	text-align: center;
+		    	background: #2b2929;
+		    }
+       }
+    
+    body span {
+    	color: white;
+    }
+    
+    .tsn-margin-top {
+    	margin-top: 20px
+    
+    }
+    
+    </style>
+  </head>
+  <body>
+  	<div>
+  		<div class="artice"><span><h2>用户登录</h2></span></div>
+		<div class="tile flex-center flex flex-column tsn-margin-top">
+	        <form method="post">
+	          <div class="control box danger form-message hide-empty" style="display: none;"></div>
+	          <div class="control has-label-left fluid">
+	            <input autofocus="" id="account" name="account" type="text" class="input" placeholder="请输入Email">
+	            <label for="account" title="用户名"><i class="icon icon-user"></i></label>
+	            <p class="help-text"></p>
+	          </div>
+	          <div class="control has-label-left fluid">
+	            <input id="password" name="password" type="password" class="input" placeholder="密码">
+	            <label for="password" title="密码"><i class="icon icon-lock"></i></label>
+	            <p class="help-text"></p>
+	          </div>
+	          <div class="control">
+	            <button type="button" class="btn accent fluid" id="loginBtn">登录</button>
+	          </div>
+	          <div class="control">
+	          	<a style="color: white;text-decoration: underline;" href="/page/reg.html">立即注册</a>
+	          </div>
+	        </form>
+	      </div>
+	 </div>
+  </body>
+  <script type="text/javascript">
+  
+  	$("#loginBtn").click(function(){
+		
+		var userMail =$("#account").val();
+		var pwd = $("#password").val();
+		if (!userMail || !pwd) {
+			new $.zui.Messager('请输入必填字段', {
+				placement: 'center'
+		    }).show();
+			return false;
+		}
+		
+		var user = {
+			userName:userMail,
+			grantType: 'password',
+			password:pwd
+		}
+		
+		$.ajax({
+           type : "POST",
+           url : "/auth/v2/token",
+           beforeSend: function(request) {
+           },
+           contentType: "application/json; charset=utf-8",
+           dataType : "json",
+           data : JSON.stringify(user),
+           success : function(res) {
+          	 if (res.code == '000000') {
+          		 var accessToken = res.data.accessToken;
+          		 token = accessToken;
+          		 $.cookie('v-token', token, { path: "/", expires: 1024 });
+         		 $.cookie('v-token-type', "bea_us", { path: "/", expires: 1024 });
+          		 window.location.href="/page/subscribe.html"
+          		 return false;
+          	 }
+          	 
+          	 if (res.code == "100999") {
+          		new $.zui.Messager('账号密码错误', {
+          			placement: 'center'
+    		    }).show();
+          		 return false;
+              } else if (res.code === "100998") {
+	           	new $.zui.Messager('账号不存在', {
+	           		placement: 'center'
+    		    }).show();
+	           	 return false;
+              }
+          		 
+           },
+           error : function() {
+          	new $.zui.Messager('网络异常', {
+		    }).show();
+           },
+           complete : function() {
+           }
+       });
+		
+		return false;
+	})
+  
+  </script>
+</html>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsn.serv.auth.mapper.app.AppDownloadMapper">
+
+  <resultMap id="BaseResultMap" type="com.tsn.serv.auth.entity.app.AppDownload">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="down_type" jdbcType="VARCHAR" property="downType" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+	  id, name, path, type, status, down_type, create_date, update_date
+  </sql>
+
+
+  <delete id="delete" parameterType="java.lang.String">
+	  delete from v_app_download
+	  where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+	  delete from v_app_download
+	  where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByCode" parameterType="java.lang.String">
+	  delete from v_app_download
+	  where code = #{code,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.tsn.serv.auth.entity.app.AppDownload">
+  insert into v_app_download (id, name, path, type, status, down_type,
+    create_date, update_date)
+  values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{downType,jdbcType=VARCHAR},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+</insert>
+
+  <insert id="insertIngore" parameterType="com.tsn.serv.auth.entity.app.AppDownload">
+  insert ignore into v_app_download (id, name, path, type, status, down_type,
+    create_date, update_date)
+  values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{downType,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+</insert>
+
+  <insert id="insertDynamic" parameterType="com.tsn.serv.auth.entity.app.AppDownload">
+    insert into v_app_download
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateDynamic" parameterType="com.tsn.serv.auth.entity.app.AppDownload">
+    update v_app_download
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="downType != null">
+        down_type = #{downType,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <update id="update" parameterType="com.tsn.serv.auth.entity.app.AppDownload">
+  update v_app_download
+  set name = #{name,jdbcType=VARCHAR},
+    path = #{path,jdbcType=VARCHAR},
+    type = #{type,jdbcType=VARCHAR},
+    create_date = #{createDate,jdbcType=TIMESTAMP},
+    update_date = #{updateDate,jdbcType=TIMESTAMP}
+  where id = #{id,jdbcType=VARCHAR}
+</update>
+
+
+  <update id="updateByTypeAndName" parameterType="com.tsn.serv.auth.entity.app.AppDownload">
+  update v_app_download
+  set path = #{path,jdbcType=VARCHAR},
+    update_date = #{updateDate,jdbcType=TIMESTAMP}
+  where name = #{name,jdbcType=VARCHAR} and type = #{type,jdbcType=VARCHAR}
+</update>
+
+
+
+  <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  v_app_download
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  v_app_download
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+
+
+  <sql id="findPageWithWhere">
+    <where> 1=1
+      <if test="id != null" >
+        and id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null and name != ''" >
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="path != null and path != ''" >
+        and path = #{path,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null and path != ''" >
+        and type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null" >
+        and create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateDate != null" >
+        and update_date = #{updateDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getAppDownloadByPage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM v_app_download
+    where 1 = 1
+    <if test="paramObj.name != null and paramObj.name != ''" >
+      and name like concat('%',#{paramObj.name,jdbcType=VARCHAR},'%')
+    </if>
+    order by down_type
+  </select>
+
+  <select id="getAppDownloadList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM v_app_download order by down_type
+  </select>
+
+  <select id="getAppDownloadListStatus" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM v_app_download where status = 0
+  </select>
+  
+</mapper>
