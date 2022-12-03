@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.druid.util.StringUtils;
@@ -34,6 +35,7 @@ import com.tsn.serv.mem.entity.order.CashoutOrder;
 import com.tsn.serv.mem.entity.order.ChargeOrder;
 import com.tsn.serv.mem.service.order.CashoutOrderService;
 import com.tsn.serv.mem.service.order.ChargeOrderService;
+import com.tsn.serv.pay.service.yzf.YzfService;
 
 @RestController
 @RequestMapping("order")
@@ -47,6 +49,9 @@ public class ChargeOrderController {
 	
 	@Autowired
 	private AtomiRedisNoRepeatService atomiRedisNoRepeatService;
+	
+	@Autowired
+	private YzfService yzfService;
 	
 	@GetMapping("/redirect")
 	@AuthClient()
@@ -63,6 +68,32 @@ public class ChargeOrderController {
 		
 		String result = chargeOrderService.toSign(userId, token);
 		
+		return Response.ok(result);
+	}
+	
+	@GetMapping("/callback/yzf")
+	public String callbackYzf(@RequestParam Map<String, String> callbackMap) {
+		
+		boolean returnResult = chargeOrderService.queryOrderAndUpdateCallback(callbackMap);
+		
+		return returnResult ? "success" : "fail";
+	}
+	
+	@PostMapping("/subefore")
+	@AuthClient(client = AuthEnum.bea_us)
+	public Response<?> addChargeOrderFormSubmit(@RequestBody Map<String, String> subOrderMap) {
+		
+		JwtInfo info = JwtLocal.getJwt();
+		
+		String userId = info.getSubject();
+		
+		if (StringUtils.isEmpty(userId)) {
+			throw new AuthException(AuthCode.AUTH_TOKEN_VALID_ERROR, "user valid error, please again login");
+		}
+		
+		String chargeId = subOrderMap.get("chargeId");
+		String payType = subOrderMap.get("payType");
+		Map<String, Object> result = chargeOrderService.addChargeOrderFormSubmit(userId, chargeId, payType);
 		return Response.ok(result);
 	}
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tsn.common.utils.utils.tools.json.JsonUtils;
+import com.tsn.common.utils.utils.tools.time.DateUtils;
 import com.tsn.serv.mem.entity.flow.FlowDay;
 import com.tsn.serv.mem.mapper.flow.FlowDayMapper;
 
@@ -37,4 +38,11 @@ public class FlowService {
 		
 	}
 	
+	public FlowDay queryDayByMemId(String userId) {
+		FlowDay flowDay = new FlowDay();
+		flowDay.setMemId(userId);
+		flowDay.setDay(DateUtils.getCurrYMD("yyyyMMdd"));
+		flowDay = flowMapper.queryFlowByDay(flowDay);
+		return flowDay;
+	}
 }

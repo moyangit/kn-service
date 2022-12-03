@@ -18,6 +18,8 @@ public interface MemInfoMapper extends IBaseMapper<MemInfo>{
 	
 	MemInfo selectMemByPhone(String phone);
 	
+	MemInfo selectMemByNoAndEmailAndPhone(String phone);
+	
 	MemInfo selectMemByEmail(String memEmail);
 	
 	MemInfo selectParentByMemId(String memId);

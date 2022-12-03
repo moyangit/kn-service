@@ -174,7 +174,7 @@ public class AppMsgController{
 	@GetMapping("/urgent")
 	@ApiOperation(value = "消息状态接口",notes = "测试")
 	@AuthClient(client = AuthEnum.bea_us)
-	public Response<AppMsg> getMsgUrgent(@PathVariable String id) {
+	public Response<AppMsg> getMsgUrgent() {
 		
 		JwtInfo jwtInfo = JwtLocal.getJwt();
 		String userId = jwtInfo.getSubject();

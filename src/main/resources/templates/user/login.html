@@ -104,8 +104,16 @@
           	 if (res.code == '000000') {
           		 var accessToken = res.data.accessToken;
           		 token = accessToken;
-          		 $.cookie('v-token', token, { path: "/", expires: 1024 });
-         		 $.cookie('v-token-type', "bea_us", { path: "/", expires: 1024 });
+          		 var host = ﻿window.location.host;
+          		 var domain = host.substring(host.indexOf("."));
+          		 if (host.indexOf("localhost") > -1 ) {
+          			domain = "localhost"
+          		 }
+          		 if (host.indexOf("127.0.0.1") > -1) {
+          			domain = "127.0.0.1"
+          		 }
+          		 $.cookie('v-token', token, { path: "/", expires: 1024, domain:domain });
+         		 $.cookie('v-token-type', "bea_us", { path: "/", expires: 1024, domain:domain });
           		 window.location.href="/page/subscribe.html"
           		 return false;
           	 }

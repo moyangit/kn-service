@@ -72,6 +72,7 @@ import com.tsn.serv.mem.service.mem.MemExtInfoService;
 import com.tsn.serv.mem.service.mem.MemGuestInfoService;
 import com.tsn.serv.mem.service.mem.MemService;
 import com.tsn.serv.mem.service.pay.PayService;
+import com.tsn.serv.pay.service.yzf.YzfService;
 
 @Service
 public class ChargeOrderService {
@@ -140,13 +141,18 @@ public class ChargeOrderService {
 	@Autowired
 	private RebateWaitOrderService rebateWaitOrderService;
 	
+	@Autowired
+	private YzfService yzfService;
+	
 	private static Logger log = LoggerFactory.getLogger(ChargeOrderService.class);
 	
 	public String toSign(String mId, String token) {
 		
 		Map<String, String> map = new HashMap<String, String>();
 		
-		String payUrl = "https://app.knapi.xyz/page/paycenter.html";
+		String addr = Env.getVal("serv.pay.addr");
+		
+		String payUrl = StringUtils.isEmpty(addr) ? "https://user.kuainiaojsq.xyz/page/paycenter.html" : addr;
 		
 		if ("dev".equals(Env.getVal("spring.profiles.active"))){
 			payUrl = "http://localhost:9077/page/paycenter.html";
@@ -185,6 +191,52 @@ public class ChargeOrderService {
 		ChargeOrder chargeOrder = queryOrderAndUpdateByNo(memId, orderNo);
 		
 		return chargeOrder;
+	}
+	
+	@Transactional
+	public boolean queryOrderAndUpdateCallback(Map<String, String> callbackParams) {
+		
+		log.info("queryOrderAndUpdateCallback result = {}", JsonUtils.objectToJson(callbackParams));
+		
+		if (callbackParams == null || callbackParams.isEmpty()) {
+			return false;
+		}
+		
+		boolean validResult = yzfService.validCallBack(callbackParams);
+		
+		if (!validResult) {
+			log.info("queryOrderAndUpdateCallback validcallback fail.......");
+			return false;
+		}
+		
+		log.info("queryOrderAndUpdateCallback validcallback success..........");
+		
+		String orderNo = callbackParams.get("out_trade_no");
+		String tradeStatus = callbackParams.get("trade_status");
+		String tradeNo = callbackParams.get("trade_no");
+		
+		ChargeOrder order = chargeOrderMapper.queryOrderByOrderNo(orderNo);
+		
+		if (OrderStatusEum.pay_success.getStatus().equals(order.getOrderStatus())) {
+			// 计算返利
+			memActiviService.rebateMoney(order);
+			return true;
+		}
+		
+		if ("TRADE_SUCCESS".equals(tradeStatus)) {
+			ChargeOrder chargeOrderSuccess = new ChargeOrder();
+			chargeOrderSuccess.setOrderNo(orderNo);
+			chargeOrderSuccess.setTradeNo(tradeNo);
+			chargeOrderSuccess.setTradeStatus(tradeStatus);
+			updateChargeOrderSuccess(chargeOrderSuccess);
+			return true;
+		}
+		
+		return false;
+		
+		
+		
+		
 	}
 	
 	@Transactional
@@ -239,6 +291,141 @@ public class ChargeOrderService {
 	public ChargeOrder queryOrderByNo(String orderNo) {
 		ChargeOrder order = chargeOrderMapper.queryOrderByOrderNo(orderNo);
 		return order;
+	}
+	
+	/**
+	 * 
+	 * @param chargeOrder
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> addChargeOrderFormSubmit(String memId, String chargeId, String payType) {
+		
+		log.debug("enter method addChargeOrderFormSubmit , chargeId = {}", chargeId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		if (StringUtils.isEmpty(chargeId)) {
+			throw new RequestParamValidException("chargeId is not null");
+		}
+		
+		String orderNo = snowFlakeManager.create(GenIDEnum.RECH_ORDER_NO.name()).getIdByPrefix(GenIDEnum.RECH_ORDER_NO.getPreFix());
+		
+		ChargeOrder chargeOrder = new ChargeOrder();
+		chargeOrder.setChargeId(chargeId);
+		chargeOrder.setMemId(memId);
+		chargeOrder.setPayType(payType);
+		if (StringUtils.isEmpty(payType)) {
+			chargeOrder.setPayType(PayTypeEum.alipay.name());
+		} else {
+			
+			try {
+				PayTypeEum payTypeEnum = PayTypeEum.valueOf(chargeOrder.getPayType());
+				chargeOrder.setPayType(payTypeEnum.name());
+			} catch (Exception e) {
+				log.info("user pay type is not supported, type = {}", chargeOrder.getPayType());
+				throw new BusinessException(ResultCode.UNKNOW_ERROR, "ser pay type is not supported, type" + chargeOrder.getPayType());
+			}
+			
+			
+		}
+		
+		
+		chargeOrder.setOrderNo(orderNo);
+		chargeOrder.setCreateTime(new Date());
+		chargeOrder.setUpdateTime(new Date());
+		chargeOrder.setOrderStatus(OrderStatusEum.pay_wait.getStatus());
+		
+		MemInfo memInfo = memService.queryMemById(chargeOrder.getMemId());
+		
+		MemCharge memCharge = memChargeMapper.selectByPrimaryKey(chargeOrder.getChargeId());
+		
+		if (memCharge == null) {/*!memInfo.getMemType().equals(memCharge.getMemType())*/
+			
+			throw new BusinessException(ResultCode.UNKNOW_ERROR, "memCharge info is empty , query by chargeId");
+			
+		}
+		
+		chargeOrder.setMemBeforeSuspenDate(memInfo.getSuspenDate());
+		chargeOrder.setChargeId(chargeOrder.getChargeId());
+		chargeOrder.setChargePrice(memCharge.getChargeMoney());
+		
+		ChargeTypeEum chargeTypeEum = ChargeTypeEum.getChargeTypeEnum(memCharge.getChargeType());
+		chargeOrder.setChargeType(memCharge.getChargeType());
+		chargeOrder.setSubject(chargeTypeEum.getDetail());
+		chargeOrder.setMemId(chargeOrder.getMemId());
+		chargeOrder.setMemNo(memInfo.getMemNo());
+		chargeOrder.setMemName(memInfo.getMemName());
+		chargeOrder.setMemPhone(memInfo.getMemPhone());
+		chargeOrder.setMemEmail(memInfo.getMemEmail());
+		chargeOrder.setMemRealName(memInfo.getMemReallyName());
+		chargeOrder.setMemType(memInfo.getMemType());
+		
+		int orderTimeout = StringUtils.isEmpty(Env.getVal("order.alipay.timeout")) ? 5 : Integer.parseInt(Env.getVal("order.alipay.timeout"));
+		
+		chargeOrder.setOrderTimeout(orderTimeout);
+		
+		//原价
+		chargeOrder.setCostPrice(memCharge.getChargeMoney());
+		//折扣
+		chargeOrder.setDiscount(memCharge.getDiscount());
+		//最终价
+		chargeOrder.setFinalPrice(memCharge.getChargeMoney().multiply(BigDecimal.valueOf(memCharge.getDiscount() * 0.01)).setScale(2,BigDecimal.ROUND_FLOOR));
+		
+		//这个地方要根据用户类型进行配置，如果改会员有上级代理信息，获取给上级代理多少比例分成信息  && MemInvitorTypeEum.mem.name().equals(memInfo.getInviterUserType())
+		if (!StringUtils.isEmpty(memInfo.getInviterUserId())) {
+			
+			MemInfo inviMemInfo = memInfoMapper.selectByPrimaryKey(memInfo.getInviterUserId());
+			
+			if (inviMemInfo != null) {
+				chargeOrder.setInvitUserId(inviMemInfo.getMemId());
+				chargeOrder.setInvitUserType(inviMemInfo.getMemType());
+				chargeOrder.setInvitUserName(StringUtils.isEmpty(inviMemInfo.getMemPhone()) ? inviMemInfo.getInviterCode() : inviMemInfo.getMemPhone());
+				
+				chargeOrder.setRebateUserId(memInfo.getInviterUserId());
+				chargeOrder.setRebateUserType(MemInvitorTypeEum.mem.name());
+				chargeOrder.setRebateUserName(inviMemInfo.getMemNickName());
+				chargeOrder.setRebateUserPhone(inviMemInfo.getMemPhone());
+				// 默认返利等级两级,这里之前是2
+				chargeOrder.setRebateLvl(1);
+				chargeOrder.setRebateStatus(FlowStatusEum.create.getStatus());
+				
+				//如果是父级用户是代理
+				//ProxyInfo proxyInfo = proxyInfoMapper.selectProxyAndGroupByProxyId(memInfo.getInviterUserId());
+				ProxyInfo proxyInfo = proxyInfoMapper.selectByPrimaryKey(memInfo.getInviterUserId());
+				log.debug("addChargeOrderForQcode , selectProxyAndGroupByProxyId(memId), memId = {} ,  proxyInfo  = {}", memInfo.getMemId(), proxyInfo == null ? "" : proxyInfo.toString());
+				if (proxyInfo != null && "1".equals(inviMemInfo.getIsProxy())) {
+					int rebateValue = Integer.parseInt(proxyInfo.getProxyLvl());
+					chargeOrder.setRebate(rebateValue);
+				}else {
+					//这个地方10先写死吧！
+					chargeOrder.setRebate(10);
+					
+				}
+			}
+			
+		}
+		
+		chargeOrderMapper.insert(chargeOrder);
+		
+		//添加渠道订单金额,用来测试
+		//ChannelMsgProducter.build().sendChannelMsg(ChannelMsg.createChannelOrderMoneyValue(memInfo.getChannelCode(), chargeOrder.getOrderNo(), chargeOrder.getFinalPrice() == null ? 0 : chargeOrder.getFinalPrice().intValue()));
+		
+		//如果是ios苹果内购支付，直接返回订单号，这时先不做验证
+		if (PayTypeEum.apple.name().equals(chargeOrder.getPayType())) {
+			log.info("user paying by apple pay, order no = {}", orderNo);
+			result.put("orderNo", orderNo);
+			result.put("productId", chargeOrder.getChargeId());
+			return result;
+		}
+		
+		String productName = getSubjectName();
+		
+		result = yzfService.param2sign(chargeOrder.getOrderNo(), payType, productName, chargeOrder.getFinalPrice().toString(), null);
+		
+		redisHandler.set(RedisKey.USER_LAST_ORDERs + chargeOrder.getMemId(), orderNo, 6 * 60 * 60); 
+		
+		return result;
 	}
 	
 	@Transactional

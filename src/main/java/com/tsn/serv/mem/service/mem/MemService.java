@@ -990,7 +990,7 @@ public class MemService {
 
 	public Map<String,Object> memInfoQuery(String memPhone) {
 		// 查询用户信息
-		MemInfo memInfo = memMapper.selectMemByPhone(memPhone);
+		MemInfo memInfo = memMapper.selectMemByNoAndEmailAndPhone(memPhone);
 		if (memInfo == null) {
 			return null;
 		}

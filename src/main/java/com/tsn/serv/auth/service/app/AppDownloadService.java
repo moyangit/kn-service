@@ -137,8 +137,10 @@ public class AppDownloadService {
         		return val.getPath();
         	} else if ("win32".equals(appType) && "1".equals(val.getType())) {
         		return val.getPath();
-        	} else {
-        		
+        	} else if ("darwin".equals(appType) && "4".equals(val.getType())) {
+        		return val.getPath();
+        	} else if ("ios".equals(appType) && "3".equals(val.getType())) {
+        		return val.getPath();
         	}
         }
         

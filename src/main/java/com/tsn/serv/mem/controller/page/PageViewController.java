@@ -1,6 +1,9 @@
 package com.tsn.serv.mem.controller.page;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +28,14 @@ import com.tsn.common.web.utils.CookieUtils;
 import com.tsn.common.web.utils.WebUtils;
 import com.tsn.common.web.web.auth.anno.AuthClient;
 import com.tsn.serv.common.cons.redis.RedisKey;
+import com.tsn.serv.mem.entity.env.enm.EnvKeyEnum;
+import com.tsn.serv.mem.entity.flow.FlowDay;
 import com.tsn.serv.mem.entity.mem.MemInfo;
+import com.tsn.serv.mem.entity.mem.MemInfoConfig;
 import com.tsn.serv.mem.service.charge.MemChargeService;
+import com.tsn.serv.mem.service.env.EnvParamsService;
+import com.tsn.serv.mem.service.flow.FlowService;
+import com.tsn.serv.mem.service.mem.MemInfoConfigService;
 import com.tsn.serv.mem.service.mem.MemService;
 
 @Controller
@@ -46,6 +55,15 @@ public class PageViewController {
 	
 	@Autowired
 	private MemChargeService memChargeService;
+	
+	@Autowired
+	private FlowService flowService;
+	
+	@Autowired
+	private MemInfoConfigService memInfoConfigService;
+	
+	@Autowired
+	private EnvParamsService envParamsService;
 	
 	@GetMapping("/login.html")
 	public ModelAndView toLoginPage() {
@@ -101,6 +119,31 @@ public class PageViewController {
 			if (StringUtils.isEmpty(userId)) {
 				return new ModelAndView("redirect:/page/login.html");
 			}
+			
+			Page page = new Page();
+			page.setParamObj("memId", userId);
+			memService.inviteList(page);
+			model.addAttribute("invitNum", page.getTotalRecord());
+			
+			MemInfo memInfo = memService.queryMemById(userId);
+			model.addAttribute("user", memInfo);
+			FlowDay flowDay = flowService.queryDayByMemId(userId);
+			model.addAttribute("flowDay", flowDay);
+			
+			MemInfoConfig memInfoConfig = memInfoConfigService.getMemConfigAndAddByMemId(userId);
+			
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("sr", "https://user.kuainiaojsq.xyz/path/sub/all/srvmess/" + memInfoConfig.getSubKey());
+			result.put("general", "https://user.kuainiaojsq.xyz/path/sub/all/generalvmess/" + memInfoConfig.getSubKey());
+			model.addAttribute("subInfo", result);
+			
+			//获取appsotre账号
+			List<Map<String, String>> accList = envParamsService.getAppStoreAcc();
+			model.addAttribute("accList", accList);
+			
+			//获取小火箭教程链接
+			String swrLink = envParamsService.getValByKey(EnvKeyEnum.link_swr_help);
+			model.addAttribute("swrLink", swrLink);
 			
 			return new ModelAndView("user/subscribe");
 		} catch (Exception e) {
@@ -300,5 +343,11 @@ public class PageViewController {
 		}
 	}
 	
+	
+	@GetMapping("/paysuccess.html")
+	@AuthClient()
+	public ModelAndView paySuccess() {
+		return new ModelAndView("user/pay_success");
+	}
 
 }

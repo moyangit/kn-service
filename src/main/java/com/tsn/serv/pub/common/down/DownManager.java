@@ -31,25 +31,13 @@ public class DownManager {
 	
 	private static Logger log = LoggerFactory.getLogger(DownManager.class);
 	
-	private Map<String, DownUrl> kjsMap = new HashMap<String, DownUrl>();
-	
-	private Map<String, DownUrl> hbMap = new HashMap<String, DownUrl>();
-	
-	private Map<String, DownUrl> ggMap = new HashMap<String, DownUrl>();
+	private Map<String, DownUrl> knMap = new HashMap<String, DownUrl>();
 	
 	private static DownManager downManager = new DownManager();
 	
-	private ExecutorService executor = Executors.newSingleThreadExecutor();
+	private ExecutorService knExecutor = Executors.newSingleThreadExecutor();
 	
-	private ExecutorService kjsExecutor = Executors.newSingleThreadExecutor();
-	
-	private ExecutorService ggExecutor = Executors.newSingleThreadExecutor();
-	
-	private DelayQueue<QueueObj> hbQueue = new DelayQueue<>();
-	
-	private DelayQueue<QueueObj> kjsQueue = new DelayQueue<>();
-	
-	private DelayQueue<QueueObj> ggQueue = new DelayQueue<>();
+	private DelayQueue<QueueObj> knQueue = new DelayQueue<>();
 	/*
 	 * 安卓 https://kjsdd.lanzoui.com/iv8OWr2ekve
 windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
@@ -61,7 +49,7 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 		
 		init();
 		
-		executor.execute(new Thread(new Runnable() {
+		knExecutor.execute(new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -70,70 +58,12 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 					
 					
 					try {
-						QueueObj queueObj = hbQueue.take();
+						QueueObj queueObj = knQueue.take();
 						
-						DownUrl downUrl = hbMap.get(queueObj.name);
+						DownUrl downUrl = knMap.get(queueObj.name);
 						downUrl.refresh();
 						queueObj.setStartTime(downUrl.getNextTime().getTime());
-						hbQueue.put(queueObj);
-						
-						log.info("refresh hb url success, {}, {} ", queueObj.name, downUrl);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					
-				}
-				
-				
-			}
-		}));
-		
-		kjsExecutor.execute(new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-				while(true) {
-					
-					
-					try {
-						QueueObj queueObj = kjsQueue.take();
-						
-						DownUrl downUrl = kjsMap.get(queueObj.name);
-						downUrl.refresh();
-						queueObj.setStartTime(downUrl.getNextTime().getTime());
-						kjsQueue.put(queueObj);
-						
-						log.info("refresh kjs url success, {}, {} ", queueObj.name, downUrl);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					
-				}
-				
-				
-			}
-		}));
-		
-		ggExecutor.execute(new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-				while(true) {
-					
-					
-					try {
-						QueueObj queueObj = ggQueue.take();
-						
-						DownUrl downUrl = ggMap.get(queueObj.name);
-						downUrl.refresh();
-						queueObj.setStartTime(downUrl.getNextTime().getTime());
-						ggQueue.put(queueObj);
+						knQueue.put(queueObj);
 						
 						log.info("refresh kjs url success, {}, {} ", queueObj.name, downUrl);
 					} catch (InterruptedException e) {
@@ -155,61 +85,17 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 	 */
 	private void init() {
 		//https://kjsdd.lanzoue.com
-		ggMap.put("ad",new DownUrl("https://kjsdd.lanzoue.com/id3Sv0cnb3wh", ""));
-		ggMap.put("pc",new DownUrl("https://kjsdd.lanzoue.com/i476i0cnbfda", ""));
-		ggMap.put("mac",new DownUrl("https://kjsdd.lanzoue.com/ieW4G0cnbvdg", ""));
-		
-		
-		hbMap.put("sgwjg",new DownUrl("https://kjsdd.lanzoui.com/sgweijiagu", ""));
-		hbMap.put("sgjg",new DownUrl("https://kjsdd.lanzoui.com/sgjiagu", ""));
-		
-		
-		
-		hbMap.put("adyyxb",new DownUrl("https://kjsdd.lanzoue.com/yyxbad", ""));
-		hbMap.put("adyyxbsign",new DownUrl("https://kjsdd.lanzoue.com/yyxbadsign", ""));
-		
-		hbMap.put("ad_unsign",new DownUrl("https://kjsdd.lanzoue.com/heibaoanzhuomiananzhuangunsign", ""));
-		
-/*		hbMap.put("ad",new DownUrl("https://kjsdd.lanzoui.com/heibaoanzhuo", ""));
-		hbMap.put("pc",new DownUrl("https://kjsdd.lanzoui.com/iIkoJr3d54h", ""));
-		hbMap.put("mac",new DownUrl("https://kjsdd.lanzoui.com/i8yuVr3d4ob", ""));
-		
-		kjsMap.put("ad",new DownUrl("https://kjsdd.lanzoui.com/kjsad", ""));
-		kjsMap.put("pc",new DownUrl("https://kjsdd.lanzoui.com/kjspc", ""));
-		kjsMap.put("mac",new DownUrl("https://kjsdd.lanzoui.com/kjsmac", ""));*/
-		
-		hbMap.put("ad",new DownUrl("https://kjsdd.lanzoue.com/hb511ad", ""));
-		hbMap.put("pc",new DownUrl("https://kjsdd.lanzoue.com/hb511pc", ""));
-		hbMap.put("mac",new DownUrl("https://kjsdd.lanzoue.com/hb511mac", ""));
-		
-		kjsMap.put("ad",new DownUrl("https://kjsdd.lanzoue.com/kjs511ad", ""));
-		kjsMap.put("pc",new DownUrl("https://kjsdd.lanzoue.com/kjs511pc", ""));
-		kjsMap.put("mac",new DownUrl("https://kjsdd.lanzoue.com/kjs511mac", ""));
-		
-		kjsMap.put("ad_unsign",new DownUrl("https://kjsdd.lanzoue.com/kjsadweijiamituiguang", ""));
-		kjsMap.put("ad",new DownUrl("https://kjsdd.lanzoue.com/kjsad", ""));
-		kjsMap.put("pc",new DownUrl("https://kjsdd.lanzoue.com/kjspc", ""));
-		kjsMap.put("mac",new DownUrl("https://kjsdd.lanzoue.com/kjsmac", ""));
-		
+		knMap.put("ad",new DownUrl("https://wwyh.lanzoue.com/iRmNN0hbe72h", "", "46m5"));
+		knMap.put("pc",new DownUrl("https://wwyh.lanzoue.com/i5BMO0hbct7c","", "3bvb"));
+		knMap.put("mac",new DownUrl("https://wwyh.lanzoue.com/ilBqU0hbd82h","", "8pbz"));
 	}
 	
 	public void initData() {
-		for (Map.Entry<String, DownUrl> entry : hbMap.entrySet()) {
-			DownUrl downUrl = entry.getValue();
-			downUrl.refresh();
-			hbQueue.add(new QueueObj(entry.getKey(), downUrl.getNextTime().getTime()));
-		}
 		
-		for (Map.Entry<String, DownUrl> entry : kjsMap.entrySet()) {
+		for (Map.Entry<String, DownUrl> entry : knMap.entrySet()) {
 			DownUrl downUrl = entry.getValue();
 			downUrl.refresh();
-			kjsQueue.add(new QueueObj(entry.getKey(), downUrl.getNextTime().getTime()));
-		}
-		
-		for (Map.Entry<String, DownUrl> entry : ggMap.entrySet()) {
-			DownUrl downUrl = entry.getValue();
-			downUrl.refresh();
-			ggQueue.add(new QueueObj(entry.getKey(), downUrl.getNextTime().getTime()));
+			knQueue.add(new QueueObj(entry.getKey(), downUrl.getNextTime().getTime()));
 		}
 	}
 	
@@ -281,20 +167,23 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 		
 		private String downUrl;
 		
+		private String pwd;
+		
 		private Date lastTime;
 		
 		private Date nextTime;
 		
-		public DownUrl(String sourceUrl, String downUrl) {
+		public DownUrl(String sourceUrl, String downUrl, String pwd) {
 			this.setSourceUrl(sourceUrl);
 			this.setDownUrl(downUrl);
+			this.pwd = pwd;
 			this.lastTime = new Date();
 			this.nextTime = DateUtils.addMinutes(this.lastTime, new Random().nextInt(3));
 			this.nextTime = DateUtils.addSeconds(this.nextTime, new Random().nextInt(60));
 		}
 		
 		public void refresh() {
-			String downUrl = getYunPanUrl(sourceUrl);
+			String downUrl = getYunPanUrl(sourceUrl, pwd);
 			
 			if (!StringUtils.isEmpty(downUrl)) {
 				this.downUrl = downUrl;
@@ -305,122 +194,66 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 			this.nextTime = DateUtils.addSeconds(this.nextTime, new Random().nextInt(60));
 		}
 		
-		public String getYunPanUrl(String reqUrl) {
+		public String getYunPanUrl(String reqUrl, String passwd) {
 			
 			try {
-				URL url = new URL(reqUrl);
-				String host = url.getHost();
-				//String reqUrl = "https://kjsdd.lanzoui.com/kjsad";
+				//String reqUrl = reqUrl;
+				//String passwd = passwd;
 				
 				Connection.Response response = Jsoup.connect(reqUrl).execute();
-				//System.out.println(response.cookies());
-				//System.out.println(response.body());
+//				System.out.println(response.cookies());
+//				System.out.println(response.body());
 				
 				Document document = Jsoup.parse(response.body());
 				
-				String iframeContent = "";
-				String iframeAffer = "";
+				//System.out.println(document.html());
 				
-				Elements elements = document.select("iframe[class='ifr2']");
-				
-				if (elements == null || elements.isEmpty()) {
-					elements = document.select("iframe[class='n_downlink']");
-				}
-				
-				for (Element element : elements) {
-					iframeAffer = "https://" + host + "/" + element.baseUri() + element.attr("src");
-				    Connection.Response responseFn = Jsoup.connect(iframeAffer).cookies(response.cookies()).execute();
-				    
-				    System.out.println(responseFn.cookies());
-				    iframeContent  = responseFn.body();
-				    //System.out.println(iframeContent);
-				}
-				
-				Document iframeDoc = Jsoup.parse(iframeContent);
-				Element script = iframeDoc.select("script").get(1); // Get the script part
-
-				String content = script.html();
+				String content = document.html();
 				
 				String[] contentArr = content.split("\n");
 				
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("action", "downprocess");
-				params.put("ves", "1");
-				params.put("websign", "");
-				
+				String postUrl = "https://wwyh.lanzoue.com/ajaxm.php";
+				String htmlData = "";
 				for (String html : contentArr) {
 					
 					if (html.contains("//")) {
 						continue;
 					}
 					
-					if (html.contains("var ajaxdata")) {
-						params.put("signs", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
-					}else if (html.contains("var vsign")) {
-						params.put("sign", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
-					}else if (html.contains("var ispostdowns")) {
-						params.put("sign", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
-					}else if (html.contains("var pdownload")) {
-						params.put("sign", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
-					}else if (html.contains("var msigns")) {
-						params.put("sign", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
-					}else if (html.contains("var postdown")) {
-						params.put("sign", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
-					}else if (html.contains("data :")) {
-						String[] htmlArr = html.split(":");
-						String websignKey = htmlArr[htmlArr.length - 1].replace("'", "").replace("}", "").replace(",", "").trim();
-						//'VDJUag4_aBzYIAQM8ATECPlo1BTACbVRlUGZaaFI9BD1QdlJxWzsAZVU1AmBWMQUzVzUDMVc6AjRQYw_c_c','ves'
-						String signStr = htmlArr[4];
-						//如果sign直接写在ajax data中
-						if (!StringUtils.isEmpty(signStr) && signStr.indexOf("','v") > -1) {
-							params.put("sign", signStr.replaceAll("','ves'", "").replaceAll("'", "").trim());
-						}
-						params.put("websignkey", websignKey);
-						break;
+					if (html.contains("data : ")) {
+						htmlData = html.substring(html.indexOf("'") + 1, html.lastIndexOf("'"));
+						//params.put("signs", html.split("=")[1].replaceAll("'", "").replaceAll(";", "").trim());
 					}
 				}
 				
-				List<BasicNameValuePair> paramsList = new ArrayList<BasicNameValuePair>();
-				paramsList.add(new BasicNameValuePair("action", params.get("action")));
-				paramsList.add(new BasicNameValuePair("signs", params.get("signs")));
-				paramsList.add(new BasicNameValuePair("sign", params.get("sign")));
-				paramsList.add(new BasicNameValuePair("ves", params.get("ves")));
-				paramsList.add(new BasicNameValuePair("websign", params.get("websign")));
-				paramsList.add(new BasicNameValuePair("websignkey", params.get("websignkey")));
-				
-				//UM_distinctid=17b447b3a1916d-0036a02eb37d8d-4343363-144000-17b447b3a1a5ee; CNZZDATA5289133=cnzz_eid%3D1236576885-1628937230-%26ntime%3D1628937230; CNZZDATA1253610888=181102480-1628936242-%7C1628936242; CNZZDATA422640=cnzz_eid%3D1603193747-1628937477-%26ntime%3D1628937477
-				//response.cookies()
-				/*response.cookies().put("UM_distinctid", "17b447b3a1916d-0036a02eb37d8d-4343363-144000-17b447b3a1a5ee");
-				response.cookies().put("CNZZDATA5289133", "cnzz_eid%3D1236576885-1628937230-%26ntime%3D1628937230");
-				response.cookies().put("CNZZDATA1253610888", "181102480-1628936242-%7C1628936242");
-				response.cookies().put("CNZZDATA422640", "cnzz_eid%3D1603193747-1628937477-%26ntime%3D1628937477");*/
+				Map<String, String> params = new HashMap<String, String>();
+				if (!StringUtils.isEmpty(htmlData)) {
+					htmlData = htmlData + passwd;
+					String[] htmlDataArr = htmlData.split("&");
+					for (String param : htmlDataArr) {
+						String[] paramArr = param.split("=");
+						params.put(paramArr[0], paramArr[1]);
+					}
+				}
 				
 				Map<String, String> headerMap = new HashMap<String, String>();
-				headerMap.put("origin", "https://" + host);
-				headerMap.put("referer", iframeAffer);
+				headerMap.put("origin", "https://wwyh.lanzoue.com");
+				headerMap.put("Referer", reqUrl);
 				
-				
-				Connection.Response responseFn = Jsoup.connect("https://" + host + "/ajaxm.php").method(Method.POST)
-						.data("action", params.get("action"))
-						.data("signs", params.get("signs"))
-						.data("sign", params.get("sign") == null ? "" : params.get("sign"))
-						.data("ves", params.get("ves"))
-						.data("websign", params.get("websign"))
-						.data("websignkey", params.get("websignkey"))
+				Connection.Response responseFn = Jsoup.connect(postUrl).method(Method.POST)
+						.data(params)
 						.headers(headerMap)
 						.cookies(response.cookies()).followRedirects(true)
 				        .execute();
 				
+				Map<String, String> resultMap = JsonUtils.jsonToPojo(responseFn.body(), Map.class);
 				
-				/*HttpPostReq req = new HttpPostReq("https://kjsdd.lanzoui.com/ajaxm.php", null, paramsList);
-				String result = req.excuteReturnStr();*/
-				//System.out.println(responseFn.body());
-				//date.dom+"/file/"+ date.url
-				//String paraStr = MapUtil.mapJoin(params, false, true);
-				//String paraStr = "action=downprocess&signs=%3Fctdf&sign=AWcGOFprVWRUXVBvAjJSbgFvUGJSPFZhAzxRbl0zBDYBJwckCGgOa1IyAWUHa1JqAWgEMlA2UGNQYg_c_c&ves=1&websign=&websignkey=8PaD";
-				Map<String, Object> resultMap = JsonUtils.jsonToPojo(responseFn.body(), Map.class);
+				String dom = resultMap.get("dom");
+				String domUrl = resultMap.get("url");
 				
-				String downUrl = resultMap.get("dom") + "/file/" + resultMap.get("url");
+				String downUrl = dom + "/file/" + domUrl;
+				
+				//System.out.println(downUrl);
 				return downUrl;
 			} catch (Exception e) {
 				log.error("get yunpan url error, e ={}", e);
@@ -470,29 +303,30 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 	}
 
 
-	public Map<String, DownUrl> getKjsMap() {
-		return kjsMap;
+	public Map<String, DownUrl> getKnMap() {
+		return knMap;
 	}
 
-	public void setKjsMap(Map<String, DownUrl> kjsMap) {
-		this.kjsMap = kjsMap;
+	public void setKnMap(Map<String, DownUrl> knMap) {
+		this.knMap = knMap;
 	}
 
-	public Map<String, DownUrl> getHbMap() {
-		return hbMap;
+	public ExecutorService getKnExecutor() {
+		return knExecutor;
 	}
 
-	public void setHbMap(Map<String, DownUrl> hbMap) {
-		this.hbMap = hbMap;
+	public void setKnExecutor(ExecutorService knExecutor) {
+		this.knExecutor = knExecutor;
 	}
 
-	public Map<String, DownUrl> getGgMap() {
-		return ggMap;
+	public DelayQueue<QueueObj> getKnQueue() {
+		return knQueue;
 	}
 
-	public void setGgMap(Map<String, DownUrl> ggMap) {
-		this.ggMap = ggMap;
+	public void setKnQueue(DelayQueue<QueueObj> knQueue) {
+		this.knQueue = knQueue;
 	}
+
 	
 	
 }

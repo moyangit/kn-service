@@ -41,7 +41,9 @@ public class PageRedirectController {
 		//缓存1个小时
 		redisHandler.set(RedisKey.USER_TOKEN + userId, token, 1 * 60 * 60);
 		
-		String cusServiceUrl = "https://app.knapi.xyz/page/invitfriend.html?uId=" + userId;
+		String addr = Env.getVal("serv.share.addr");
+		
+		String cusServiceUrl = StringUtils.isEmpty(addr) ? "https://user.kuainiaojsq.xyz/page/invitfriend.html?uId=" + userId : addr + userId;
 		
 		if ("dev".equals(Env.getVal("spring.profiles.active"))){
 			cusServiceUrl = "http://localhost:9077/page/invitfriend.html?uId=" + userId;
@@ -69,8 +71,9 @@ public class PageRedirectController {
 			redisHandler.set(RedisKey.USER_TOKEN + userId, token, 1 * 60 * 60);
 		}
 		
+		String addr = Env.getVal("serv.msgcenter.addr");
 		
-		String cusServiceUrl = "https://app.knapi.xyz/page/msgcenter.html?uId=" + userId;
+		String cusServiceUrl = StringUtils.isEmpty(addr) ? "https://user.kuainiaojsq.xyz/page/msgcenter.html?uId=" + userId : addr + userId;
 		
 		if ("dev".equals(Env.getVal("spring.profiles.active"))){
 			cusServiceUrl = "http://localhost:9077/page/msgcenter.html?uId=" + userId;
@@ -83,13 +86,13 @@ public class PageRedirectController {
 	@ResponseBody
     public Response<?> toCustomer(){
 		
-		String addr = Env.getVal("cus.serv.addr");
+		String addr = Env.getVal("serv.customer.addr");
 		
 		if (!StringUtils.isEmpty(addr)) {
 			return Response.ok(addr);
 		}
 		
-		String cusServiceUrl = "https://app.knapi.xyz/page/linkcustomer.html";
+		String cusServiceUrl = "https://user.kuainiaojsq.xyz/page/linkcustomer.html";
 		
 		return Response.ok(cusServiceUrl);
 	}
@@ -98,13 +101,13 @@ public class PageRedirectController {
 	@ResponseBody
     public Response<?> proxy(){
 		
-		String addr = Env.getVal("cus.serv.addr");
+		String addr = Env.getVal("serv.proxy.addr");
 		
 		if (!StringUtils.isEmpty(addr)) {
 			return Response.ok(addr);
 		}
 		
-		String cusServiceUrl = "https://app.knapi.xyz/page/subscribe.html";
+		String cusServiceUrl = "https://user.kuainiaojsq.xyz/page/subscribe.html";
 		
 		return Response.ok(cusServiceUrl);
 	}

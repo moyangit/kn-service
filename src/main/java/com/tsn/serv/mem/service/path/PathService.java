@@ -121,7 +121,7 @@ public class PathService {
 		
 		StringBuffer allSubAddr = new StringBuffer();
 		
-		String result = V2raySubLinkTools.getSrV2rayLink("/", "127.0.0.1", 8080, "官网:knjsq.xyz", "999999");
+		String result = V2raySubLinkTools.getSrV2rayLink("/", "127.0.0.1", 8080, "充值域名:user.kuainiaojsq.xyz", "999999");
 		allSubAddr.append(result).append("\n");
 		
 		String resultTime = V2raySubLinkTools.getSrV2rayLink("/", "127.0.0.1", 8080, "该链接已失效", "999999");
@@ -168,8 +168,8 @@ public class PathService {
 		
 		Date susDate = memInfo.getSuspenDate();
 		
-		String title1 = "官网:knjsq.xyz";
-		String title2 = surDayNum > 0 ? "剩余使用时间:" + surDayNum + "天" : "会员已到期,请充值";
+		String title1 = "充值域名:user.kuainiaojsq.xyz";
+		String title2 = surDayNum > 0 ? "剩余:" + surDayNum + "天" : "会员已过期";
 		//小火箭v2ray配置
 		if ("srvmess".equals(type)) {
 			String result = V2raySubLinkTools.getSrV2rayLink("/", "127.0.0.1", 8080, title1, v2User.getId());

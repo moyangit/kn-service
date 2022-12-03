@@ -26,6 +26,10 @@
 	.label-warning {
 	    background-color: #f1a325 !important;
 	}
+	
+	.jiaocheng p{
+		font-size: 9px;
+	}
     
     </style>
   </head>
@@ -57,7 +61,7 @@
 			    <div style="width: 60%"><i class="icon icon-user large" style="font-size: 200% !important;"></i></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span>会员类型</span>
-			    	<div>普通用户</div>
+			    	<div th:text="${user.memType == '00' ? '游客' : (user.memType == '02' ? '会员用户' : '普通用户')}"></div>
 		    	</div>
 		    </div>
 		  </div>
@@ -66,7 +70,7 @@
 			    <div style="width: 60%"><i class="icon icon-time large" style="font-size: 200% !important;"></i></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span>剩余时间</span>
-			    	<div>23天</div>
+			    	<div th:text="${user.surDayNum + '天'}"></div>
 		    	</div>
 		    </div>
 		  </div>
@@ -75,7 +79,7 @@
 			    <div style="width: 60%"><i class="icon icon-database large" style="font-size: 200% !important;"></i></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span>今日使用</span>
-			    	<div>2.5G</div>
+			    	<div th:text="${flowDay == null ? '0M' : flowDay}"></div>
 		    	</div>
 		    </div>
 		  </div>
@@ -84,28 +88,80 @@
 			    <div style="width: 60%"><i class="icon icon-node large" style="font-size: 200% !important;"></i></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span>邀请人数</span>
-			    	<div>23个</div>
+			    	<div th:text="${invitNum + '人'}"></div>
 		    	</div>
 		    </div>
 		  </div>
 		</div>
 		
-		<span class="label label-warning">客户端订阅</span>
+		<span class="label label-warning">客户端订阅(IOS)</span>
 	
 		<div class="list-group tsn-margin-top">
 			  <a href="#" class="list-group-item flex">
 			    <h5 class="list-group-item-heading text-left" style="width:60%">通用订阅</h5>
-			    <span class="list-group-item-text text-muted text-right" style="width:40%"><span class="label label-Success label-outline">点击复制</span></span>
+			    <span class="list-group-item-text text-muted text-right" style="width:40%"><span class="label label-Success label-outline copy" th:url="${subInfo.general}">点击复制</span></span>
 			  </a>
 			  <a href="#" class="list-group-item flex">
 			    <h5 class="list-group-item-heading text-left" style="width:60%">小火箭订阅</h5>
-			    <span class="list-group-item-text text-muted text-right" style="width:40%"><span class="label label-Success label-outline">点击复制</span></span>
+			    <span class="list-group-item-text text-muted text-right" style="width:40%"><span class="label label-Success label-outline copy" th:url="${subInfo.sr}">点击复制</span></span>
 			  </a>
+		</div>
+		
+		<div class="alert alert-warning jiaocheng">
+			<h4>订阅教程</h4>
+			<h5>IOS小火箭下载安装教程(由于IOS近期遇到问题无法上架，尽情期待)</h5>
+			<p>1.下载小火箭，教程：国外AppStore账号 <a href="">点击链接</a></p>
+			<p>2.退出自己的苹果账号，使用国外apptore账号进行登录  <span style="color:black;cursor: pointer;font-weight:600" th:content="${accList.get(0).account}" class="copyAcc">复制账号</span> <span style="color:black;cursor: pointer;font-weight:600" class="copyAcc" th:content="${accList.get(0).pwd}">复制密码</span></p>
+			<p>3.登录后搜索Shadowrocket进行下载</p>
+			<p>4.下载完成后一定要退出账号！！！切记</p>
+			<p>5.以上不清楚可<a style="margin-left:5px;text-decoration: underline;" th:href="${swrLink}" target="_blank">查看链接教程</a></p>
 		</div>
 	</div>
 	
   </body>
   <script>
-	
+		$(function(){
+			
+			$(".copy").click(function(){
+				
+				var url = $(this).attr("url");
+				
+				copyContentH5(url)
+				
+			})
+			
+			$(".copyAcc").click(function() {
+				var content = $(this).attr("content");
+				copyContentH5(content)
+			})
+			
+			//h5复制文本到剪切板
+			function copyContentH5(content) {
+			    var copyDom = document.createElement('div');
+			    copyDom.innerText=content;
+			    copyDom.style.position='absolute';
+			    copyDom.style.top='0px';
+			    copyDom.style.right='-9999px';
+			    document.body.appendChild(copyDom);
+			    //创建选中范围
+			    var range = document.createRange();
+			    range.selectNode(copyDom);
+			    //移除剪切板中内容
+			    window.getSelection().removeAllRanges();
+			    //添加新的内容到剪切板
+			    window.getSelection().addRange(range);
+			    //复制
+			    var successful = document.execCommand('copy');
+			    copyDom.parentNode.removeChild(copyDom);
+			    try{
+			        if (successful) {
+			        	new $.zui.Messager('复制成功', {
+			            }).show();
+			        }
+			    } catch(err){
+			    }
+			}
+			
+		})
 	</script>
 </html>

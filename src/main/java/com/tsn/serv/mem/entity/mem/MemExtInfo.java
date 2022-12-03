@@ -46,20 +46,18 @@ public class MemExtInfo extends BaseEntity {
     
     @ApiModelProperty(value = "设备名")
     @TableField
-    @Unique
     @ColumnType(length = 20)
     private String deviceName;
     
     @ApiModelProperty(value = "设备类型M,W,A,I")
     @TableField
-    @Unique
     @ColumnType(length = 2)
     private String deviceType;
     
     @ApiModelProperty(value = "设备号")
     @TableField
-    @Unique
     @ColumnType(length = 100)
+    @Unique
     @ColumnComment("设备号")
     private String deviceNo;
     

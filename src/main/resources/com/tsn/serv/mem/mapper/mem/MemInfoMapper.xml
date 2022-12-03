@@ -64,6 +64,14 @@
     where mem_phone = #{memPhone,jdbcType=VARCHAR}
   </select>
   
+  <select id="selectMemByNoAndEmailAndPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_nick_name, mem_pwd, mem_sex, mem_phone, mem_email, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
+    suspen_date, last_login_time, reg_date, is_proxy, remarks, terminal_type, last_cashout_date, device_num, change_suspen_date, channel_code
+    from v_mem_info
+    where mem_phone = #{memPhone,jdbcType=VARCHAR} or mem_email = #{memPhone,jdbcType=VARCHAR} or mem_no = #{memPhone,jdbcType=VARCHAR}
+  </select>
+  
   <select id="selectMemByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     mem_id, mem_no, inviter_user_id, inviter_user_type, inviter_code, inviter_time, mem_name, mem_email, mem_nick_name, mem_pwd, mem_sex, mem_phone, mem_avatar, mem_type, status, first_recharge_date, last_recharge_date,
@@ -1002,7 +1010,7 @@
       /*a.use_total_traffic AS useTotalTraffic,*/
       a.last_recharge_date AS lastRechargeDate,
       a.reg_date AS regDate,
-      b.mem_phone AS inviterPhone,
+      b.mem_name AS inviterPhone,
       a.suspen_date AS suspenDate,
       a.last_cashout_date AS lastCashoutDate,
       a.status,
@@ -1050,6 +1058,8 @@
       a.mem_id AS memId,
       a.inviter_time AS inviterTime,
       a.inviter_user_type AS inviterUserType,
+      a.mem_name as memName,
+      a.mem_email as memEmail,
       a.mem_phone AS memPhone,
       a.mem_nick_name AS memNickName,
       a.mem_sex AS memSex,
@@ -1058,7 +1068,7 @@
       /*a.use_total_traffic AS useTotalTraffic,*/
       a.last_recharge_date AS lastRechargeDate,
       a.reg_date AS regDate,
-      b.mem_phone AS inviterPhone,
+      b.mem_name AS inviterPhone,
       a.suspen_date AS suspenDate,
       a.last_cashout_date AS lastCashoutDate,
       a.status,
@@ -1086,6 +1096,12 @@
     </if>
     <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
       AND (a.mem_phone like concat(#{paramObj.memPhone,jdbcType=VARCHAR},'%') or a.inviter_code = #{paramObj.memPhone,jdbcType=VARCHAR})
+    </if>
+    <if test="paramObj.memEmail != null and paramObj.memEmail != ''">
+      AND a.mem_email like concat(#{paramObj.memEmail,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="paramObj.memNo != null and paramObj.memNo != ''">
+      AND a.mem_no like concat(#{paramObj.memNo,jdbcType=VARCHAR},'%')
     </if>
     <if test="paramObj.memType != null and paramObj.memType != ''">
       AND a.mem_type = #{paramObj.memType,jdbcType=VARCHAR}
@@ -1281,7 +1297,7 @@
     /*a.use_total_traffic AS useTotalTraffic,*/
     a.last_recharge_date AS lastRechargeDate,
     a.reg_date AS regDate,
-    b.mem_phone AS inviterPhone,
+    b.mem_name AS inviterPhone,
     a.suspen_date AS suspenDate,
     a.status
     FROM

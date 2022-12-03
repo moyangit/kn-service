@@ -12,6 +12,7 @@
     <result column="mem_no" jdbcType="VARCHAR" property="memNo" />
     <result column="mem_name" jdbcType="VARCHAR" property="memName" />
     <result column="mem_real_name" jdbcType="VARCHAR" property="memRealName" />
+    <result column="mem_email" jdbcType="VARCHAR" property="memEmail" />
     <result column="mem_phone" jdbcType="VARCHAR" property="memPhone" />
     <result column="mem_type" jdbcType="VARCHAR" property="memType" />
     <result column="mem_before_suspen_date" jdbcType="VARCHAR" property="memBeforeSuspenDate" />
@@ -46,7 +47,7 @@
     <result column="order_timeout" jdbcType="INTEGER" property="orderTimeout" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_id, order_no, pay_type, trade_no, trade_status, mem_id, mem_no, mem_name, mem_real_name, 
+    order_id, order_no, pay_type, trade_no, trade_status, mem_id, mem_no, mem_name, mem_real_name, mem_email,
     mem_phone, mem_type, mem_before_suspen_date, charge_id, charge_type, charge_price, subject, cost_price, discount, 
     final_price, invit_user_id, invit_user_type, invit_user_name, rebate, rebate_user_id, rebate_user_type, rebate_user_phone, rebate_user_name, rebate_status, rebate_details, rebate_user_account_no, rebate_lvl, 
     order_status, create_time, update_time, trade_pay_time, trade_refund_time, order_timeout
@@ -269,8 +270,8 @@
   
   <select id="queryChargeOrderAndMemListPage" parameterType="com.tsn.common.utils.web.entity.page.Page" resultMap="BaseResultMap">
     select
-      a.order_id, a.order_no, a.pay_type, a.trade_no, a.trade_status, a.mem_id, a.mem_name, a.mem_real_name, 
-    a.mem_phone, a.mem_type, a.mem_before_suspen_date, a.charge_id, a.charge_type, a.charge_price, a.subject, a.cost_price, a.discount, 
+      a.order_id, a.order_no, a.pay_type, a.trade_no, a.trade_status, a.mem_id, a.mem_name, a.mem_real_name, a.mem_no,
+    a.mem_phone, a.mem_email, a.mem_type, a.mem_before_suspen_date, a.charge_id, a.charge_type, a.charge_price, a.subject, a.cost_price, a.discount, 
     a.final_price, a.invit_user_id, a.invit_user_type, a.invit_user_name, a.rebate, a.rebate_user_id, a.rebate_user_type, a.rebate_user_phone, a.rebate_user_name, a.rebate_status, a.rebate_details, a.rebate_user_account_no, a.rebate_lvl, 
     a.order_status, a.create_time, a.update_time, a.trade_pay_time, a.trade_refund_time, a.order_timeout,
       b.reg_date as mem_reg_time
@@ -278,7 +279,7 @@
     where 
       1=1
     <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
-      and a.mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
+      and (a.mem_phone like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%') or a.mem_email like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')  or a.mem_no like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%'))
     </if>
     <if test="paramObj.chargeType != null and paramObj.chargeType != ''">
       and a.charge_type = #{paramObj.chargeType,jdbcType=VARCHAR}
@@ -854,6 +855,9 @@
         order_no like concat('%',#{paramObj.memPhone,jdbcType=VARCHAR},'%')
         )
     </if>
+    <if test="paramObj.memEmail != null and paramObj.memEmail != ''">
+      and mem_email like concat('%',#{paramObj.memEmail,jdbcType=VARCHAR},'%')
+    </if>
     <if test="paramObj.chargeType != null and paramObj.chargeType != ''">
       and charge_type = #{paramObj.chargeType,jdbcType=VARCHAR}
     </if>
@@ -975,6 +979,12 @@
     where 1=1
     <if test="paramObj.memPhone != null and paramObj.memPhone != ''">
       and mem_phone = #{paramObj.memPhone, jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.memEmail != null and paramObj.memEmail != ''">
+      and mem_email = #{paramObj.memEmail, jdbcType=VARCHAR}
+    </if>
+    <if test="paramObj.memNo != null and paramObj.memNo != ''">
+      and mem_no = #{paramObj.memNo, jdbcType=VARCHAR}
     </if>
     order by create_time desc
   </select>

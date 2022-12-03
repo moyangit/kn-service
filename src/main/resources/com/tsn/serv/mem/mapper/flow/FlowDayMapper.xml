@@ -27,6 +27,16 @@
     from v_mem_flow_day
     where seri_no = #{seriNo,jdbcType=VARCHAR}
   </select>
+  
+  <select id="queryFlowByDay" resultMap="ResultMapWithBLOBs" parameterType="com.tsn.serv.mem.entity.flow.FlowDay">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from v_mem_flow_day
+    where mem_id = #{memId,jdbcType=VARCHAR} and day = #{day,jdbcType=VARCHAR}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from v_mem_flow_day
     where seri_no = #{seriNo,jdbcType=VARCHAR}

@@ -16,23 +16,12 @@ import com.tsn.serv.pub.common.down.DownManager.DownUrl;
 @RequestMapping("down")
 public class DownController {
 	
-	@GetMapping("{appType}/{type}")
+/*	@GetMapping("{appType}/{type}")
 	public ModelAndView toFHPage(Model model, @PathVariable String appType, @PathVariable String type, HttpServletRequest request){
 		
-		if ("hb".equals(appType)) {
+		if ("kn".equals(appType)) {
 			
-			DownUrl downUrl = DownManager.build().getHbMap().get(type);
-			
-			if (downUrl == null) {
-				//如果不是，直接跳转到目标页面
-			    return new ModelAndView("error");
-			}
-			
-			 //如果不是，直接跳转到目标页面
-		    return new ModelAndView("redirect:" + downUrl.getDownUrl());
-		} else if ("kjs".equals(appType)) {
-			
-			DownUrl downUrl = DownManager.build().getKjsMap().get(type);
+			DownUrl downUrl = DownManager.build().getKnMap().get(type);
 			
 			if (downUrl == null) {
 				//如果不是，直接跳转到目标页面
@@ -41,20 +30,23 @@ public class DownController {
 			
 			 //如果不是，直接跳转到目标页面
 		    return new ModelAndView("redirect:" + downUrl.getDownUrl());
-		} else if ("gg".equals(appType)) {
-			
-			DownUrl downUrl = DownManager.build().getGgMap().get(type);
-			
-			if (downUrl == null) {
-				//如果不是，直接跳转到目标页面
-			    return new ModelAndView("error");
-			}
-			
-			 //如果不是，直接跳转到目标页面
-		    return new ModelAndView("redirect:" + downUrl.getDownUrl());
-		}
+		} 
 	    
 		return new ModelAndView("error");
+	}*/
+	
+	@GetMapping("/{type}")
+	public ModelAndView toFHPage(Model model, @PathVariable String type, HttpServletRequest request){
+		
+		DownUrl downUrl = DownManager.build().getKnMap().get(type);
+		
+		if (downUrl == null) {
+			//如果不是，直接跳转到目标页面
+		    return new ModelAndView("error");
+		}
+		
+		 //如果不是，直接跳转到目标页面
+	    return new ModelAndView("redirect:" + downUrl.getDownUrl());
 	}
 	
 //	private String getOwnServer(String appType) {

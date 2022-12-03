@@ -23,7 +23,7 @@
 <style>
 
 body {
-	background: linear-gradient(135deg, #0e0e0e 0%,#1b181b 100%);
+	background: #1b181b;
 }
 
 .contentHeader {
@@ -175,9 +175,9 @@ body {
 }
 
 .payButton {
+	margin-top:20px;
     text-align: center;
-    margin: 0 auto;
-    padding: 10px 90px 35px 90px;
+    padding: 10px 70px 35px 70px;
     width: 300px;
     height: 24px;
     font-size: 18px;
@@ -186,7 +186,7 @@ body {
     color: #000000;
     opacity: 1;
     background-image: linear-gradient(to right, #F5D794FF, #F0B42AFF);
-    border-radius: 20px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -219,7 +219,20 @@ body {
       padding: 3px 18px 3px 21px;
       
       } 
-       
+      
+  .cus-active {
+  	  border: 1px solid #ffc107;
+  	  box-shadow: 0px 0px 6px #ffc107;
+  }
+  
+  .card {
+  	cursor: pointer;
+  }
+  
+  .radio-inline {
+  	color:white;
+  }
+  
 </style>
 </head>
 <body>
@@ -234,12 +247,11 @@ body {
 	</div>
 	
 
-	<div class="content tsn-margin">
-	
+	<div class="content tsn-margin taoContent">
 	
 		<div class="cards">
 		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="1">
 			    <div style="width: 60%"><div class="avatar red circle">月</div></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span class="tcFinalPrice">¥25</span>
@@ -249,7 +261,7 @@ body {
 		    </div>
 		  </div>
 		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="2">
 			    <div style="width: 60%"><div class="avatar yellow circle">季</div></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span class="tcFinalPrice">¥70</span>
@@ -259,7 +271,7 @@ body {
 		    </div>
 		  </div>
 		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="3">
 			    <div style="width: 60%"><div class="avatar blue circle">半</div></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span class="tcFinalPrice">¥135</span>
@@ -269,7 +281,7 @@ body {
 		    </div>
 		  </div>
 		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="4">
 			    <div style="width: 60%"><div class="avatar green circle">年</div></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span class="tcFinalPrice">¥256</span>
@@ -279,7 +291,7 @@ body {
 		    </div>
 		  </div>
 		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="15">
 			    <div style="width: 60%"><div class="avatar red circle">永</div></div>
 		    	<div style="width: 50%" class="text-center">
 			    	<span class="tcFinalPrice">¥520</span>
@@ -290,174 +302,116 @@ body {
 		  </div>
 		</div>
 		
+		<div class="radio-inline"><input type="radio" name="payType" checked="checked" id="payType1" value="alipay"><label for="primaryradio1">支付宝</label></div>
+		<div class="radio-inline"><input type="radio" name="payType" id="payType2" value="wxpay"><label for="primaryradio2">微信</label></div>
+		<div class="radio-inline"><input type="radio" name="payType" id="payType3" value="usdt"><label for="primaryradio3">usdt</label></div>
+		
 		<div class="payButton" id="startPay">
-				<span>立即支付</span>
-			</div>
+			<span>立即支付</span>
+		</div>
+		
+		<div>
+		<form id="subPay" action="https://www.sanzongzui.com/submit.php" method="post">
+			<input type="hidden" id="pid" name="pid"/>
+			<input type="hidden" id="type" name="type" value="alipay"/>
+			<input type="hidden" id="notifyUrl" name="notify_url"/>
+			<input type="hidden" id="returnUrl" name="return_url"/>
+			<input type="hidden" id="outTradeNo" name="out_trade_no"/>
+			<input type="hidden" id="name" name="name"/>
+			<input type="hidden" id="money" name="money"/>
+			<input type="hidden" id="sign" name="sign"/>
+			<input type="hidden" name="sign_type" value="MD5"/>
+		</form>
+		
+		</div>
 
 	</div>
-
-<!-- 	<script th:inline="javascript">
-			const payApi = [[${payApi}]];
-			// 取资费类型
-	        const chargeList = [[${chargeList}]];
-	        const memId = [[${mId}]];
-	        
-	        const pk = [[${pk}]]
-	        var token = [[${token}]];
-	        
-	        var reToken = [[${reToken}]];
-	        
-	        $.cookie('token', token);
-	        $.cookie('payApi', payApi);
-		</script> -->
-
 
 	<script type="text/javascript">
 		/*<![CDATA[*/
 		           
-		           $(function() {
+		$(function() {
 		        	   
-		   			
-		   	        let charge = [];
-		   	        
-		   	        var stripe = {};
-		   	        
-		   	        event();
-		   	        
-		   	        function event() {
-		   	        	
-		   	        	$(".contentTitleContent .boxContent").click(function() {
-		   	        		$(this).find(".tcContent").addClass("tcContentBorder");
-		   	        		$(this).siblings().find(".tcContent").removeClass("tcContentBorder");
-		   	        		
-		   	        		var chargeType = $(this).find(".tcContent").attr("data-type");
-		   	        			
-		           			for(var i in chargeList) {
-		       	                if (chargeType == chargeList[i].chargeType) {
-		       	                    charge = chargeList[i];
-		       	                    charge.memId = memId
-		       	                }
-		       	            }
-		   	        	})
-		   	        	
-		   	        	
-		   	        	$("#startPay").click(function() {
-		   	        		chargeOrder();
-		   	        	})
-		   	        }
-		   	
-		   	        // 选择资费类型
-		   	        //TODO 这里加个高亮效果
-		   	        function checkChargeType(chargeType) {
-		   	            for(var i in chargeList) {
-		   	                if (chargeType == chargeList[i].chargeType) {
-		   	                    charge = chargeList[i];
-		   	                    charge.memId = memId
-		   	                }
-		   	            }
-		   	        }
-		   	        
-		   	     function isPhone() {
-		             var sUserAgent = navigator.userAgent.toLowerCase();
-		             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
-		             var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
-		             var bIsMidp = sUserAgent.match(/midp/i) == "midp";
-		             var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
-		             var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
-		             var bIsAndroid = sUserAgent.match(/android/i) == "android";
-		             var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
-		             var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
-		             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
-		                 return true;
-		             } else {
-		            	 return false;
-		             }
-		         }
-		   	
-		   	        // 生成支付订单，获取sessionId
-		   	        function chargeOrder() {
-		   	            if (charge.length == 0) {
-		   	            	layer.msg('请选择支付套餐');
-		   					return false
-		   				}
-		   	         
-		   	         charge.payType="alipay";
-            		 charge.reToken=reToken;
-		   	         $.ajax({
-		                 type : "POST",
-		                 url : payApi + "/order/charge",
-		                 beforeSend: function(request) {
-		                	 $("#startPay").text("正在支付..")
-		                	 $("#startPay").addClass("disable");
-		                	 disabled="disabled"
-		                     request.setRequestHeader("V-Auth", token);
-		                 },
-		                 contentType: "application/json; charset=utf-8",
-		                 dataType : "json",
-		                 data : JSON.stringify(charge),
-		                 success : function(msg) {
-		                	 if (msg.code == '000000') {
-		                		 
-		                		 	window.location.href=msg.data.qrcode;
-		                		 
-	   	                            // 跳转支付页面
-	   	                            /* if (charge.payType == "stripe") {
-	   	                            	stripe.redirectToCheckout({ sessionId: msg.data.stripeSid})
-	   	                            }else if (charge.payType == "alipay") {
-	   	                            	
-	   	                            	window.location.href=msg.data.qrcode;
-	   	                            	
-	   	                            	if (isPhone()) {
-	   	                            		window.location.href=msg.data.qrcode;
-	   	                            	}else {
-	   	                            		var orderNo = msg.data.orderNo;
-	   	                            		var index = layer.open({
-	   	                            		  type: 2,
-	   	                            		  area: ['320px', '195px'],
-	   	                            		  content: "/view/xm/alipay.html?qrcode="+msg.data.qrcode + "&orderNo=" + orderNo,
-		   	                            		cancel: function(index, layero){ 
-		   	                            		    layer.close(index)
-		   	                            		    window.location.reload();
-		   	                            		  return false; 
-		   	                            		} 
-	   	                            		});
-	   	                            		layer.full(index);
-	   	                            		
-	   	                            	}
-	   	                            	
-	   	                            } */
-	   	                            
-	   							} else if (msg.code == '100991') {
-	   								layer.msg('用户未登录或已超时');
-	   								setTimeout(function(){
-	   									window.location.reload();
-	   								},2000)
-	   							} else if (msg.code == '100991') {
-	   								layer.msg('用户未登录或已超时');
-	   								setTimeout(function(){
-	   									window.location.reload();
-	   								},2000)
-	   							} else if (msg.code == 'R1002' || msg.code == 'R1004') {
-	   								layer.msg('页面操作已超时,稍后操作');
-	   								setTimeout(function(){
-	   									window.location.reload();
-	   								},1000)
-	   							} else {
-	   								layer.msg('服务器繁忙');
-	   								setTimeout(function(){
-	   									window.location.reload();
-	   								},1000)
-	   							}
-		                 },
-		                 complete : function() {
-		                	 $("#startPay").text("立即支付")
-		                	 $("#startPay").removeClass("disable");
-		                 }
-		             });
-		   	             
-		   			}
-		        	   
-		           })
+   	        event();
+   	        
+   	        var subOrderObj = {
+  	        	chargeId:"",
+  	        	payType:"alipay",
+   	        }
+   	        
+   	        function event() {
+   	        	
+   	        	$("input[name='payType']").click(function(){
+   	        		subOrderObj.payType = $(this).val();
+   	        		$("#type").val(subOrderObj.payType);
+   	        	})
+   	        	
+   	        	$(".taoContent .card").click(function() {
+   	        		$(this).addClass("cus-active")
+   	        		$(this).parent().siblings().find(".card").removeClass("cus-active");
+   	        		subOrderObj.chargeId = $(this).attr("attr-charge-id");
+   	        	})
+   	        	
+   	        	
+   	        	$("#startPay").click(function() {
+   	        		beforeSubOrder();
+   	        	})
+   	        }
+   	        
+   	        function beforeSubOrder() {
+   	        	
+   	        	if (!subOrderObj.chargeId) {
+   	        		new $.zui.Messager('请选择套餐', {
+   	          			placement: 'center'
+   	    		    }).show();
+   	        		return false;
+   	        	}
+   	        	
+   	        	$.ajax({
+                    type : "POST",
+                    url : "/order/subefore",
+                    beforeSend: function(request) {
+                   	 $("#startPay").text("正在支付中..")
+                   	 $("#startPay").addClass("disable");
+                    },
+                    dataType : "json",
+                    contentType: "application/json; charset=utf-8",
+                    data : JSON.stringify(subOrderObj),
+                    success : function(res) {
+                   	 	if (res.code == '000000') {
+                   	 		var data = res.data;
+     	                    $("#pid").val(data.pid);
+     	                    $("#notifyUrl").val(data.notifyUrl);
+     	                    $("#returnUrl").val(data.returnUrl);
+     	                    $("#outTradeNo").val(data.orderNo);
+     	                    $("#name").val(data.productName);
+     	                    $("#money").val(data.finalPrice);
+     	                    $("#sign").val(data.sign);
+     	                   	$("#startPay").text("立即支付")
+     	                   	$("#startPay").removeClass("disable");
+     	                    $("#subPay").submit();
+						}
+                    },
+                    complete : function() {
+                   	 $("#startPay").text("立即支付")
+                   	 $("#startPay").removeClass("disable");
+                    }
+                });
+   	        	
+   	        }
+   	
+   	        // 选择资费类型
+   	        //TODO 这里加个高亮效果
+   	        function checkChargeType(chargeType) {
+   	            for(var i in chargeList) {
+   	                if (chargeType == chargeList[i].chargeType) {
+   	                    charge = chargeList[i];
+   	                    charge.memId = memId
+   	                }
+   	            }
+   	        }
+        	   
+           })
 	
 		/*]]>*/
 	</script>

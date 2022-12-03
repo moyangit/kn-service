@@ -14,4 +14,6 @@ public interface FlowDayMapper extends IBaseMapper<FlowDay>{
     List<FlowDay> getMemFlowDay(Page page);
 
     List<Map> memFlowDay(Map<String, String> requestMap);
+    
+    FlowDay queryFlowByDay(FlowDay flowDay);
 }
