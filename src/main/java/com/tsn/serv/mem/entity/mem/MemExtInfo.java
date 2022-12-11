@@ -17,6 +17,7 @@ import com.gitee.sunchenbin.mybatis.actable.annotation.TableEngine;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Unique;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlEngineConstant;
+import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import com.tsn.common.db.mysql.base.BaseEntity;
 
 @Data
@@ -60,6 +61,12 @@ public class MemExtInfo extends BaseEntity {
     @Unique
     @ColumnComment("设备号")
     private String deviceNo;
+    
+    @ApiModelProperty(value = "记录支付数量")
+    @TableField
+    @ColumnType(MySqlTypeConstant.JSON)
+    @ColumnComment("记录支付数量")
+    private String payNumArr;
     
     @ApiModelProperty()
     @TableField

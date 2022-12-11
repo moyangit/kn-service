@@ -76,8 +76,9 @@ public class PageViewController {
 	}
 	
 	@GetMapping("/reg.html")
-	public ModelAndView toRegPage() {
+	public ModelAndView toRegPage(String pId, Model model) {
 		try {
+			model.addAttribute("pId", StringUtils.isEmpty(pId) ? "" : pId);
 			return new ModelAndView("user/reg");
 		} catch (Exception e) {
 			log.error("toInvitFriendListPage, excep, e = {}", e);
@@ -306,6 +307,9 @@ public class PageViewController {
 	public ModelAndView toFastPayV2Page(Model model, String mId, String code, String sign, String time, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			//String payUrl = request.getRequestURL().toString();
+			List<?> chargeList = memChargeService.selectChargeByMemType("01");
+			model.addAttribute("chargeList", chargeList);
+			
 			if (!StringUtils.isEmpty(mId)) {
 				
 				String token = (String) redisHandler.get(RedisKey.USER_TOKEN + mId);
@@ -333,8 +337,6 @@ public class PageViewController {
 				
 			}
 			
-			List<?> chargeList = memChargeService.selectChargeByMemType("01");
-			model.addAttribute("chargeList", chargeList);
 			
 			return new ModelAndView("user/pay");
 		} catch (Exception e) {

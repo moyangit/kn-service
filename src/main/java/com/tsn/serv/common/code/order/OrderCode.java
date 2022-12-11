@@ -36,4 +36,9 @@ public class OrderCode {
 	 * 当前时间小于允许提现时间，不允许提现
 	 */
 	public static final String CASHOUT_DATE_ERREY = "300997";
+	
+	/**
+	 * 支付超过限制
+	 */
+	public static final String PAY_LIMIT = "300797";
 }

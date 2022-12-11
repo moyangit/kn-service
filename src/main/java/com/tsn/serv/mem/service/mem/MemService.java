@@ -248,27 +248,15 @@ public class MemService {
 		
 		String shareUrl = Env.getVal("mem.share.reg.url");
 		
-		//分享防洪链接配置
-		String fhUrl = Env.getVal("mem.share.fh.url");
-		fhUrl = StringUtils.isEmpty(fhUrl) ? "https://mapi.heibaohouduan.com/website/" : fhUrl;
+		//String sign = ShareUtils.getSign(userId, memInfo.getInviterCode(), shareUrl);
 		
-		MemInfo memInfo = memMapper.selectByPrimaryKey(userId);
+		shareUrl = StringUtils.isEmpty(shareUrl) ? "https://user.kuainiaojsq.xyz/page/reg.html" : shareUrl;
 		
-		if (memInfo == null) {
-			String webUrls = Env.getVal("official.url.addrs");
-			if (StringUtils.isEmpty(webUrls)) {
-				return "";
-			}
-			return webUrls.split(",")[0];
-		}
+		//String signShareUrl = new StringBuffer(shareUrl).append("?").append(sign).toString();
 		
-		String sign = ShareUtils.getSign(userId, memInfo.getInviterCode(), shareUrl);
+		//String r = Base64Utils.encodeToString(signShareUrl);
 		
-		String signShareUrl = new StringBuffer(shareUrl).append("?").append(sign).toString();
-		
-		String r = Base64Utils.encodeToString(signShareUrl);
-    	
-    	String linkUrl = fhUrl + "/link?r=" + r + "&ivCode=" + memInfo.getInviterCode() + "&s=" + FHCons.sign(signShareUrl);
+    	String linkUrl = shareUrl + "?pId=" + userId;
 		
 		//String linkCode = Long.toHexString(Long.valueOf(userId));
 		
@@ -295,6 +283,11 @@ public class MemService {
 	public MemInfo queryMemById(String userId) {
 		MemInfo memInfo = memMapper.selectByPrimaryKey(userId);
 		return memInfo;
+	}
+	
+	public int queryMemDeviceNumById(String userId) {
+		MemInfo memInfo = memMapper.selectByPrimaryKey(userId);
+		return Integer.parseInt(memInfo.getDeviceNum());
 	}
 	
 	public MemInfo queryAllMemById(String userId) {
@@ -355,9 +348,7 @@ public class MemService {
 	public void updateMemInviCode(String userId, String invicode) {
 		
 		if (StringUtils.isEmpty(invicode)) {
-			
 			throw new RequestParamValidException("inviterCode can not be null");
-			
 		}
 
 		//先获取用户是否已经填写过邀请码
@@ -365,69 +356,9 @@ public class MemService {
 		if (!StringUtils.isEmpty(memInfoTemp.getInviterUserId())) {
 			throw new BusinessException(MemCode.MEM_REPEAT_INVIT_CODE_ERROR, "已经填写过邀请码!");
 		}
-		/*
-		// 判断用户是否充值过，充值过就不允许填写邀请码了
-		if (memInfoTemp.getLastRechargeDate() != null){
-			throw new BusinessException(MemCode.MEM_IS_INVIT_CODE_ERROR, "mem is invit code error!");
-		}*/
 
         MemInfo memInfo = new MemInfo();
 
-		/*// 优先查询推广来源邀请码信息
-		MemSourceInviter memSourceInviter = memSourceInviterMapper.selectByInviterCode(invicode);
-		// 如果填写的是推广邀请码，则发放奖励
-		if (memSourceInviter != null) {
-			// 当奖励类型为时长时，发放时长
-			if (memSourceInviter.getRewardType().equals("0")) {
-				// 新增时长记录
-				DurationRecord durationRecord = new DurationRecord();
-				durationRecord.setMemId(userId);
-				durationRecord.setConvertCardType(ConvertDurationEum.source.name());
-				durationRecord.setConvertDuration(memSourceInviter.getRewardVal());
-				durationRecord.setDurationSources(ConvertDurationEum.source.name());
-				durationRecordService.insert(durationRecord);
-
-                updateSuspenDateByMinute(userId, memSourceInviter.getRewardVal());
-			} else {
-				// 发放积分暂时不做操作
-			}
-			memInfo.setMemId(userId);
-			memInfo.setInviterUserId(memSourceInviter.getId().toString());
-			memInfo.setInviterUserType(MemInvitorTypeEum.source.name());
-			memInfo.setInviterTime(new Date());
-
-			memSourceInviter.setNum(memSourceInviter.getNum() + 1);
-			memSourceInviterMapper.updateByPrimaryKeySelective(memSourceInviter);
-		} else {
-
-			MemInfo parentMemInfo = memMapper.selectMemByInviCode(invicode);
-
-			if (parentMemInfo == null) {
-
-				throw new BusinessException(MemCode.MEM_INVIT_CODE_NOT_EXISTS, "input invi code is not exists");
-
-			}
-
-			if (parentMemInfo.getMemId().equals(userId)) {
-
-				throw new BusinessException(MemCode.MEM_INVIT_CODE_AVLID_ERROR, "mem invit code avlid error!");
-			}
-			
-			//新增时长记录
-			durationRecordService.addDurationOfInvite(parentMemInfo.getMemId());
-			//修改邀请人使用的时间
-            updateSuspenDateByMinute(parentMemInfo.getMemId(), Integer.valueOf(ConvertDurationEum.friend_invite.getCode()));
-
-			durationRecordService.addDurationOfInvite(userId);
-			//修改被邀请人的使用时间
-            updateSuspenDateByMinute(userId, Integer.valueOf(ConvertDurationEum.friend_invite.getCode()));
-
-			memInfo.setMemId(userId);
-            memInfo.setInviterUserId(parentMemInfo.getMemId());
-            memInfo.setInviterUserType(MemInvitorTypeEum.mem.name());
-            memInfo.setInviterTime(new Date());
-		}*/
-        
         MemInfo parentMemInfo = memMapper.selectMemByInviCode(invicode);
 
 		if (parentMemInfo == null) {
@@ -446,11 +377,10 @@ public class MemService {
 		//修改邀请人使用的时间
         //updateSuspenDateByMinute(parentMemInfo.getMemId(), Integer.valueOf(ConvertDurationEum.friend_invite.getCode()));
         //memActiviService.inviteUpdateMemTimeByPeopleNum(parentMemInfo.getMemId());
-		memActiviService.inviteUpdateMemTimeByRechargeUser(parentMemInfo.getMemId());
+		//memActiviService.inviteUpdateMemTimeByRechargeUser(parentMemInfo.getMemId());
 		
-		durationRecordService.addDurationOfInvite(userId);
-		//修改被邀请人的使用时间
-        //updateSuspenDateByMinute(userId, Integer.valueOf(ConvertDurationEum.friend_invite.getCode()));
+		//修改邀请人的时长
+		durationRecordService.addDurationOfInvite(parentMemInfo.getMemId());
 
 		memInfo.setMemId(userId);
         memInfo.setInviterUserId(parentMemInfo.getMemId());

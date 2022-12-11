@@ -30,6 +30,7 @@ import com.tsn.common.utils.web.exception.AuthException;
 import com.tsn.common.utils.web.utils.env.Env;
 import com.tsn.common.web.entity.AuthEnum;
 import com.tsn.serv.common.code.mem.MemCode;
+import com.tsn.serv.common.cons.redis.RedisKey;
 import com.tsn.serv.common.cons.sys.SysCons;
 import com.tsn.serv.common.enm.comm.PlatTypeEnum;
 import com.tsn.serv.common.enm.node.NodeKeyStatus;
@@ -1106,6 +1107,9 @@ public class PathService {
 		
 		
 		Map<String, Object> result = new HashMap<String, Object>();
+		
+		Device delDevice = deviceService.addAndValidDevice(userId, dId);
+		
 		Date susDate = null;
 		
 		//触发线路实时统计
@@ -1208,7 +1212,7 @@ public class PathService {
 		// 设备轮询时间
 		String pollingTime = Env.getVal("mem.device.polling.time");
 		result.put("pollingTime", pollingTime);
-
+		result.put("delDevice", delDevice);
 		
 		try {
 			if(isEncrypt) {

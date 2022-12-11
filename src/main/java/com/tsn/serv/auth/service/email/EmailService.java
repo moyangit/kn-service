@@ -3,6 +3,8 @@ package com.tsn.serv.auth.service.email;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -10,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.druid.util.StringUtils;
@@ -89,7 +93,22 @@ public class EmailService {
 		simpleMailMessage.setTo(mail.getTo()); // 接收人
 		simpleMailMessage.setSubject(mail.getSubject());
 		simpleMailMessage.setText(mail.getContent());
+		
 		mailSender.send(simpleMailMessage);
+	}
+	
+	public void sendBatchEmail(String[] emailList, String subject, String content){
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			helper.setFrom(from); // 发送人,从配置文件中取得
+			helper.setTo(emailList); // 接收人
+			helper.setSubject(subject);
+			helper.setText(content, true);
+			mailSender.send(message);
+		} catch (Exception e) {
+			logger.error("sendBatchEmail e = {}", e);
+		}
 	}
 	
 	public void sendOwnMail(MailParam mail) {

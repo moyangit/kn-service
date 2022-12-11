@@ -70,6 +70,7 @@
 	            <label for="password" title="密码"><i class="icon icon-lock"></i></label>
 	            <p class="help-text"></p>
 	          </div>
+	          <input id="parentId" name="parentUserId" type="hidden" th:value="${pId}"/>
 	          <div class="control">
 	            <button type="button" class="btn accent fluid" id="regBtn">提交注册</button>
 	          </div>
@@ -96,7 +97,7 @@
 			
 			//var clientIp = returnCitySN["cip"];
 			
-			var paraObj = {userName:userEmail, smsCode:valiCode, password:password, clientIp:"", parenInviCode:""}
+			var paraObj = {userName:userEmail, smsCode:valiCode, password:password, clientIp:"", parenInviCode:$("#parentId").val()}
 			
 			if (!formValid) {
 				return;

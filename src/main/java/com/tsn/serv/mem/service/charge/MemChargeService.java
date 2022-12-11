@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tsn.common.utils.web.entity.page.Page;
 import com.tsn.serv.mem.entity.charge.MemCharge;
 import com.tsn.serv.mem.mapper.charge.MemChargeMapper;
@@ -26,7 +27,8 @@ public class MemChargeService {
 	}
 
 	public void updateCustomer(MemCharge memCharge) {
-		memChargeMapper.updateByPrimaryKeySelective(memCharge);
+		//memChargeMapper.updateByPrimaryKeySelective(memCharge);
+		memChargeMapper.updateById(memCharge);
 	}
 	
 	public List<MemCharge> selectChargeByMemType(String memType){
@@ -35,7 +37,16 @@ public class MemChargeService {
 			memType = "01";
 		}
 		
-		List<MemCharge> memCharges =  memChargeMapper.selectMemChargeByMemType(memType);
+		QueryWrapper<MemCharge> queryWrapper = new QueryWrapper<MemCharge>();
+		queryWrapper.eq("mem_type", memType);
+		queryWrapper.eq("status", 0);
+		queryWrapper.orderByAsc("charge_id");
+		
+		List<MemCharge> memCharges =  memChargeMapper.selectList(queryWrapper);
+		
+		for (MemCharge charge : memCharges) {
+			charge.setFinalMoney(charge.getChargeMoney().multiply(new BigDecimal(0.01)).multiply(new BigDecimal(charge.getDiscount())).setScale(2,BigDecimal.ROUND_HALF_UP) );
+		}
 		
 		BigDecimal rate = sysConfigService.getUsdRate();
 		

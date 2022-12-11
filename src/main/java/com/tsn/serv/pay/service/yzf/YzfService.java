@@ -1,6 +1,5 @@
 package com.tsn.serv.pay.service.yzf;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,11 +7,14 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.tsn.common.utils.utils.tools.http.HttpGetReq;
-import com.tsn.common.utils.utils.tools.http.entity.HttpRes;
 import com.tsn.common.utils.utils.tools.security.MD5Utils;
 import com.tsn.common.utils.web.utils.env.Env;
 
+/**
+ * 牛肉付
+ * @author 28338
+ *
+ */
 @Service
 public class YzfService {
 	
@@ -147,5 +149,6 @@ public class YzfService {
 		
 		return md5Str;
 	}
+	
 	
 }

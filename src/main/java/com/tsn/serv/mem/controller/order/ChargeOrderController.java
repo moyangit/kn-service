@@ -79,6 +79,11 @@ public class ChargeOrderController {
 		return returnResult ? "success" : "fail";
 	}
 	
+	/**
+	 * 只获取签名
+	 * @param subOrderMap
+	 * @return
+	 */
 	@PostMapping("/subefore")
 	@AuthClient(client = AuthEnum.bea_us)
 	public Response<?> addChargeOrderFormSubmit(@RequestBody Map<String, String> subOrderMap) {

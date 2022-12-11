@@ -213,4 +213,9 @@ public class RedisKey {
 	/** 广告记录 点击人数 **/
 	public static String AD_DAY_USER = SysCons.getPlatRedisSuffix() + "ad:day:user:";
 	
+	public static String USER_DEVICE_LIMIT = SysCons.getPlatRedisSuffix() + "user:device:list:";
+	
+	//新设备把老设备挤掉，会记录
+	public static String USER_DEVICE_NEW = SysCons.getPlatRedisSuffix() + "user:device:new:";
+	
 }

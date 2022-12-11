@@ -60,6 +60,11 @@ public class MemCharge {
     @ApiModelProperty(value = "折扣10-100，计算乘以0.01,默认100")
     @TableField
     private Integer discount;
+    
+    @ApiModelProperty(value = "描述")
+    @TableField
+    @ColumnType(length = 100)
+    private String chargeDesc;
 
     @ApiModelProperty(value = "资费类型 10:月卡;   11:季卡;   12:半年卡;   13:年卡; 14：永久")
     @TableField
@@ -77,6 +82,14 @@ public class MemCharge {
     @ApiModelProperty(value = "更新时间")
     @TableField(exist = false)
     private BigDecimal finalMoney;
+    
+    @ApiModelProperty(value = "购买次数")
+    @TableField
+    private Integer payNum;
+    
+    @ApiModelProperty(value = "0可用，1不可用")
+    @TableField
+    private Integer status;
     
     @ApiModelProperty(value = "美元汇率")
     @TableField

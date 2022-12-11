@@ -16,10 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.tsn.common.core.cache.RedisHandler;
 import com.tsn.common.core.cache.redis.delay.DelayRedisHandler;
 import com.tsn.common.core.jms.MqHandler;
 import com.tsn.common.pay.alipay.face.model.result.AlipayF2FQueryResult;
+import com.tsn.common.pay.exception.code.PayCode;
 import com.tsn.common.utils.exception.BusinessException;
 import com.tsn.common.utils.exception.RequestParamValidException;
 import com.tsn.common.utils.utils.CommUtils;
@@ -37,7 +39,6 @@ import com.tsn.serv.common.cons.redis.RedisKey;
 import com.tsn.serv.common.enm.charge.ChargeTypeEum;
 import com.tsn.serv.common.enm.comm.EnableStatus;
 import com.tsn.serv.common.enm.comm.FlowStatusEum;
-import com.tsn.serv.common.enm.credits.convert.ConvertDurationEum;
 import com.tsn.serv.common.enm.id.GenIDEnum;
 import com.tsn.serv.common.enm.mem.MemInvitorTypeEum;
 import com.tsn.serv.common.enm.mem.MemProxyLvlEum;
@@ -51,11 +52,10 @@ import com.tsn.serv.common.pay.PaySel;
 import com.tsn.serv.mem.entity.account.MemAccount;
 import com.tsn.serv.mem.entity.charge.AliSubject;
 import com.tsn.serv.mem.entity.charge.MemCharge;
-import com.tsn.serv.mem.entity.mem.DurationRecord;
 import com.tsn.serv.mem.entity.mem.GuestInfo;
+import com.tsn.serv.mem.entity.mem.MemExtInfo;
 import com.tsn.serv.mem.entity.mem.MemInfo;
 import com.tsn.serv.mem.entity.order.ChargeOrder;
-import com.tsn.serv.mem.entity.order.RebateWaitOrder;
 import com.tsn.serv.mem.entity.proxy.ProxyInfo;
 import com.tsn.serv.mem.mapper.account.MemAccountMapper;
 import com.tsn.serv.mem.mapper.account.MemAccountRecordMapper;
@@ -309,6 +309,9 @@ public class ChargeOrderService {
 			throw new RequestParamValidException("chargeId is not null");
 		}
 		
+		//校验次数
+		validRecordPayNum(memId, chargeId);
+		
 		String orderNo = snowFlakeManager.create(GenIDEnum.RECH_ORDER_NO.name()).getIdByPrefix(GenIDEnum.RECH_ORDER_NO.getPreFix());
 		
 		ChargeOrder chargeOrder = new ChargeOrder();
@@ -338,7 +341,7 @@ public class ChargeOrderService {
 		
 		MemInfo memInfo = memService.queryMemById(chargeOrder.getMemId());
 		
-		MemCharge memCharge = memChargeMapper.selectByPrimaryKey(chargeOrder.getChargeId());
+		MemCharge memCharge = memChargeMapper.selectById(chargeOrder.getChargeId());
 		
 		if (memCharge == null) {/*!memInfo.getMemType().equals(memCharge.getMemType())*/
 			
@@ -382,25 +385,29 @@ public class ChargeOrderService {
 				chargeOrder.setInvitUserType(inviMemInfo.getMemType());
 				chargeOrder.setInvitUserName(StringUtils.isEmpty(inviMemInfo.getMemPhone()) ? inviMemInfo.getInviterCode() : inviMemInfo.getMemPhone());
 				
-				chargeOrder.setRebateUserId(memInfo.getInviterUserId());
-				chargeOrder.setRebateUserType(MemInvitorTypeEum.mem.name());
-				chargeOrder.setRebateUserName(inviMemInfo.getMemNickName());
-				chargeOrder.setRebateUserPhone(inviMemInfo.getMemPhone());
-				// 默认返利等级两级,这里之前是2
-				chargeOrder.setRebateLvl(1);
-				chargeOrder.setRebateStatus(FlowStatusEum.create.getStatus());
-				
 				//如果是父级用户是代理
-				//ProxyInfo proxyInfo = proxyInfoMapper.selectProxyAndGroupByProxyId(memInfo.getInviterUserId());
 				ProxyInfo proxyInfo = proxyInfoMapper.selectByPrimaryKey(memInfo.getInviterUserId());
 				log.debug("addChargeOrderForQcode , selectProxyAndGroupByProxyId(memId), memId = {} ,  proxyInfo  = {}", memInfo.getMemId(), proxyInfo == null ? "" : proxyInfo.toString());
 				if (proxyInfo != null && "1".equals(inviMemInfo.getIsProxy())) {
 					int rebateValue = Integer.parseInt(proxyInfo.getProxyLvl());
-					chargeOrder.setRebate(rebateValue);
-				}else {
-					//这个地方10先写死吧！
-					chargeOrder.setRebate(10);
+					if (rebateValue > 40) {
+						chargeOrder.setRebate(0);//如果大于40，不合理，所以直接给0
+					}else {
+						chargeOrder.setRebate(rebateValue);
+					}
 					
+					chargeOrder.setRebateUserId(memInfo.getInviterUserId());
+					chargeOrder.setRebateUserType(MemInvitorTypeEum.mem.name());
+					chargeOrder.setRebateUserName(inviMemInfo.getMemName());
+					chargeOrder.setRebateUserPhone(inviMemInfo.getMemPhone());
+					chargeOrder.setRebateUserEmail(inviMemInfo.getMemEmail());
+					// 默认返利等级两级,这里之前是2
+					chargeOrder.setRebateLvl(1);
+					chargeOrder.setRebateStatus(FlowStatusEum.create.getStatus());
+					
+				}else {
+					//这个地方0先写死吧！
+					chargeOrder.setRebate(0);
 				}
 			}
 			
@@ -466,7 +473,7 @@ public class ChargeOrderService {
 		
 		MemInfo memInfo = memService.queryMemById(chargeOrder.getMemId());
 		
-		MemCharge memCharge = memChargeMapper.selectByPrimaryKey(chargeOrder.getChargeId());
+		MemCharge memCharge = memChargeMapper.selectById(chargeOrder.getChargeId());
 		
 		if (memCharge == null) {/*!memInfo.getMemType().equals(memCharge.getMemType())*/
 			
@@ -618,7 +625,7 @@ public class ChargeOrderService {
 		String memId = order.getMemId();
 		
 		//计算到期时间，并打算更新
-		int monthNum = getMonthNum(order.getChargeType());
+		int dayNum = getDayNum(order.getChargeType());
 		
 		//boolean guest = memService.isGuest(memId);
 		boolean guest = memService.isGuestById(memId);
@@ -639,7 +646,7 @@ public class ChargeOrderService {
 				//不管还有没有剩余时间，从充值时间开始算起
 				//memInfo.setSuspenDate(DateUtils.getCurrDateAddMonth(new Date(), monthNum));
 				//Date date = addDate(new Date(), monthNum * 30);
-				memInfo.setSuspenDate(DateUtils.getCurrDateAddMinTime(new Date(), monthNum * 30 * 24 * 60));
+				memInfo.setSuspenDate(DateUtils.getCurrDateAddMinTime(new Date(), dayNum * 24 * 60));
 				// 记录用户充值到期日期，用作判断用户使用线路的级别
 				memInfo.setChangeSuspenDate(memInfo.getSuspenDate());
 
@@ -649,9 +656,9 @@ public class ChargeOrderService {
 				if (memInfo.isExpire()) {
 					Date currDate = new Date();
 					memInfo.setLastRechargeDate(currDate);
-					memInfo.setSuspenDate(DateUtils.getCurrDateAddMinTime(currDate, monthNum * 30 * 24 * 60));
+					memInfo.setSuspenDate(DateUtils.getCurrDateAddMinTime(currDate, dayNum * 24 * 60));
 				}else {
-					Date date = DateUtils.getCurrDateAddMinTime(memInfo.getSuspenDate(), monthNum * 30 * 24 * 60);
+					Date date = DateUtils.getCurrDateAddMinTime(memInfo.getSuspenDate(), dayNum * 24 * 60);
 					memInfo.setSuspenDate(date);
 				}
 				
@@ -675,7 +682,7 @@ public class ChargeOrderService {
 			
 			//保存待返利订单队列
 			//如果返利为10，可能邀请人不是代理，这里要判断下邀请人是不是代理，如果不是代理 就插入等待返利队列
-			if (order.getRebate() != null && order.getRebate() == 10) {
+			/*if (order.getRebate() != null && order.getRebate() == 10) {
 				
 				ProxyInfo proxyInfo = proxyInfoMapper.selectByPrimaryKey(order.getRebateUserId());
 				
@@ -686,9 +693,10 @@ public class ChargeOrderService {
 					rebateWaitOrder.setMemOrderNo(chargeOrder.getOrderNo());
 					rebateWaitOrderService.save(rebateWaitOrder);
 				}
-			}
+			}*/
 			
-			//邀请活动逻辑， 获取用户父级Id,如果不为空, 不影响事务,
+			//这里是用户充值回调，可以根据用户充值成功情况，判断用户上一层级用户是否能成为代理
+			//比如邀请充值得人数为10个
 			String initUserId = memInfo.getInviterUserId();
 			if (!StringUtils.isEmpty(initUserId)) {
 				try {
@@ -713,9 +721,9 @@ public class ChargeOrderService {
 			//如果过期，更新lastRechargteDate，
 			if (memGuestInfo.isExpire()) {
 				Date currDate = new Date();
-				memGuestInfo.setSuspenDate(DateUtils.getCurrDateAddMinTime(currDate, monthNum * 30 * 24 * 60));
+				memGuestInfo.setSuspenDate(DateUtils.getCurrDateAddMinTime(currDate, dayNum * 24 * 60));
 			}else {
-				Date date = DateUtils.getCurrDateAddMinTime(memGuestInfo.getSuspenDate(), monthNum * 30 * 24 * 60);
+				Date date = DateUtils.getCurrDateAddMinTime(memGuestInfo.getSuspenDate(), dayNum * 24 * 60);
 				memGuestInfo.setSuspenDate(date);
 			}
 			
@@ -723,7 +731,7 @@ public class ChargeOrderService {
 		}
 		
 		
-		try {
+		/*try {
 			
 			//插入时长兑换记录
 			DurationRecord durationRecord = new DurationRecord();
@@ -746,7 +754,9 @@ public class ChargeOrderService {
 			flowLimitService.updateRechargeUserLimit(memId);
 		} catch (Exception e) {
 			// TODO: handle exception
-		}
+		}*/
+		
+		recordPayNum(memId, order.getChargeId());
 		
 		//添加付款人数事件
 		ChannelMsgProducter.build().sendChannelMsg(ChannelMsg.createPayPeopleCount(channelCode, memId));
@@ -756,6 +766,68 @@ public class ChargeOrderService {
 		
 		//添加渠道订单金额
 		ChannelMsgProducter.build().sendChannelMsg(ChannelMsg.createChannelOrderMoneyValue(channelCode, chargeOrder.getOrderNo(), order.getFinalPrice() == null ? 0 : order.getFinalPrice().intValue()));
+	}
+	
+	private void recordPayNum(String memId, String chargeId) {
+		//记录支付次数
+		MemCharge memCharge = memChargeMapper.selectById(chargeId);
+		Integer payNum = memCharge.getPayNum();
+		MemExtInfo memExtInfo = memExtService.getById(memId);
+		String payNumArr = memExtInfo.getPayNumArr();
+		
+		if (StringUtils.isEmpty(payNumArr)) {
+			
+			List<Map<String, Integer>> payNumList = new ArrayList<Map<String, Integer>>();
+			Map<String, Integer> payNumMap = new HashMap<String, Integer>();
+			payNumMap.put(chargeId, 1);
+			payNumList.add(payNumMap);
+			MemExtInfo memExtInfoTmp = new MemExtInfo();
+			memExtInfoTmp.setId(memId);
+			memExtInfoTmp.setPayNumArr(JsonUtils.objectToJson(payNumList));
+			memExtService.updateById(memExtInfoTmp);
+		}else {
+			
+			List<Map<String, Integer>> payNumList = JsonUtils.jsonToPojo(payNumArr, List.class);
+			
+			for (Map<String, Integer> payNumMap : payNumList) {
+				if (payNumList.contains(chargeId)) {
+					payNumMap.put(chargeId, payNumMap.get(chargeId) + 1);
+				}
+			}
+			
+			MemExtInfo memExtInfoTmp = new MemExtInfo();
+			memExtInfoTmp.setId(memId);
+			memExtInfoTmp.setPayNumArr(JsonUtils.objectToJson(payNumList));
+			memExtService.updateById(memExtInfoTmp);
+			
+		}
+	}
+	
+	private void validRecordPayNum(String memId, String chargeId) {
+		//记录支付次数
+		MemCharge memCharge = memChargeMapper.selectById(chargeId);
+		Integer payNum = memCharge.getPayNum();
+		
+		if (payNum == null || payNum == 0) {
+			return;
+		}
+		
+		MemExtInfo memExtInfo = memExtService.getById(memId);
+		String payNumArr = memExtInfo.getPayNumArr();
+		
+		if (!StringUtils.isEmpty(payNumArr)) {
+			
+			List<Map<String, Integer>> payNumList = JsonUtils.jsonToPojo(payNumArr, List.class);
+			
+			for (Map<String, Integer> payNumMap : payNumList) {
+				if (payNumMap.containsKey(chargeId)) {
+					Integer currPayNum = payNumMap.get(chargeId);
+					if (currPayNum >= payNum) {
+						throw new BusinessException(OrderCode.PAY_LIMIT, "每人只能购买"+payNum+"次");
+					}
+				}
+			}
+		}
 	}
 
 	/*public void rebateMoney(ChargeOrder order){
@@ -927,25 +999,27 @@ public class ChargeOrderService {
 		
 	}
 	
-	private int getMonthNum(String chargeType) {
+	private int getDayNum(String chargeType) {
 		
-		int monthNum = 1;
+		int dayNum = 1;
 		
 		if (ChargeTypeEum.month.getType().equals(chargeType)){
-			monthNum = 1;
+			dayNum = 1 * 30;
 		}else if (ChargeTypeEum.quarter.getType().equals(chargeType)){
-			monthNum = 3;
+			dayNum = 3 * 30;
 		}else if (ChargeTypeEum.halfYear.getType().equals(chargeType)){
-			monthNum = 6;
+			dayNum = 6 * 30;
 		}else if (ChargeTypeEum.year.getType().equals(chargeType)){
-			monthNum = 12;
+			dayNum = 12 * 30;
 		}else if (ChargeTypeEum.forever.getType().equals(chargeType)){
-			monthNum = 12 * 50;
+			dayNum = 12 * 50 * 30;
+		}else if (ChargeTypeEum.activity.getType().equals(chargeType)){
+			dayNum = 7;
 		}else {
 			throw new BusinessException(ResultCode.UNKNOW_ERROR, "getMonthNum chargeType do not matched");
 		}
 		
-		return monthNum;
+		return dayNum;
 	}
 
 	public static Date addDate(Date date,long day) {

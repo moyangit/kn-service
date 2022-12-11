@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -19,8 +20,11 @@ import com.tsn.common.utils.web.exception.AuthException;
 import com.tsn.common.utils.web.utils.env.Env;
 import com.tsn.common.web.entity.AuthEnum;
 import com.tsn.serv.common.code.mem.MemCode;
+import com.tsn.serv.common.cons.redis.RedisKey;
+import com.tsn.serv.common.entity.device.Device;
 import com.tsn.serv.common.mq.EventMsg;
 import com.tsn.serv.common.mq.EventMsgProducter;
+import com.tsn.serv.common.utils.DeviceUtils;
 import com.tsn.serv.mem.entity.device.MemDevice;
 import com.tsn.serv.mem.entity.device.MemDeviceOline;
 import com.tsn.serv.mem.entity.mem.GuestInfo;
@@ -58,6 +62,135 @@ public class DeviceService {
 	private MemGuestInfoService memGuestInfoService;
 	
     private static Logger log = LoggerFactory.getLogger(DeviceService.class);
+    
+    //保存3个月
+    private int expireTime = 3 * 30 * 24 * 60 * 60;
+    
+    /**
+     * 添加并验证设备,返回被挤掉的设备信息
+     * @param userId
+     * @param deviceNo
+     */
+    public Device addAndValidDevice(String userId, String deviceNo) {
+    	
+    	//redisHandler.del(RedisKey.USER_DEVICE_LIMIT + userId);
+    	
+    	Device device = DeviceUtils.getDeviceInfo(deviceNo);
+    	device.setCreateTime(new Date());
+    	
+    	List<Device> deviceList = (List<Device>) redisHandler.get(RedisKey.USER_DEVICE_LIMIT + userId);
+    	
+    	if (deviceList == null || deviceList.isEmpty()) {
+    		List<Device> deviceListTemp = new ArrayList<Device>();
+    		//设置一个时间，用来判断先后
+    		deviceListTemp.add(device);
+    		
+    		redisHandler.set(RedisKey.USER_DEVICE_LIMIT + userId, deviceListTemp, expireTime);
+    		
+    		return null;
+    	}
+    	
+    	//判断是否存在
+    	boolean isExist = false;
+    	for (Device deviceTemp : deviceList) {
+    		
+    		if (deviceTemp.getDeviceNo().equals(device.getDeviceNo())) {
+    			isExist = true;
+    		}
+    	}
+    	
+    	//如果不存在，则判断设备数量，如果超过了，则替换 最旧得
+    	if (!isExist) {
+    		
+    		MemInfo memInfo = memService.queryMemById(userId);
+    		
+    		if (deviceList.size() >= Integer.parseInt(memInfo.getDeviceNum())) {//超过了就替换最老得
+    			
+    			List<Device> collectList = deviceList.stream().sorted((Device o1, Device o2) -> {
+	                    Date date1 = o1.getCreateTime();
+	                    Date date2 = o2.getCreateTime();
+	                    return Long.compare(date2.getTime(), date1.getTime());
+	                }
+	            ).collect(Collectors.toList());
+    			
+    			Device delDevice = null;
+    			
+    			//实时设备列表大于用户设备限制数，先删掉最老的，保持最大数量和用户限制的数量一致
+    			List<Device> deviceTemp2 = new ArrayList<Device>();
+    			if (deviceList.size() > Integer.parseInt(memInfo.getDeviceNum())) {
+    				// 6  4  相差2
+    				for (int num = collectList.size() - 1; num >= collectList.size() - Integer.parseInt(memInfo.getDeviceNum()); num--) {
+    					deviceTemp2.add(collectList.get(num));
+    				}
+    				
+    				delDevice = collectList.get(collectList.size() - 1);
+    				collectList.set(collectList.size() - 1, device);
+    			}else {
+    				delDevice = collectList.get(0);
+    				collectList.set(0, device);
+    			}
+    			
+    			redisHandler.set(RedisKey.USER_DEVICE_LIMIT + userId, collectList, expireTime);
+    			redisHandler.set(RedisKey.USER_DEVICE_NEW + userId, device, expireTime);
+    			return delDevice;
+    			
+    		}else {//如果没有超过 就添加
+    			deviceList.add(device);
+    			redisHandler.set(RedisKey.USER_DEVICE_LIMIT + userId, deviceList, expireTime);
+    		}
+    		
+    	}
+    	
+    	return null;
+    	
+    }
+    
+    public Map<String, Object> validConnectByDeviceNo(String userId, String deviceNo) {
+    	
+    	MemInfo memInfo = memService.queryMemById(userId);
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("isExpire", memInfo.isExpire());//是否继续使用
+		
+    	Device device = DeviceUtils.getDeviceInfo(deviceNo);
+    	device.setCreateTime(new Date());
+    	
+    	List<Device> deviceList = (List<Device>) redisHandler.get(RedisKey.USER_DEVICE_LIMIT + userId);
+    	
+    	if (deviceList == null || deviceList.isEmpty()) {
+    		result.put("isExistDevice", true);
+    		return result;
+    	}
+    	
+    	//判断是否存在
+    	boolean isExist = false;
+    	for (Device deviceTemp : deviceList) {
+    		
+    		if (deviceTemp.getDeviceNo().equals(device.getDeviceNo())) {
+    			isExist = true;
+    			result.put("isExistDevice", true);
+    		}
+    	}
+    	
+    	//如果不存在，就不让链接
+    	if (!isExist) {
+    		Device deviceTemp = (Device) redisHandler.get(RedisKey.USER_DEVICE_NEW + userId);
+    		result.put("isExistDevice", false);
+    		result.put("newDeviceName", deviceTemp == null ? "" : deviceTemp.getDeviceName());
+    		result.put("deviceType", deviceTemp == null ? "" : deviceTemp.getDeviceType());
+    	}
+    	
+    	return result;
+    	
+    }
+    
+    public List<Device> getDeviceListByUserId(String userId) {
+    	
+    	List<Device> deviceList = (List<Device>) redisHandler.get(RedisKey.USER_DEVICE_LIMIT + userId);
+    	
+    	return deviceList;
+    }
+    
 	
 	/*private static final String key = "guest:deviceNo:memId:";
 	

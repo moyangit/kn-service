@@ -26,6 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tsn.common.utils.utils.tools.json.JsonUtils;
+import com.tsn.common.utils.web.utils.bean.SpringContext;
+import com.tsn.serv.mem.entity.env.enm.EnvKeyEnum;
+import com.tsn.serv.mem.service.env.EnvParamsService;
 
 public class DownManager {
 	
@@ -38,6 +41,8 @@ public class DownManager {
 	private ExecutorService knExecutor = Executors.newSingleThreadExecutor();
 	
 	private DelayQueue<QueueObj> knQueue = new DelayQueue<>();
+	
+	private EnvParamsService envParamsService;
 	/*
 	 * 安卓 https://kjsdd.lanzoui.com/iv8OWr2ekve
 windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
@@ -46,6 +51,8 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 	
 
 	private DownManager() {
+		
+		this.envParamsService = SpringContext.getBean(EnvParamsService.class);
 		
 		init();
 		
@@ -84,10 +91,19 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 		https://s456s456.com/down/hb/sgjg —加固
 	 */
 	private void init() {
+		
+		String pcLink = envParamsService.getValByKey(EnvKeyEnum.link_down_pc);
+		String adLink = envParamsService.getValByKey(EnvKeyEnum.link_down_ad);
+		String macLink = envParamsService.getValByKey(EnvKeyEnum.link_down_mac);
+		
+		String[] pcLinkArr = pcLink.split("#");
+		String[] adLinkArr = adLink.split("#");
+		String[] macLinkArr = macLink.split("#");
+		
 		//https://kjsdd.lanzoue.com
-		knMap.put("ad",new DownUrl("https://wwyh.lanzoue.com/iRmNN0hbe72h", "", "46m5"));
-		knMap.put("pc",new DownUrl("https://wwyh.lanzoue.com/i5BMO0hbct7c","", "3bvb"));
-		knMap.put("mac",new DownUrl("https://wwyh.lanzoue.com/ilBqU0hbd82h","", "8pbz"));
+		knMap.put("ad",new DownUrl(adLinkArr[0], "", adLinkArr[1]));
+		knMap.put("pc",new DownUrl(pcLinkArr[0],"", pcLinkArr[1]));
+		knMap.put("mac",new DownUrl(macLinkArr[0],"", macLinkArr[1]));
 	}
 	
 	public void initData() {
@@ -97,6 +113,14 @@ windows电脑 https://kjsdd.lanzoui.com/iIkoJr3d54h
 			downUrl.refresh();
 			knQueue.add(new QueueObj(entry.getKey(), downUrl.getNextTime().getTime()));
 		}
+	}
+	
+	public void refreshData() {
+		envParamsService.clearParams();
+		this.knQueue.clear();
+		this.init();
+		this.initData();
+		
 	}
 	
 	public static DownManager build() {

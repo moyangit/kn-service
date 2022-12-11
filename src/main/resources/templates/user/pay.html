@@ -233,6 +233,14 @@ body {
   	color:white;
   }
   
+  .activi-card {
+  	background: #673ab7
+  }
+  
+  .activi-card .tcDesc {
+  	color:#ffc107;
+  }
+  
 </style>
 </head>
 <body>
@@ -250,27 +258,32 @@ body {
 	<div class="content tsn-margin taoContent">
 	
 		<div class="cards">
-		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="1">
-			    <div style="width: 60%"><div class="avatar red circle">月</div></div>
-		    	<div style="width: 50%" class="text-center">
-			    	<span class="tcFinalPrice">¥25</span>
-			    	<span class="tcSourcePrice">8折</span>
-			    	<div class="tcDesc">月卡30天</div>
+		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3" th:each="charge : ${ chargeList }">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between" th:classappend="${charge.chargeType eq '99'} ? 'activi-card' : ''" th:attr-charge-id="${charge.chargeId}">
+			    <div style="width: 60%" th:if="${ charge.chargeType eq '10' }"><div class="avatar red circle">月</div></div>
+			    <div style="width: 60%" th:if="${ charge.chargeType eq '11' }"><div class="avatar yellow circle">季</div></div>
+			    <div style="width: 60%" th:if="${ charge.chargeType eq '12' }"><div class="avatar blue circle">半</div></div>
+			    <div style="width: 60%" th:if="${ charge.chargeType eq '13' }"><div class="avatar green circle">年</div></div>
+			    <div style="width: 60%" th:if="${ charge.chargeType eq '14' }"><div class="avatar red circle">永</div></div>
+			    <div style="width: 60%" th:if="${ charge.chargeType eq '99' }"><div class="avatar red circle">活</div></div>
+		    	<div style="width: 80%" class="text-center">
+			    	<span class="tcFinalPrice" th:text="'¥' + ${charge.finalMoney}"></span>
+			    	<span class="tcSourcePrice" th:text="${charge.discount/10} + '折'"></span>
+			    	<div class="tcDesc" th:text="${charge.chargeDesc}"></div>
 		    	</div>
 		    </div>
 		  </div>
-		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
-		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="2">
-			    <div style="width: 60%"><div class="avatar yellow circle">季</div></div>
-		    	<div style="width: 50%" class="text-center">
+		  <!-- <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		    <div class="card flex flex-middle tsn-margin-zd content-space-between activi-card">
+			    <div style="width: 60%"><div class="avatar yellow circle">活</div></div>
+		    	<div style="width: 80%" class="text-center">
 			    	<span class="tcFinalPrice">¥70</span>
 			    	<span class="tcSourcePrice">8折</span>
-			    	<div class="tcDesc">季卡90天</div>
+			    	<div class="tcDesc">限时活动7天优惠套餐，抓紧体验</div>
 		    	</div>
 		    </div>
-		  </div>
-		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		  </div> -->
+		  <!-- <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
 		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="3">
 			    <div style="width: 60%"><div class="avatar blue circle">半</div></div>
 		    	<div style="width: 50%" class="text-center">
@@ -279,8 +292,8 @@ body {
 			    	<div class="tcDesc">半年卡</div>
 		    	</div>
 		    </div>
-		  </div>
-		  <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
+		  </div> -->
+		  <!-- <div class="col-xs-12 col-md-4 col-sm-6 col-lg-3">
 		    <div class="card flex flex-middle tsn-margin-zd content-space-between" attr-charge-id="4">
 			    <div style="width: 60%"><div class="avatar green circle">年</div></div>
 		    	<div style="width: 50%" class="text-center">
@@ -299,7 +312,7 @@ body {
 			    	<div class="tcDesc">永久</div>
 		    	</div>
 		    </div>
-		  </div>
+		  </div> -->
 		</div>
 		
 		<div class="radio-inline"><input type="radio" name="payType" checked="checked" id="payType1" value="alipay"><label for="primaryradio1">支付宝</label></div>
@@ -390,6 +403,14 @@ body {
      	                   	$("#startPay").text("立即支付")
      	                   	$("#startPay").removeClass("disable");
      	                    $("#subPay").submit();
+						}else if (res.code === "100991") {
+							new $.zui.Messager('用户未登录，请重试', {
+		   	          			placement: 'center'
+		   	    		    }).show();
+						}else if (res.code === "300797") {
+							new $.zui.Messager(res.msg, {
+		   	          			placement: 'center'
+		   	    		    }).show();
 						}
                     },
                     complete : function() {

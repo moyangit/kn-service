@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.tsn.common.utils.exception.BusinessException;
 import com.tsn.common.utils.utils.cons.ResultCode;
 import com.tsn.common.utils.utils.tools.json.JsonUtils;
@@ -33,7 +30,6 @@ import com.tsn.serv.mem.entity.activit.ActivitRuleInvit;
 import com.tsn.serv.mem.entity.mem.MemExtInfo;
 import com.tsn.serv.mem.entity.mem.MemInfo;
 import com.tsn.serv.mem.entity.order.ChargeOrder;
-import com.tsn.serv.mem.entity.order.RebateWaitOrder;
 import com.tsn.serv.mem.entity.proxy.ProxyInfo;
 import com.tsn.serv.mem.mapper.account.MemAccountMapper;
 import com.tsn.serv.mem.mapper.account.MemAccountRecordMapper;
@@ -183,11 +179,6 @@ public class MemActiviService {
 		//如果memExtInfo == null 说明是老用户
 		MemExtInfo memExtInfo = memExtInfoService.getById(parentId);
 		
-		//如果是老用户
-		/*if (memExtInfo == null) {
-			return;
-		}*/
-		
 		//获取父级邀请的已充值的用户的信息
 		int inviMemCount = memMapper.getInvitationMemCount(parentId);
 		
@@ -207,6 +198,8 @@ public class MemActiviService {
 			String dayCdkType = activitInvit.getDayCdkType();
 			String weekCdkType = activitInvit.getWeekCdkType();
 			String monthCdkType = activitInvit.getMonthCdkType();
+			
+			Integer rewardDur = activitInvit.getRewardDuration();
 			
 			//参与过的活动人数 大于 任务人数 说明参与过了，就不执行了
 			if (memExtInfo != null && memExtInfo.getInivActivitPeopleNum() != null && memExtInfo.getInivActivitPeopleNum() >= peopleNum) {
@@ -232,6 +225,10 @@ public class MemActiviService {
 					cdkService.insertCDK(parentId, monthCdkType, monthCdkNum, "auto");
 				}
 				
+				//如果有奖励时长这时给邀请人添加时长
+				if (rewardDur != null && rewardDur != 0) {
+					durationRecordService.addDurationOfInvitCharge(parentId, rewardDur);
+				}
 				
 				//int duration = activitInvit.getDuration();
 				Integer proxyRebate = activitInvit.getProxyRebate();
@@ -268,77 +265,6 @@ public class MemActiviService {
 				break;
 			}
 		}
-		
-		/*int people2Time = 10;
-		int people2ProxyLvl20 = 20;
-		int people2ProxyLvl40 = 50;*/
-		
-		/*//如果小于10用户个就不做处理
-		if (inviMemCount < people2Time) {
-			return;
-		}
-		
-		//获取用户信息
-		MemInfo memInfo = memMapper.selectByPrimaryKey(parentId);
-		boolean isProxy = "1".equals(memInfo.getIsProxy()) ? true :  false;
-		
-		//如果不是代理 且 邀请人数大于等于10，延长30天
-		if (!isProxy && inviMemCount >= people2Time) {
-			
-			//如果已经邀请任务兑换了就不走下面
-			if (memExtInfo == null || memExtInfo.getIsInvitGetTime() == null || memExtInfo.getIsInvitGetTime() != 1) {
-				//新增时长记录
-				durationRecordService.addDurationOfInvite(parentId);
-				int duration = 30 * 24 * 60;
-				MemInfo memInfoTemp = new MemInfo();
-				memInfoTemp.setMemId(parentId);
-				if (memInfo.isExpire()) {
-					memInfoTemp.setSuspenDate(DateUtils.getCurrDateAddMinTime(new Date(), duration));
-				}else {
-					memInfoTemp.setSuspenDate(DateUtils.getCurrDateAddMinTime(memInfo.getSuspenDate(), duration));
-				}
-				memMapper.updateByPrimaryKeySelective(memInfoTemp);
-				
-				//更新扩展信息表
-				MemExtInfo memExtInfoTemp = new MemExtInfo();
-				memExtInfoTemp.setId(parentId);
-				memExtInfoTemp.setIsInvitGetTime(1);
-				boolean  res = memExtInfoService.updateById(memExtInfoTemp);
-				if(!res) {
-					memExtInfoService.save(memExtInfoTemp);
-				}
-			}
-		}
-		
-		//成为代理,并修改等级
-		if (inviMemCount >= people2ProxyLvl20 && inviMemCount < people2ProxyLvl40) {
-			
-			//如果不是代理，升级代理，如果是代理，说明已经升级过了，不操作任何
-			if (!isProxy) {
-				//20表示百分比
-				upUser2Proxy(parentId, MemProxyLvlEum.lvl0.getCode());
-			}
-			
-		}
-		
-		//修改等级
-		if (inviMemCount >= people2ProxyLvl40) {
-			
-			String rebate = MemProxyLvlEum.lvl1.getCode();
-			
-			//如果不是代理，升级代理，同时修改代理级别  这种情况只会出现老用户
-			if (!isProxy) {
-				//20表示百分比
-				upUser2Proxy(parentId, rebate);
-			}else {//如果是代理，可能之前的比例是20，现在要升级成40
-				//如果是永久用户，同时添加代理商表
-				ProxyInfo proxyInfoTmp = new ProxyInfo();
-				proxyInfoTmp.setProxyId(memInfo.getMemId());
-				proxyInfoTmp.setProxyLvl(rebate);
-				//添加代理商用户表
-				proxyInfoMapper.updateByPrimaryKeySelective(proxyInfoTmp);
-			}
-		}*/
 		
 	}
 	
@@ -428,9 +354,10 @@ public class MemActiviService {
 
 			log.info("charge order update success, orderNo= {}， ready rebateing, then put mq ", new Object[]{order.getChargeType()});
 			
+			this.operaOrderRabate(order.getOrderNo());
 			
 			//判断邀请用户是否成为了10的代理
-			Integer rebate = order.getRebate();
+			/*Integer rebate = order.getRebate();
 			
 			Integer lowerRebate = 10;
 			
@@ -469,7 +396,7 @@ public class MemActiviService {
 				}
 			}else {
 				this.operaOrderRabate(order.getOrderNo());
-			}
+			}*/
 			
 			//mqHandler.send(MqCons.QUEUE_OREDER_RABATE, JsonUtils.objectToJson(rebateInfo));
 			
@@ -488,14 +415,9 @@ public class MemActiviService {
 			return;
 		}
 		
-		//如果返利为10，可能邀请人不是代理，这里要判断下邀请人是不是代理，如果不是代理，就不返利，如果是代理就返利
-		if (order.getRebate() == 10) {
-			
-			ProxyInfo proxyInfo = proxyInfoMapper.selectByPrimaryKey(order.getRebateUserId());
-			
-			if (proxyInfo == null) {
-				return;
-			}
+		//如果返利为0 不返利
+		if (order.getRebate() == null || order.getRebate() == 0) {
+			return;
 		}
 		
 		List<Map<String, Object>> rebateDetail = new ArrayList<Map<String, Object>>();

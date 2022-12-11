@@ -22,7 +22,7 @@ import com.tsn.common.db.mysql.base.BaseEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="邀请活动规则", description="")
+@ApiModel(value="邀请活动规则，累计充值人数奖励", description="")
 //mes_req_record
 @TableName("v_activit_rule_invit")
 @TableComment("邀请活动规则")
@@ -36,7 +36,7 @@ public class ActivitRuleInvit extends BaseEntity {
     @TableId
     private String id;
     
-    @ApiModelProperty(value = "人数")
+    @ApiModelProperty(value = "充值人数")
     @TableField
     @ColumnType
     private Integer peopleNum;
@@ -67,6 +67,10 @@ public class ActivitRuleInvit extends BaseEntity {
     @ApiModelProperty(value = "cdk数量")
     @TableField
     private Integer monthCdkNum;
+    
+    @ApiModelProperty(value = "奖励时长")
+    @TableField
+    private Integer rewardDuration;
     
 /*    @ApiModelProperty(value = "奖励时长，单位分钟")
     @TableField

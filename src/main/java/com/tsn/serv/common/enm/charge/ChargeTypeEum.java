@@ -2,7 +2,7 @@ package com.tsn.serv.common.enm.charge;
 
 public enum ChargeTypeEum {
 	
-	month("10", "月卡"), quarter("11", "季卡"), halfYear("12", "半年卡"), year("13", "年卡"), forever("14", "永久");
+	month("10", "月卡"), quarter("11", "季卡"), halfYear("12", "半年卡"), year("13", "年卡"), forever("14", "永久"), activity("99", "永久");
 	
 	String type;
 	

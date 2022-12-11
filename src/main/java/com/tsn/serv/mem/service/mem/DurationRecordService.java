@@ -1,14 +1,21 @@
 package com.tsn.serv.mem.service.mem;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.tsn.common.utils.utils.tools.time.DateUtils;
 import com.tsn.serv.common.enm.credits.convert.ConvertDurationEum;
 import com.tsn.serv.mem.entity.credits.CreditsTask;
+import com.tsn.serv.mem.entity.env.enm.EnvKeyEnum;
 import com.tsn.serv.mem.entity.mem.DurationRecord;
+import com.tsn.serv.mem.entity.mem.MemInfo;
 import com.tsn.serv.mem.mapper.credits.CreditsTaskMapper;
 import com.tsn.serv.mem.mapper.mem.DurationRecordMapper;
+import com.tsn.serv.mem.service.env.EnvParamsService;
 
 /**
  * 时长记录操作
@@ -24,6 +31,9 @@ public class DurationRecordService {
 	private CreditsTaskMapper creditsTaskMapper;
 	
 	@Autowired
+	private EnvParamsService envParamsService;
+	
+	@Autowired
 	private MemService memService;
 	
 	public void insert(DurationRecord durationRecord) {
@@ -31,16 +41,58 @@ public class DurationRecordService {
 		durationRecordMapper.insert(durationRecord);
 	}
 	
+	@Transactional
 	public void addDurationOfInvite(String memId) {
 		
-		CreditsTask creditsTask = creditsTaskMapper.getCreditsTaskByTaskType("friend_invite","win");
+		String duration = envParamsService.getValByKey(EnvKeyEnum.invit_people_reward_duration);
+		
+		if (StringUtils.isEmpty(duration)) {
+			//duration = "30";//分钟
+			return;
+		}
+		
+		int durationInt = Integer.parseInt(duration);
+		
+		MemInfo memInfo = memService.queryMemById(memId);
+		
+		MemInfo memInfoTmp = new MemInfo();
+		memInfoTmp.setMemId(memId);
+		
+		if (memInfo.isExpire()) {
+			memInfoTmp.setLastRechargeDate(new Date());
+			memInfoTmp.setSuspenDate(DateUtils.getCurrDateAddMinTime(new Date(), durationInt));
+		}else {
+			memInfoTmp.setSuspenDate(DateUtils.getCurrDateAddMinTime(memInfo.getSuspenDate(), durationInt));
+		}
+		memService.updateMemInfo(memInfoTmp);
+		
 		//新增时长记录
 		DurationRecord durationRecord = new DurationRecord();
 		durationRecord.setMemId(memId);
 		durationRecord.setConvertCardType(ConvertDurationEum.friend_invite.name());
-		durationRecord.setConvertDuration(creditsTask.getTaskVal());
+		durationRecord.setConvertDuration(durationInt);
 		durationRecord.setDurationSources(ConvertDurationEum.friend_invite.name());
 		this.insert(durationRecord);
+	}
+	
+	/**
+	 * 邀请充值成功奖励
+	 * @param memId
+	 * @param cdkNo
+	 * @param minTime
+	 */
+	@Transactional
+	public void addDurationOfInvitCharge(String memId, Integer duration) {
+		//新增时长记录
+		DurationRecord durationRecord = new DurationRecord();
+		durationRecord.setMemId(memId);
+		durationRecord.setConvertCardType(ConvertDurationEum.friend_invite.name());
+		durationRecord.setConvertDuration(duration);
+		durationRecord.setDurationSources(ConvertDurationEum.friend_invite.name());
+		this.insert(durationRecord);
+		
+		memService.updateSuspenDateByMinute(memId, duration);
+		
 	}
 	
 	public void addDuration(String memId, String convertCardType, String convertSource, Integer convertDuration) {

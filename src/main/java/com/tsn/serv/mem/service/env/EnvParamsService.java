@@ -25,6 +25,10 @@ public class EnvParamsService extends ServiceImpl<EnvParamsMapper, EnvParams>{
 	
 	private static List<EnvParams> cacheEnvParams = new ArrayList<EnvParams>();
 	
+	public void clearParams() {
+		cacheEnvParams.clear();
+	}
+	
 	public String getValByKey(EnvKeyEnum keyEnum) {
 		
 		if (cacheEnvParams.isEmpty()) {
