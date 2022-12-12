@@ -3,7 +3,6 @@ package com.tsn.serv.auth.service.email;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.ws.rs.core.MediaType;
 
@@ -12,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +40,12 @@ public class EmailService {
 	
 	@Value("${spring.mail.ownserver}")  
 	private String ownServer;
+	
+	@Value("${spring.mail.host}")  
+	private String host;
+	
+	@Value("${spring.mail.port}")  
+	private int port;
 	
 	private Logger logger = LoggerFactory.getLogger(EmailService.class);
 	
@@ -97,15 +102,55 @@ public class EmailService {
 		mailSender.send(simpleMailMessage);
 	}
 	
-	public void sendBatchEmail(String[] emailList, String subject, String content){
+	public void sendBatchEmail(String fromEmail, String[] emailList, String subject, String content){
 		try {
+			
+			//1、创建邮件对象
+
+			JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+
+			//2、发邮件人邮箱
+
+			javaMailSender.setUsername(fromEmail);
+
+			//3、发邮件人邮箱密码（默认使用客户端的授权码）
+
+			javaMailSender.setPassword(password);
+
+			//4、设置邮件服务器主机名 SMTP服务器地址
+
+			javaMailSender.setHost(host);
+
+			//5、SMTP服务器: 默认端口 换成腾讯云服务器后,需要将端口换成465
+
+			// javaMailSender.setPort(465);
+
+			javaMailSender.setPort(port);
+
+			//6、//发送邮件协议名称
+
+			javaMailSender.setProtocol("smtp");
+
+			//7、编码格式
+
+			javaMailSender.setDefaultEncoding("UTF-8");
+
+			//8、创建连接对象，连接到邮箱服务器
+
+			//Properties mailProperties = new Properties();
+
+			//发送服务器需要身份验证,要采用指定用户名密码的方式去认证
+
+			//mailProperties.put(“mail.smtp.auth”, true);
+
+			//mailProperties.put(“mail.smtp.starttls.enable”, true);
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
-			helper.setFrom(from); // 发送人,从配置文件中取得
+			helper.setFrom(fromEmail); // 发送人,从配置文件中取得
 			helper.setTo(emailList); // 接收人
 			helper.setSubject(subject);
 			helper.setText(content, true);
-			mailSender.send(message);
+			javaMailSender.send(message);
 		} catch (Exception e) {
 			logger.error("sendBatchEmail e = {}", e);
 		}
